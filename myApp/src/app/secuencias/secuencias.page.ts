@@ -21,4 +21,19 @@ export class SecuenciasPage implements OnInit {
     })
   }
 
+  clickDownloadJSON(){
+    db.table("secuenciaLists").toArray().then(secuenciaLists => {
+      var data1 = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(secuenciaLists));
+      var a = document.createElement('a');
+      a.href = 'data:' + data1;
+      //a.download = nombrePDF.slice(0, -4) +'.json';
+      a.innerHTML = 'download JSON';
+      a.id='descargarJsonBd'
+
+      var container = document.getElementById('linkDescargarBaseDatos');
+      //container.appendChild(a);
+      //document.getElementById('descargarJsonBd').click();
+    });
+  }
+
 }

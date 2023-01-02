@@ -14,6 +14,7 @@ export class FolderPage implements OnInit  {
   botonesEstado = false;
   acordeonEstado = true;
   iframeEstado = false;
+  libros: any[] = [];
   @ViewChild('iframe') iframe: ElementRef;
 
   constructor(
@@ -23,7 +24,7 @@ export class FolderPage implements OnInit  {
   ) {}
 
   ngOnInit() {    
-    
+    this.libros = this.librosService.peticionLibros();
   }
 
   url(){

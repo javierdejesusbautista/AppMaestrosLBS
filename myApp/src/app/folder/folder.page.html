@@ -28,103 +28,61 @@
       <ion-item slot="header" color="light">
         <ion-label>1er Grado</ion-label>
       </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_01_matematicas</ion-label>
-      </ion-item>
-      <ion-item button slot="content" (click)="acordeonStatus()">
-        <ion-label style="padding-left: 20px;">ESC_01_ciencias</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_01_español</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_01_formacion_civica_y_etica</ion-label>
-      </ion-item>
+      <div *ngFor="let libro of libros" slot="content">
+        <ion-item  button slot="content" (click)="acordeonStatus()" *ngIf="libro.Grados==1">
+          <ion-label style="padding-left: 20px;">{{libro.Nombre}}</ion-label>
+        </ion-item>
+      </div>
     </ion-accordion>
     <ion-accordion value="segundo">
       <ion-item slot="header" color="light">
         <ion-label>2do Grado</ion-label>
       </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_02_matematicas</ion-label>
-      </ion-item>
-      <ion-item button slot="content" (click)="acordeonStatus()">
-        <ion-label style="padding-left: 20px;">ESC_02_ciencias</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_02_español</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_02_formacion_civica_y_etica</ion-label>
-      </ion-item>
+      <div *ngFor="let libro of libros" slot="content">
+        <ion-item  button slot="content" (click)="acordeonStatus()" *ngIf="libro.Grados==2">
+          <ion-label style="padding-left: 20px;">{{libro.Nombre}}</ion-label>
+        </ion-item>
+      </div>
     </ion-accordion>
     <ion-accordion value="tercero">
       <ion-item slot="header" color="light">
         <ion-label>3er Grado</ion-label>
       </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_03_matematicas</ion-label>
-      </ion-item>
-      <ion-item button slot="content" (click)="acordeonStatus()">
-        <ion-label style="padding-left: 20px;">ESC_03_ciencias</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_03_español</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_03_formacion_civica_y_etica</ion-label>
-      </ion-item>
+      <div *ngFor="let libro of libros" slot="content">
+        <ion-item  button slot="content" (click)="acordeonStatus()" *ngIf="libro.Grados==3">
+          <ion-label style="padding-left: 20px;">{{libro.Nombre}}</ion-label>
+        </ion-item>
+      </div>
     </ion-accordion>
     <ion-accordion value="cuarto">
       <ion-item slot="header" color="light">
         <ion-label>4to Grado</ion-label>
       </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_04_matematicas</ion-label>
-      </ion-item>
-      <ion-item button slot="content" (click)="acordeonStatus()">
-        <ion-label style="padding-left: 20px;">ESC_04_ciencias</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_04_español</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_04_formacion_civica_y_etica</ion-label>
-      </ion-item>
+      <div *ngFor="let libro of libros" slot="content">
+        <ion-item  button slot="content" (click)="acordeonStatus()" *ngIf="libro.Grados==4">
+          <ion-label style="padding-left: 20px;">{{libro.Nombre}}</ion-label>
+        </ion-item>
+      </div>
     </ion-accordion>
     <ion-accordion value="quinto">
       <ion-item slot="header" color="light">
         <ion-label>5to Grado</ion-label>
       </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_05_matematicas</ion-label>
-      </ion-item>
-      <ion-item button slot="content" (click)="acordeonStatus()">
-        <ion-label style="padding-left: 20px;">ESC_05_ciencias</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_05_español</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_05_formacion_civica_y_etica</ion-label>
-      </ion-item>
+      <div *ngFor="let libro of libros" slot="content">
+        <ion-item  button slot="content" (click)="acordeonStatus()" *ngIf="libro.Grados==5">
+          <ion-label style="padding-left: 20px;">{{libro.Nombre}}</ion-label>
+        </ion-item>
+      </div>
     </ion-accordion>
     <ion-accordion value="sexto">
       <ion-item slot="header" color="light">
         <ion-label>6to Grado</ion-label>
       </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_06_matematicas</ion-label>
-      </ion-item>
-      <ion-item button slot="content" (click)="acordeonStatus()">
-        <ion-label style="padding-left: 20px;">ESC_06_ciencias</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_06_español</ion-label>
-      </ion-item>
-      <ion-item button slot="content">
-        <ion-label style="padding-left: 20px;">ESC_06_formacion_civica_y_etica</ion-label>
-      </ion-item>
+      <div *ngFor="let libro of libros" slot="content">
+        <ion-item  button slot="content" (click)="acordeonStatus()" *ngIf="libro.Grados==6">
+          <ion-label style="padding-left: 20px;">{{libro.Nombre}}</ion-label>
+        </ion-item>
+      </div>
     </ion-accordion>
   </ion-accordion-group>
   <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
