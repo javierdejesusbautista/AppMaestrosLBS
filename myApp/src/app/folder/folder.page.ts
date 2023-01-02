@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { LibrosService } from '../API/libros.service';
 import { DataService } from '../services/data.service';
 
 
@@ -15,10 +16,14 @@ export class FolderPage implements OnInit  {
   iframeEstado = false;
   @ViewChild('iframe') iframe: ElementRef;
 
-  constructor(private activatedRoute: ActivatedRoute, public dataService: DataService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute, 
+    public dataService: DataService,
+    private librosService: LibrosService,
+  ) {}
 
   ngOnInit() {    
-  
+    
   }
 
   url(){
