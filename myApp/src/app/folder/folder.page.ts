@@ -1,5 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { link } from 'fs';
+import * as JSZip from 'jszip';
+import * as FileSaver from 'file-saver';
 import { LibrosService } from '../API/libros.service';
 import { DataService } from '../services/data.service';
 
@@ -43,4 +46,12 @@ export class FolderPage implements OnInit  {
     this.botonesEstado = false;
   }
 
+  crearZip(){
+    var zip = new JSZip();
+    zip.file("ejemplo.js", "Hola Josias y bienvenido a JSZIP\n");
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      FileSaver.saveAs(content, "Example.zip");
+    });
+  }
 }
+
