@@ -17,7 +17,8 @@ export class FolderPage implements OnInit  {
   botonesEstado = false;
   acordeonEstado = true;
   iframeEstado = false;
-  libros: any[] = [];
+  librosTemp: any[] = [];
+  librosAll: any[] = [];
   @ViewChild('iframe') iframe: ElementRef;
 
   constructor(
@@ -27,14 +28,30 @@ export class FolderPage implements OnInit  {
   ) {}
 
   ngOnInit() {    
-    this.libros = this.librosService.peticionLibros();
+    this.librosTemp = this.librosService.peticionLibros();
+
+	//Agrupo los libros por grado
+	const grades = ['1', '2', '3', '4', '5', '6'];
+	const gradeNames = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
+
+	this.librosAll = grades.reduce((acc: any[], grade, index) => {
+		const libros = this.librosTemp.filter(libro => libro.Grados === grade);
+		acc.push({'Grados': gradeNames[index], 'Libros': libros});
+		return acc;
+	}, []);
+	console.log(this.librosAll);
   }
 
   url(){
     console.log('iframe',this.iframe.nativeElement.contentWindow.location.href);
   }
 
-  acordeonStatus(){
+  abrirLibro(libro: any){
+	console.log('abrirLibro', libro);
+	this.dataService.libroActual = libro;
+
+	// accion abrir ifrime con link real libro
+
     this.acordeonEstado = false;
     this.iframeEstado = true;
     this.botonesEstado = true;

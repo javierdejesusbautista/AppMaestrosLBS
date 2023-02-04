@@ -10,10 +10,16 @@ import { FormsModule } from '@angular/forms';
 import { FolderPageModule } from './folder/folder.module';
 import { FolderPage } from './folder/folder.page';
 import { SelectScrollDirective } from './directives/select-scroll.directive';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [AppComponent, SelectScrollDirective],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,FormsModule, FolderPageModule],
+  imports: [BrowserModule,
+	IonicModule.forRoot(),
+	AppRoutingModule,
+	FormsModule,
+	FolderPageModule,
+	QuillModule.forRoot()],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

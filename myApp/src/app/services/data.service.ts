@@ -7,6 +7,7 @@ import { Observable, Subject } from "rxjs";
 export class DataService {
 
   estadoModal = false;
+  libroActual: any = {};
 
   locations = new Observable((pagina) => {
    

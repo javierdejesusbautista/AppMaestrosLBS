@@ -30,32 +30,35 @@
           [breakpoints]="[0.8, 0.15]"
           [backdropDismiss]="false"
           [backdropBreakpoint]="1"
-          handle="false">
+          handle="false"
+		  class="modalService">
           <ng-template>
             <ion-header>
               <ion-toolbar>
                 <ion-label style="padding-left: 20px; padding-right: 5px;">Pagina :</ion-label>
                 <ion-buttons slot="end">
                   <ion-button shape="round" fill="clear" (click)="dataService.abrirModal()">
-                    <ion-icon name="close-circle"></ion-icon>
+                    <ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
                   </ion-button>
                 </ion-buttons>
-                <select name="select" [(ngModel)]="pag" value="{{numeroPagina$}}" style="color: black;">
+                <select id="slcModal" name="select" [ngModel]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
                   <option *ngFor="let pag of totalPaginas">{{pag}}</option>
                 </select>
               </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding">
-              <ion-textarea
+              <!-- <ion-textarea
                 class="custom-textarea"
                 placeholder="Escribe tu comentario aqui..."
                 [(ngModel)]="contenido"
                 rows="7"
                 cols="5"
                 style="border: solid 2px gray; border-radius: 10px;">
-              </ion-textarea>
+              </ion-textarea> -->
+			  <quill-editor [(ngModel)]="contenidoSecuencia" [modules]="quillModules" id="quillText" 
+			  	format="html" placeholder="Insertar texto aqui..."></quill-editor>
               <div style="text-align: center; margin-top: 4px;">
-                <ion-button shape="round" (click)="addNewList()" color="medium">
+                <ion-button shape="round" color="dark" (click)="addNewList()">
                   <ion-icon slot="start" name="paper-plane"></ion-icon>
                   Enviar
                 </ion-button>

@@ -25,20 +25,69 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+// quill editor
+@import '~quill/dist/quill.bubble.css'; 
+@import '~quill/dist/quill.snow.css';
+
 ion-modal {
-    --height: 50%;
+    --height: 55%;
     --border-radius: 16px;
     --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --min-width: 400px;
-    --max-width: 400px;
-  }
+    //--min-width: 400px;
+    //--max-width: 80%;
+	--width: 45%;
+	justify-content: flex-end;
+}
+
   
-  ion-modal ion-toolbar {
+  
+ion-modal ion-toolbar {
     --background: #92949c;
     --color: white;
-  }
+}
 
-  ::-webkit-scrollbar {
+ion-modal ion-content {
+	--padding-top: 0px !important;
+    --padding-start: 0px !important;
+	--padding-end: 0px !important;
+}
+
+ion-modal #slcModal {
+    padding: 7px 40px 7px 12px;
+    border: 1px solid #E8EAED;
+	color: #223254;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 1px 3px -2px #9098A9;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    transition: all 150ms ease;
+}
+
+#slcModal option {
+	color: #223254;
+}
+
+ion-modal #quillText {
+	height:57%; 
+	width: 100%;
+}
+
+#quillText .ql-toolbar {
+	background-color: #ffffff;
+	// border-top-left-radius: 4px;
+	// border-top-right-radius: 4px;
+}
+
+#quillText .ql-container {
+    background-color: #ffffff;
+	color: #000000;
+	// border-bottom-left-radius: 4px;
+	// border-bottom-right-radius: 4px;
+}
+
+::-webkit-scrollbar {
     width: 12px;
 }
 ::-webkit-scrollbar-track {

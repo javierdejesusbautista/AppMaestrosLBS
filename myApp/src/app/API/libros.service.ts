@@ -10,7 +10,7 @@ export class LibrosService extends apiBase{
     super();
   }
 
-  peticionLibros(){
-    return this.libros;
+	peticionLibros(){
+    	return  this.libros;
   }
 }

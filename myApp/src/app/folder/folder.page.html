@@ -26,6 +26,24 @@
       <ion-icon name="arrow-undo"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <!-- Libro sections-->
+
+<ion-accordion-group expand="inset" *ngIf="acordeonEstado">
+	<ion-accordion [value]="i" *ngFor="let grado of librosAll; index as i;">
+		<ion-item slot="header" color="light">
+		<ion-label>{{ grado.Grados }} Grado</ion-label>
+		</ion-item>
+		<div *ngFor="let libro of grado.Libros;" slot="content">
+			<ion-item  button slot="content" (click)="abrirLibro(libro)">
+			<ion-label style="padding-left: 20px;">{{ libro.Nombre }}</ion-label>
+			</ion-item>
+		</div>
+	</ion-accordion>
+</ion-accordion-group>
+
+
+<!---
+
   <ion-accordion-group expand="inset" *ngIf="acordeonEstado">
     <ion-accordion value="primero">
       <ion-item slot="header" color="light">
@@ -87,7 +105,7 @@
         </ion-item>
       </div>
     </ion-accordion>
-  </ion-accordion-group>
+  </ion-accordion-group> -->
   <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
     <div class="contenedorIframe">
         <iframe #iframe src="http://localhost:8100/assets/ESC_03_science/indexAndroid.html" frameborder="0" style="height: 100%; width: 100%"></iframe>

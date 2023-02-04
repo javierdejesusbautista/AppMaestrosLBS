@@ -2,9 +2,14 @@ import Dexie, { Table } from 'dexie';
 
 
 export interface SecuenciaList {
-  id?: number;
+  Id?: number;
   contenido: string;
   numPagina : number;
+  libroNombre: string;
+  NombreArchivo: string;
+  Grados: string;
+  Escolaridad: string;
+  idLibro: string;
 }
 
 
@@ -24,7 +29,6 @@ export class AppDB extends Dexie {
   async resetDatabase() {
     await db.transaction('rw', 'todoItems', 'todoLists', () => {
       this.secuenciaLists.clear();
-
     });
   }
 }
