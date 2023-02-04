@@ -77,7 +77,8 @@ export class AppComponent implements OnInit{
 	  Grados: this.dataService.libroActual.Grados,
 	  Escolaridad: this.dataService.libroActual.Escolaridad,
 	  NombreArchivo: this.dataService.libroActual.NombreArchivo,
-	  idLibro: this.dataService.libroActual.Id
+	  idLibro: this.dataService.libroActual.Id,
+	  Suffix: this.dataService.libroActual.Suffix
     });
     this.dataService.abrirModal();
   }

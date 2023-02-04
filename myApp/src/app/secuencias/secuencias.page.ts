@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { liveQuery } from 'dexie';
 import { title } from 'process';
 import { db } from '../db/db';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-secuencias',
@@ -10,15 +11,22 @@ import { db } from '../db/db';
 })
 export class SecuenciasPage implements OnInit {
 
-  secuencias$:any = [];
+  	secuencias$:any ;
+	secuenciasTemp: any = []
+	secuenciasIsLoading: boolean = false;
 
-  constructor() { }
+  constructor(private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
-     db.secuenciaLists.toArray().then((data)=>{
-       this.secuencias$ = data
-       console.log(data)
-    })
+   this.secuenciasIsLoading = true;
+	this.getDataSecuencia();
+	setTimeout(() => {
+		this.secuencias$.forEach((element: any) => {
+			element.contenido = this.domSanitizer.bypassSecurityTrustHtml(element.contenido);
+		}); 
+		this.secuenciasIsLoading = false;
+	},400 );
+	console.log(this.secuencias$);
   }
 
   clickDownloadJSON(){
@@ -36,4 +44,11 @@ export class SecuenciasPage implements OnInit {
     });
   }
 
+
+  async getDataSecuencia() {
+	await db.secuenciaLists.toArray().then( (data) => {
+        this.secuencias$ = data;
+       console.log(data);
+    });
+  }
 }

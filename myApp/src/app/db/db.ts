@@ -10,6 +10,7 @@ export interface SecuenciaList {
   Grados: string;
   Escolaridad: string;
   idLibro: string;
+  Suffix: string;
 }
 
 
