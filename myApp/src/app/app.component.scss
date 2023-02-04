@@ -1,5 +1,6 @@
 ion-menu{
   --side-max-width: 15%;
+  --side-min-width: 230px;
 }
 
 ion-menu ion-content {
@@ -8,8 +9,8 @@ ion-menu ion-content {
 }
 
 ion-menu.md ion-content {
-  --padding-start: 0px;
-  --padding-end: 8px;
+  --padding-start: 8px;
+  --padding-end: 1px;
   --padding-top: 20px;
   --padding-bottom: 20px;
 }
@@ -50,7 +51,7 @@ ion-menu.md ion-list#labels-list ion-list-header {
 ion-menu.md ion-item {
   --padding-start: 10px;
   --padding-end: 10px;
-  border-radius: 230px;
+  border-radius: 5px;
 }
 
 ion-menu.md ion-item.selected {
