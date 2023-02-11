@@ -2,16 +2,17 @@ import Dexie, { Table } from 'dexie';
 
 
 export interface SecuenciaList {
-  Id?: number;
-  contenido: string;
-  numPagina : number;
-  libroNombre: string;
-  NombreArchivo: string;
-  Grados: string;
-  Escolaridad: string;
-  idLibro: string;
-  Suffix: string;
-}
+	idLibro: string, 
+	nombreLibro: string, 
+	datosGenerales: {
+		id?: number,
+		Grados: string, 
+		Suffix: string,
+		Escolaridad: string,
+		NombreArchivo: string,
+		contenido: string
+	}
+};
 
 
 
@@ -22,7 +23,7 @@ export class AppDB extends Dexie {
   constructor() {
     super('ngdexieliveQuery');
     this.version(3).stores({
-      secuenciaLists: '++id'
+      secuenciaLists: 'id++'
     });
   }
 

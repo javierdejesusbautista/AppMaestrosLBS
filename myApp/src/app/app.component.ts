@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { db, SecuenciaList } from 'src/app/db/db';
 import { DataService } from './services/data.service';
 import { Observable } from 'rxjs';
 import interact from 'interactjs';
 import { IonSelect } from '@ionic/angular';
+
+//import { db, SecuenciaList } from 'src/app/db/db';
+import { LibroService } from './services/libro.service';
 
 @Component({
   selector: 'app-root',
@@ -43,11 +45,14 @@ export class AppComponent implements OnInit{
   
   public labels = ['Family', 'Friends', 'Notes'];
 
+  libroExiste: any;
 
   @ViewChild('#modal') modalSecuencia: ElementRef;
 
   constructor( 
     public dataService: DataService,
+	private libroService: LibroService,
+
   ) { }
 
   ngOnInit(){   
@@ -63,28 +68,44 @@ export class AppComponent implements OnInit{
 
   async addNewList() {
 	if(this.contenidoSecuencia.length < 1) return;
+	const idLibro = this.dataService.libroActual.Id;
+	//Si libro existe, solo agregar secuencia, sino agregar informacion del libro y secuencia
+	this.libroService.getLibroExiste(idLibro).subscribe(resp => {
+		if(resp) {
+			let datosLibro = {
+					pagina: this.pag,
+					contenido: this.contenidoSecuencia
+				};
+			this.libroService.addSecuenciaLibro(idLibro, datosLibro).subscribe(res => {
+				this.contenidoSecuencia = '';
+			});
+		} else {
+			let libro = {
+				idLibro: this.dataService.libroActual.Id,
+				nombreLibro: this.dataService.libroActual.Nombre,
+				Grados: this.dataService.libroActual.Grados,
+				Suffix: this.dataService.libroActual.Suffix,
+				Escolaridad: this.dataService.libroActual.Escolaridad,
+				NombreArchivo: this.dataService.libroActual.NombreArchivo,
+			}
+			this.libroService.createRegistroLibro(libro).subscribe(res => {
+				let secuencias = { 
+					pagina: this.pag,
+					contenido: this.contenidoSecuencia
+				};
+				this.libroService.addSecuenciaLibro(idLibro, secuencias).subscribe(res => {
+					this.contenidoSecuencia = '';
+				});
+			 })
+		}
+	});
 
-	console.log(this.dataService.libroActual);
-    await db.secuenciaLists.add({
-		contenido : this.contenidoSecuencia,
-		numPagina : this.pag,
-		// libroNombre: "nombre",
-		// NombreArchivo: "nombreArchivo",
-		// Grados: "grados",
-		// Escolaridad: "escolaridad",
-		// idLibro: "idlibro"
-	  libroNombre: this.dataService.libroActual.Nombre,
-	  Grados: this.dataService.libroActual.Grados,
-	  Escolaridad: this.dataService.libroActual.Escolaridad,
-	  NombreArchivo: this.dataService.libroActual.NombreArchivo,
-	  idLibro: this.dataService.libroActual.Id,
-	  Suffix: this.dataService.libroActual.Suffix
-    });
     this.dataService.abrirModal();
   }
 
   onChangePag(event: any) {
 	console.log(event);
   }
+
 }
 

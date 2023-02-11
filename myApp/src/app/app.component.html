@@ -31,7 +31,8 @@
           [backdropDismiss]="false"
           [backdropBreakpoint]="1"
           handle="false"
-		  class="modalService">
+		  class="modalService"
+		  id="modal-secuencia">
           <ng-template>
             <ion-header>
               <ion-toolbar>
@@ -41,20 +42,12 @@
                     <ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
                   </ion-button>
                 </ion-buttons>
-                <select id="slcModal" name="select" [ngModel]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
+                <select id="slcModal" name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
                   <option *ngFor="let pag of totalPaginas">{{pag}}</option>
                 </select>
               </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding">
-              <!-- <ion-textarea
-                class="custom-textarea"
-                placeholder="Escribe tu comentario aqui..."
-                [(ngModel)]="contenido"
-                rows="7"
-                cols="5"
-                style="border: solid 2px gray; border-radius: 10px;">
-              </ion-textarea> -->
 			  <quill-editor [(ngModel)]="contenidoSecuencia" [modules]="quillModules" id="quillText" 
 			  	format="html" placeholder="Insertar texto aqui..."></quill-editor>
               <div style="text-align: center; margin-top: 4px;">

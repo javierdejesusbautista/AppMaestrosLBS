@@ -11,6 +11,7 @@ import { FolderPageModule } from './folder/folder.module';
 import { FolderPage } from './folder/folder.page';
 import { SelectScrollDirective } from './directives/select-scroll.directive';
 import { QuillModule } from 'ngx-quill';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, SelectScrollDirective],
@@ -19,7 +20,8 @@ import { QuillModule } from 'ngx-quill';
 	AppRoutingModule,
 	FormsModule,
 	FolderPageModule,
-	QuillModule.forRoot()],
+	QuillModule.forRoot(),
+	HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

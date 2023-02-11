@@ -4,14 +4,15 @@ ion-col {
     text-align: center;
 }
 
+ion-card {
+	margin: 0;
+}
+
 ion-card-header.ios {
     display: flex;
     flex-flow: column-reverse;
 }
 
-ion-card ion-card-content {
-	text-align: unset;
-}
 
 .container-loading {
 	text-align: center;
@@ -26,3 +27,4 @@ ion-card ion-card-content {
 	animation: fadeIn;
 	animation-duration: 800ms;
 }
+
