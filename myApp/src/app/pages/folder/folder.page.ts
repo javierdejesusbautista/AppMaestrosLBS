@@ -3,12 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { link } from 'fs';
 import * as JSZip from 'jszip';
 import * as FileSaver from 'file-saver';
-import { LibrosService } from '../API/libros.service';
-import { DataService } from '../services/data.service';
+
+import { LibrosService } from '../../API/libros.service';
+import { DataService } from '../../services/data.service';
 
 
 @Component({
-  selector: 'app-folder',
+  selector: 'app-folder-page',
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
 })

@@ -1,0 +1,29 @@
+<ion-content>
+    <form [formGroup]="frmLogin" (ngSubmit)="onLogin()">
+            <ion-grid class="ion-justify-content-center">
+                <ion-row color="primary" class="ion-justify-content-center">
+                    <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+
+                        <div class="ion-padding">
+                            <ion-item style="padding-bottom: 16px;" lines="none">
+                                <ion-input class="cajaTexto" formControlName="usuario" type="email" placeholder="Usuario"></ion-input>
+                            </ion-item>
+                            <ion-item  lines="none">
+                                <ion-input class="cajaTexto" formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+                            </ion-item>
+                            <ion-item lines="none" style="padding-top: 16px">
+                                <div class="ion-padding" style="width: 100%;padding: 10px 0px 0px 0px;">
+                                    <ion-button style="--border-radius: 50px;
+									height: 48px;
+									--background: #F4315D;
+									--background-activated: #f76e8d;
+									--background-focused: #f76e8d;
+									--background-hover: #f76e8d;" size="large" type="submit" expand="block">Entrar</ion-button>
+                                </div>
+								</ion-item>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+    </form>
+</ion-content>
