@@ -7,6 +7,7 @@ import { LibroService } from '../../services/libro.service';
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,8 @@ export class HomePage implements OnInit {
 	presentingElement : any;
 
 	stateBotonGuardarEditarSecuencia: boolean = false;
+
+	nombreLibro: string;
 
 	quillModules = {
 		'toolbar': [
@@ -61,7 +64,8 @@ export class HomePage implements OnInit {
   constructor( public dataService: DataService,
 	private libroService: LibroService,
 	private authService: AuthService,
-	private alertController: AlertController) { }
+	private alertController: AlertController,
+	private router: Router) { }
 
 	ngOnInit() {   
 		
@@ -75,16 +79,17 @@ export class HomePage implements OnInit {
 				this.stateBotonGuardarEditarSecuencia = false;
 				this.formContenidoSecuencia.setValue('');
 
-				console.log(this.dataService.secuenciasLibroActual);
 				const secuencias = this.dataService.secuenciasLibroActual;
 				const secuenciaActual = secuencias.find((secuencia: { pagina: number; }) => secuencia.pagina === this.pag);
 				this.formContenidoSecuencia.setValue(secuenciaActual['contenido']);
 				this.stateBotonGuardarEditarSecuencia = true;
-				console.log(secuenciaActual.contenido);
 			}
 
 
 		});
+
+		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
+
 		for (let index = 1; index < 142; index++) {
 			this.totalPaginas.push(index);
 		}
@@ -181,11 +186,16 @@ export class HomePage implements OnInit {
 		// 	this.appPages[0].activo = false;
 		// 	this.appPages[1].activo = true;
 		// }
-
 		this.appPages[0].activo = pageTipo === 'libros';
 		this.appPages[1].activo = pageTipo === 'secuencias';
 	}
-	
+
+	regresarInicio() {
+		console.log("regresar inicio");
+		const cerrarIframe  = false;
+		this.dataService.setNombreLibroActual('');
+		this.dataService.setStateIframe( cerrarIframe );
+	}
 
 	onLogout() {
 		this.authService.logout();

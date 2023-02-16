@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +24,7 @@ import { AppComponent } from './app.component';
 	IonicModule.forRoot(),
 	AppRoutingModule,
 	FormsModule,
-	HttpClientModule
+	HttpClientModule,
 	//QuillModule.forRoot(),
 ],
   providers: [

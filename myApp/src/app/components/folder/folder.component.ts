@@ -53,6 +53,12 @@ export class FolderComponent implements OnInit {
 
 			console.log(this.librosAll);
 		});
+
+		this.dataService.stateIframe$.subscribe((data: boolean) => {
+			this.iframeEstado = data;
+			this.acordeonEstado = true;
+			this.botonesEstado = false;
+		 } );
 	
 
 		this.dataService.paginaSubejct$.subscribe(value => {
@@ -82,17 +88,19 @@ export class FolderComponent implements OnInit {
 			this.dataService.secuenciasLibroActual = secuencias;
 		});
 		// accion abrir ifrime con link real libro
-	
-		this.acordeonEstado = false;
+		this.dataService.setNombreLibroActual(libro.Nombre);
 		this.iframeEstado = true;
+		this.acordeonEstado = false;
 		this.botonesEstado = true;
 	  }
 	
 	  regresar(){
 		this.acordeonEstado = true;
-		this.iframeEstado = false;
+		this.dataService.stateIframe = false;
 		this.botonesEstado = false;
+		this.dataService.setNombreLibroActual('');
 	  }
+
 	
 	  crearZip(){
 		var zip = new JSZip();
