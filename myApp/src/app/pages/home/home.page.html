@@ -16,19 +16,15 @@
 
 
 
-    <div class="ion-page" id="main-content">
-        <ion-header>
-            <ion-toolbar>
-                <ion-title></ion-title>
-            </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-            <app-folder *ngIf="appPages[0].activo"></app-folder>
-            <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
-        </ion-content>
+    <div id="main-content">
+
+        <app-folder *ngIf="appPages[0].activo"></app-folder>
+        <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
+
     </div>
 
-    <ion-modal #modal trigger="open-modal" [isOpen]="dataService.estadoModal" [initialBreakpoint]="0.8" [breakpoints]="[0.8, 0.15]" [backdropDismiss]="false" [backdropBreakpoint]="1" handle="false" class="modalService" id="modal-secuencia">
+    <ion-modal #modal [style.display]="dataService.displayModal" trigger="open-modal" [isOpen]="dataService.estadoModal" [initialBreakpoint]="0.8" [breakpoints]="[0.8, 0.15]" [backdropDismiss]="false" [backdropBreakpoint]="1" handle="false" class="modalService"
+        id="modal-secuencia">
         <ng-template>
             <ion-header>
                 <ion-toolbar>

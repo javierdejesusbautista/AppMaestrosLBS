@@ -7,6 +7,7 @@ import { Observable, Subject } from "rxjs";
 export class DataService {
 
   estadoModal = false;
+  displayModal = 'none';
   libroActual: any = {};
   pagina: any;
   public paginaSubejct$: Subject<any> = new Subject<any>();
@@ -23,6 +24,7 @@ export class DataService {
 
   abrirModal(){
     this.estadoModal = this.estadoModal ? false : true;
+    this.displayModal = 'none' ? 'inherit' : 'none'
   }
   cambiarPaginaSubejct(pagina: any) {
     console.log(pagina);
