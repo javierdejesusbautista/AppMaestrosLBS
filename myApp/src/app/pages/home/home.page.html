@@ -1,78 +1,57 @@
 <ion-split-pane when="xs" contentId="main-content">
-	<ion-menu contentId="main-content" type="overlay">
-	<ion-content style="font-family: Solitreo !important;">
-		<ion-list id="inbox-list">
-			<ion-list-header style="padding-bottom: 20px;">LBS+</ion-list-header>
-			<ion-menu-toggle
-				auto-hide="false"
-				*ngFor="let page of appPages; let i = index"
-				
-			>
-				<ion-item
-					(click)="chosePage(page.tipo)"
-					lines="none"
-					detail="false"
-					[class.isActive]="page.activo"
-					style="margin-top: 10px; margin-left: 8px; font-family: 'Solitreo';">
-					<ion-label>{{ page.title }}</ion-label>
-					<ion-icon name="{{ page.icon }}" slot="start"></ion-icon>
-				</ion-item>
-			</ion-menu-toggle>
-			<ion-menu-toggle auto-hide="false">
-				<ion-item (click)="onLogout()" lines="none" detail="false" style="margin-top: 10px; margin-left: 8px; font-family: 'Solitreo';">
-					<ion-label>Cerrar sesión</ion-label>
-					<ion-icon name="exit-outline" slot="start"></ion-icon>
-				</ion-item>
-			</ion-menu-toggle>
-		</ion-list>
+    <ion-menu contentId="main-content" type="overlay">
+        <ion-content style="font-family: Solitreo !important;">
+            <ion-list id="inbox-list">
+                <ion-list-header style="padding-bottom: 20px;">LBS+</ion-list-header>
+                <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages; let i = index">
+                    <ion-item (click)="chosePage(page.tipo)" lines="none" detail="false" [class.isActive]="page.activo" style="margin-top: 10px; margin-left: 8px; font-family: 'Solitreo';">
+                        <ion-label>{{ page.title }}</ion-label>
+                        <ion-icon name="{{ page.icon }}" slot="start"></ion-icon>
+                    </ion-item>
+                </ion-menu-toggle>
+            </ion-list>
 
-		</ion-content>
-	</ion-menu>
+        </ion-content>
+    </ion-menu>
 
 
 
-	<div class="ion-page" id="main-content">
-		<ion-content class="ion-padding">
-		  <app-folder *ngIf="appPages[0].activo"></app-folder>
-		  <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
-		</ion-content>
-	  </div>
-	
-	<ion-modal 
-	#modal
-	trigger="open-modal"
-	[isOpen]="dataService.estadoModal"
-	[initialBreakpoint]="0.8"
-	[breakpoints]="[0.8, 0.15]"
-	[backdropDismiss]="false"
-	[backdropBreakpoint]="1"
-	handle="false"
-	class="modalService"
-	id="modal-secuencia">
-	<ng-template>
-		<ion-header>
-		<ion-toolbar>
-			<ion-label style="padding-left: 20px; padding-right: 5px;">Pagina :</ion-label>
-			<ion-buttons slot="end">
-			<ion-button shape="round" fill="clear" (click)="dataService.abrirModal()">
-				<ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
-			</ion-button>
-			</ion-buttons>
-			<select id="slcModal" name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
+    <div class="ion-page" id="main-content">
+        <ion-header>
+            <ion-toolbar>
+                <ion-title></ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <app-folder *ngIf="appPages[0].activo"></app-folder>
+            <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
+        </ion-content>
+    </div>
+
+    <ion-modal #modal trigger="open-modal" [isOpen]="dataService.estadoModal" [initialBreakpoint]="0.8" [breakpoints]="[0.8, 0.15]" [backdropDismiss]="false" [backdropBreakpoint]="1" handle="false" class="modalService" id="modal-secuencia">
+        <ng-template>
+            <ion-header>
+                <ion-toolbar>
+                    <ion-label style="padding-left: 20px; padding-right: 5px;">Pagina :</ion-label>
+                    <ion-buttons slot="end">
+                        <ion-button shape="round" fill="clear" (click)="dataService.abrirModal()">
+                            <ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
+                    <select id="slcModal" #select name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
 			<option *ngFor="let pag of totalPaginas">{{pag}}</option>
 			</select>
-		</ion-toolbar>
-		</ion-header>
-		<ion-content class="ion-padding">
-		<quill-editor [(ngModel)]="contenidoSecuencia" [modules]="quillModules" id="quillText" 
-			format="html" placeholder="Insertar texto aqui..."></quill-editor>
-		<div style="text-align: center; margin-top: 4px;">
-			<ion-button shape="round" color="dark" (click)="addNewList()">
-			<ion-icon slot="start" name="paper-plane"></ion-icon>
-			Enviar
-			</ion-button>
-		</div>
-		</ion-content>
-	</ng-template>
-	</ion-modal>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <quill-editor [(ngModel)]="contenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+                <div style="text-align: center; margin-top: 4px;">
+                    <ion-button shape="round" color="dark" (click)="addNewList()">
+                        <ion-icon slot="start" name="paper-plane"></ion-icon>
+                        Enviar
+                    </ion-button>
+                </div>
+            </ion-content>
+        </ng-template>
+    </ion-modal>
 </ion-split-pane>

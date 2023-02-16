@@ -8,10 +8,8 @@ export class DataService {
 
   estadoModal = false;
   libroActual: any = {};
-
-	pagina: any;
-
-	public paginaSubejct$: Subject<any> = new Subject<any>();
+  pagina: any;
+  public paginaSubejct$: Subject<any> = new Subject<any>();
 
 
   locations = new Observable((pagina) => {
@@ -26,6 +24,11 @@ export class DataService {
   abrirModal(){
     this.estadoModal = this.estadoModal ? false : true;
   }
+  cambiarPaginaSubejct(pagina: any) {
+    console.log(pagina);
+    this.paginaSubejct$.next(pagina);
+  }
+
 
   constructor() { 
 
@@ -35,9 +38,6 @@ export class DataService {
 
   }
 
-  cambiarPaginaSubejct(pagina: any) {
-	console.log(pagina);
-	this.paginaSubejct$.next(pagina);
-  }
+
    
 }

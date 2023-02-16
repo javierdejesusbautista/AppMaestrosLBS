@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { fromEvent, Observable, map } from 'rxjs';
 
 import { LibroService } from '../../services/libro.service';
 import { DataService } from '../../services/data.service';
@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-
+   
 	contenidoSecuencia = ''
 	pag = 0;
 	numeroPagina$ : any;
@@ -51,14 +51,16 @@ export class HomePage implements OnInit {
   libroExiste: any;
 
   @ViewChild('#modal') modalSecuencia: ElementRef;
-
+  @ViewChild('select') select: ElementRef;
 
   constructor( public dataService: DataService,
 	private libroService: LibroService,
 	private authService: AuthService) { }
 
 	ngOnInit() {   
+		
 		this.dataService.locations.subscribe(pagina =>{
+			
 		  this.numeroPagina$ = pagina;
 		 this.pag = parseInt(this.numeroPagina$);
 		});
@@ -66,6 +68,8 @@ export class HomePage implements OnInit {
 			this.totalPaginas.push(index);
 		}
 		this.presentingElement = document.querySelector('.ion-page');
+
+	
 	}
 
 	async addNewList() {
@@ -104,12 +108,18 @@ export class HomePage implements OnInit {
 	
 		this.dataService.abrirModal();
 	  }
-	
-	onChangePag(event: any) {
+
+	onChangePag(event:any) {
 		console.log(event);
+		//window.content.postMessage(datos, 'https://url-del-iframe.com');
 		this.dataService.cambiarPaginaSubejct(event);
+
 	}
 
+    
+
+	
+	
 	chosePage(pageTipo: string) {
 		console.log("page", pageTipo);
 		// if(pageTipo === 'libros') {

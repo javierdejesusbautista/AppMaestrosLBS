@@ -1,57 +1,54 @@
 <ion-header>
-	<ion-toolbar style="font-family: Solitreo !important">
-	  <ion-title>Libros</ion-title>
-	</ion-toolbar>
-  </ion-header>
-  
-  <ion-content [fullscreen]="true" style="font-family:  Solitreo;">
-	<ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true" style="padding-right: 5%;" *ngIf="botonesEstado">
-	  <ion-fab-button color="medium">
-		<ion-icon name="caret-down-circle"></ion-icon>
-	  </ion-fab-button>
-	  <ion-fab-list side="bottom">
-		<ion-fab-button (click)="dataService.abrirModal()">
-		  <ion-icon name="receipt-outline"></ion-icon>
-		</ion-fab-button>
-		<ion-fab-button>
-		  <ion-icon name="arrow-down-outline"></ion-icon>
-		</ion-fab-button>
-		<ion-fab-button (click)="crearZip()">
-		  <ion-icon name="file-tray-full-outline"></ion-icon>
-		</ion-fab-button>
-	  </ion-fab-list>
-	</ion-fab>
-	<ion-fab slot="fixed" vertical="center" horizontal="start" style="padding-left: 5%;" *ngIf="botonesEstado">
-	  <ion-fab-button (click)="regresar()" color="medium">
-		<ion-icon name="arrow-undo"></ion-icon>
-	  </ion-fab-button>
-	</ion-fab>
-	<!-- Libro sections-->
-  
-  <ion-accordion-group expand="inset" *ngIf="acordeonEstado">
-	<div *ngFor="let grado of librosAll; index as i;">
-		<ion-accordion [value]="i" *ngIf="grado.Libros.length > 0">
-			<ion-item slot="header" color="light">
-			<ion-label>{{ grado.Grados }} Grado</ion-label>
-			</ion-item>
-			<div *ngFor="let libro of grado.Libros;" slot="content">
-				<ion-item  button slot="content" (click)="abrirLibro(libro)">
-				<ion-label style="padding-left: 20px;">{{ libro.Nombre }}</ion-label>
-				</ion-item>
-			</div>
-		</ion-accordion>
-	</div>
-  </ion-accordion-group>
-  
-  <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
-	<div class="contenedorIframe">
-		<!-- <iframe #iframe [src]="http://localhost:8100/assets/ESC_03_science/indexAndroid.html" frameborder="0" style="height: 100%; width: 100%"></iframe> -->
-		<iframe #iframe [src]="urlLibro" frameborder="0" style="height: 100%; width: 100%"></iframe>
-	</div>
-  </div>
+    <ion-toolbar style="font-family: Solitreo !important">
+        <ion-title>Libros</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" style="font-family:  Solitreo;">
+    <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true" style="padding-right: 5%;" *ngIf="botonesEstado">
+        <ion-fab-button color="medium">
+            <ion-icon name="caret-down-circle"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="bottom">
+            <ion-fab-button (click)="dataService.abrirModal()">
+                <ion-icon name="receipt-outline"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button>
+                <ion-icon name="arrow-down-outline"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button (click)="crearZip()">
+                <ion-icon name="file-tray-full-outline"></ion-icon>
+            </ion-fab-button>
+        </ion-fab-list>
+    </ion-fab>
+    <ion-fab slot="fixed" vertical="center" horizontal="start" style="padding-left: 5%;" *ngIf="botonesEstado">
+        <ion-fab-button (click)="regresar()" color="medium">
+            <ion-icon name="arrow-undo"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <!-- Libro sections-->
+
+    <ion-accordion-group expand="inset" *ngIf="acordeonEstado">
+        <ion-accordion [value]="i" *ngFor="let grado of librosAll; index as i;">
+            <ion-item slot="header" color="light">
+                <ion-label>{{ grado.Grados }} Grado</ion-label>
+            </ion-item>
+            <div *ngFor="let libro of grado.Libros;" slot="content">
+                <ion-item button slot="content" (click)="abrirLibro(libro)">
+                    <ion-label style="padding-left: 20px;">{{ libro.Nombre }}</ion-label>
+                </ion-item>
+            </div>
+        </ion-accordion>
+    </ion-accordion-group>
+
+    <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
+        <div class="contenedorIframe">
+            <iframe id="iframe10" #iframe src="http://localhost:8100/assets/ESC_03_science/indexAndroid.html" frameborder="0" style="height: 100%; width: 100%"></iframe>
+        </div>
+    </div>
 </ion-content>
 
-  <!---
+<!---
   
 	<ion-accordion-group expand="inset" *ngIf="acordeonEstado">
 	  <ion-accordion value="primero">
@@ -115,4 +112,3 @@
 		</div>
 	  </ion-accordion>
 	</ion-accordion-group> -->
-	

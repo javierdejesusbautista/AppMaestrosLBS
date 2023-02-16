@@ -633,6 +633,11 @@ var Visor=(function() {
          document.getElementById('goBtn').value=pagina;
          document.getElementById('goBtn').onchange();
     };
+
+
+           
+
+
      /***************************************************/
      /******************Notas***************************/
     var handleEliminarNota=function(){
@@ -3322,7 +3327,14 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
               resultado: 'elemento,libroid,ejercicio,estado' // 1=Siguiente intentnado,2=Buen trabajo,3= Excelente
         });
 
+        /**/
+        window.addEventListener('message', function(event) {
 
+            if (event.data.type === 'callFunction') {
+                const [paginaAppMaestros] = event.data.arguments;
+               IDRViewer.goToPage(paginaAppMaestros)
+            }
+        });
 
         /**********************/
 

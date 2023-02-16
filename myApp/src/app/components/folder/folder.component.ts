@@ -23,6 +23,11 @@ export class FolderComponent implements OnInit {
 	urlLibro: any;
 
 	@ViewChild('iframe') iframe: ElementRef;
+     message = {
+		type: '',
+		functionName : '',
+		arguments: [0]
+	};
   
 	constructor( 
 	  public dataService: DataService,
@@ -49,12 +54,16 @@ export class FolderComponent implements OnInit {
 			console.log(this.librosAll);
 		});
 	
-		
-		this.dataService.paginaSubejct$.subscribe(value => {
-			console.log(value);
-		});
-		
 
+		this.dataService.paginaSubejct$.subscribe(value => {
+			console.log(value)
+			this.message = {
+				type: 'callFunction',
+				functionName: 'nombreDeTuFuncion',
+				arguments: [value]
+			};
+			this.iframe.nativeElement.contentWindow.postMessage( this.message , '*');
+		});
 	  }
 	
 	//   url(){
