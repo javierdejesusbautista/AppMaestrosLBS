@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, SecurityContext, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController } from '@ionic/angular';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 import { db } from '../../db/db';
 import { LibroService } from '../../services/libro.service';

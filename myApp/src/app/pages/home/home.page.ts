@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { LibroService } from '../../services/libro.service';
 import { DataService } from '../../services/data.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -53,7 +54,8 @@ export class HomePage implements OnInit {
 
 
   constructor( public dataService: DataService,
-	private libroService: LibroService ) { }
+	private libroService: LibroService,
+	private authService: AuthService) { }
 
 	ngOnInit() {   
 		this.dataService.locations.subscribe(pagina =>{
@@ -105,6 +107,7 @@ export class HomePage implements OnInit {
 	
 	onChangePag(event: any) {
 		console.log(event);
+		this.dataService.cambiarPaginaSubejct(event);
 	}
 
 	chosePage(pageTipo: string) {
@@ -122,5 +125,9 @@ export class HomePage implements OnInit {
 		this.appPages[1].activo = pageTipo === 'secuencias';
 	}
 	
+
+	onLogout() {
+		this.authService.logout();
+	}
 
 }

@@ -18,6 +18,12 @@
 					<ion-icon name="{{ page.icon }}" slot="start"></ion-icon>
 				</ion-item>
 			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item (click)="onLogout()" lines="none" detail="false" style="margin-top: 10px; margin-left: 8px; font-family: 'Solitreo';">
+					<ion-label>Cerrar sesión</ion-label>
+					<ion-icon name="exit-outline" slot="start"></ion-icon>
+				</ion-item>
+			</ion-menu-toggle>
 		</ion-list>
 
 		</ion-content>
@@ -26,11 +32,6 @@
 
 
 	<div class="ion-page" id="main-content">
-		<ion-header>
-		  <ion-toolbar>
-			<ion-title></ion-title>
-		  </ion-toolbar>
-		</ion-header>
 		<ion-content class="ion-padding">
 		  <app-folder *ngIf="appPages[0].activo"></app-folder>
 		  <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>

@@ -1,5 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { link } from 'fs';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as JSZip from 'jszip';
 import * as FileSaver from 'file-saver';
 
@@ -37,7 +36,12 @@ export class FolderComponent implements OnInit {
 			acc.push({'Grados': gradeNames[index], 'Libros': libros});
 			return acc;
 		}, []);
-		console.log(this.librosAll);
+		
+		this.dataService.paginaSubejct$.subscribe(value => {
+			console.log(value);
+		});
+		
+
 	  }
 	
 	  url(){

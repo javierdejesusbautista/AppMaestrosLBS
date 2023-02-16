@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, Output, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, Subject } from "rxjs";
 
 @Injectable({
@@ -9,6 +9,11 @@ export class DataService {
   estadoModal = false;
   libroActual: any = {};
 
+	pagina: any;
+
+	public paginaSubejct$: Subject<any> = new Subject<any>();
+
+
   locations = new Observable((pagina) => {
    
     window.addEventListener('message', (event)=>{
@@ -17,10 +22,22 @@ export class DataService {
     
   });
 
+
   abrirModal(){
     this.estadoModal = this.estadoModal ? false : true;
   }
 
-  constructor() { }
+  constructor() { 
+
+	this.paginaSubejct$.subscribe((value) => {
+		this.pagina = value
+	});
+
+  }
+
+  cambiarPaginaSubejct(pagina: any) {
+	console.log(pagina);
+	this.paginaSubejct$.next(pagina);
+  }
    
 }
