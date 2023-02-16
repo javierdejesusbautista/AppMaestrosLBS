@@ -9,6 +9,7 @@ export class DataService {
   estadoModal = false;
   displayModal = 'none';
   libroActual: any = {};
+  secuenciasLibroActual: any = {};
   pagina: any;
   public paginaSubejct$: Subject<any> = new Subject<any>();
 

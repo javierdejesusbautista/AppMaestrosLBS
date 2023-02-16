@@ -77,7 +77,10 @@ export class FolderComponent implements OnInit {
 
 		console.log('abrirLibro', libro);
 		this.dataService.libroActual = libro;
-	
+		const { Id } = libro;
+		this.librosService.getSecuenciasLibro(Id).subscribe(secuencias => {
+			this.dataService.secuenciasLibroActual = secuencias;
+		});
 		// accion abrir ifrime con link real libro
 	
 		this.acordeonEstado = false;

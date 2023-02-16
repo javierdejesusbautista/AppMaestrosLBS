@@ -15,26 +15,32 @@ export class AuthInterceptorService {
 		const token: string = localStorage.getItem('USER_INFO')!;
 		let request = req;
 
-		if (token) {
-			request = req.clone({
-			setHeaders: {
-				Authorization: `Bearer ${ token }`
+		if(!request.url.includes('https://pruebasnek-default-rtdb.firebaseio.com/')) {
+			console.log(request);
+			if (token) {
+				request = req.clone({
+				setHeaders: {
+					Authorization: `Bearer ${ token }`
+				}
+				});
 			}
-			});
+		
+
+			return next.handle(request).pipe(
+				catchError((err: HttpErrorResponse) => {
+
+				if (err.status === 401) {
+					this.router.navigate(['login'],{ replaceUrl: true });
+					//this.navCtrl.navigateRoot('login');
+				}
+
+				return throwError( err );
+				
+				})
+			);
+
 		}
-
-		return next.handle(request).pipe(
-			catchError((err: HttpErrorResponse) => {
-
-			if (err.status === 401) {
-				this.router.navigate(['login'],{ replaceUrl: true });
-				//this.navCtrl.navigateRoot('login');
-			}
-
-			return throwError( err );
-			
-			})
-		);
+		return next.handle(request);
 	}
 
 

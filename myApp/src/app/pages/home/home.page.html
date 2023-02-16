@@ -40,11 +40,15 @@
                 </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding">
-                <quill-editor [(ngModel)]="contenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+                <quill-editor [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
                 <div style="text-align: center; margin-top: 4px;">
-                    <ion-button shape="round" color="dark" (click)="addNewList()">
-                        <ion-icon slot="start" name="paper-plane"></ion-icon>
-                        Enviar
+                    <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()">
+						<ion-icon slot="start" name="paper-plane"></ion-icon>
+                        	Enviar
+                    </ion-button>
+					<ion-button shape="round" color="dark" *ngIf="stateBotonGuardarEditarSecuencia" (click)="guardarEdited()">
+						<ion-icon slot="start" name="create"></ion-icon>
+                        	Editar
                     </ion-button>
                 </div>
             </ion-content>

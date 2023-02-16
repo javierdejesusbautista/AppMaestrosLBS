@@ -139,35 +139,35 @@ export class SecuenciasComponent implements OnInit {
 	* Boton guardar, editar secuencia, crea un alert para despues recargar los datos si se edito.
 	*/
 	async guardarEdited(secuenciaId: string, idLibro: string) {
-	const alert = await this.alertController.create({
-		subHeader: '¿Desea modificar la secuencia?',
-		buttons: [
-		{
-			text: 'Cancelar',
-			role: 'cancel',
-			handler: () => {
+		const alert = await this.alertController.create({
+			subHeader: '¿Desea modificar la secuencia?',
+			buttons: [
+			{
+				text: 'Cancelar',
+				role: 'cancel',
+				handler: () => {
+				},
 			},
-		},
-		{
-			text: 'Aceptar',
-			role: 'confirm',
-			handler: async () => {
-				this.secuenciasIsLoading = true;
-				this.libroService.editSecuenciaLibro(secuenciaId, idLibro, this.frmContenido.getRawValue()).subscribe(data => { 
-					if(this.modalVerSecuencia === true) {
-						this.modalVerSecuencia = false;
-					}
-					this.secuenciaEditarState();
-					this.getDataSecuencia();
-					
-				});
-			
+			{
+				text: 'Aceptar',
+				role: 'confirm',
+				handler: async () => {
+					this.secuenciasIsLoading = true;
+					this.libroService.editSecuenciaLibro(secuenciaId, idLibro, this.frmContenido.getRawValue()).subscribe(data => { 
+						if(this.modalVerSecuencia === true) {
+							this.modalVerSecuencia = false;
+						}
+						this.secuenciaEditarState();
+						this.getDataSecuencia();
+						
+					});
+				
+				},
 			},
-		},
-		],
-	});
+			],
+		});
 
-	await alert.present();
+		await alert.present();
 
 
 	}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, delay } from 'rxjs';
+import { map, delay, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +47,17 @@ export class LibroService {
 		return this.http.get<any[]>(`${this.urlOmega}/${this.ws}/grados`);
 	}
 
+
+	getSecuenciasLibro(idLibro: any) {
+		return this.http.get(`${this.url}/${idLibro}/secuencias.json`).pipe(
+			map(res => this.createArraySecuencias(res)), delay(0));
+	}
+
+	getSecuenciaPag({pagina, idLibro}: any) {
+		// return this.http.get<any[]>(`${this.url}/${idLibro}/`);
+		return new Observable();
+	}
+
 	/**
 	 * 
 	 * @param data datos de firebase
@@ -65,6 +76,11 @@ export class LibroService {
 		  });
 	
 		return resultArray;
+	}
+
+
+	private createArraySecuencias(data: any) {
+		return  Object.keys(data).map(key => ({ id: key, ...data[key] }));
 	}
 
 

@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { fromEvent, Observable, map } from 'rxjs';
 
 import { LibroService } from '../../services/libro.service';
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +16,13 @@ import { AuthService } from 'src/app/services/auth.service';
 export class HomePage implements OnInit {
    
 	contenidoSecuencia = ''
+	formContenidoSecuencia: FormControl = new FormControl();
 	pag = 0;
 	numeroPagina$ : any;
 	totalPaginas : any[] = [];
 	presentingElement : any;
+
+	stateBotonGuardarEditarSecuencia: boolean = false;
 
 	quillModules = {
 		'toolbar': [
@@ -55,35 +60,50 @@ export class HomePage implements OnInit {
 
   constructor( public dataService: DataService,
 	private libroService: LibroService,
-	private authService: AuthService) { }
+	private authService: AuthService,
+	private alertController: AlertController) { }
 
 	ngOnInit() {   
 		
 		this.dataService.locations.subscribe(pagina =>{
 			
-		  this.numeroPagina$ = pagina;
-		 this.pag = parseInt(this.numeroPagina$);
+		  	this.numeroPagina$ = pagina;
+		 	this.pag = parseInt(this.numeroPagina$);
+			const {Id} = this.dataService.libroActual;
+			
+			if(this.dataService.estadoModal) {
+				this.stateBotonGuardarEditarSecuencia = false;
+				this.formContenidoSecuencia.setValue('');
+
+				console.log(this.dataService.secuenciasLibroActual);
+				const secuencias = this.dataService.secuenciasLibroActual;
+				const secuenciaActual = secuencias.find((secuencia: { pagina: number; }) => secuencia.pagina === this.pag);
+				this.formContenidoSecuencia.setValue(secuenciaActual['contenido']);
+				this.stateBotonGuardarEditarSecuencia = true;
+				console.log(secuenciaActual.contenido);
+			}
+
+
 		});
 		for (let index = 1; index < 142; index++) {
 			this.totalPaginas.push(index);
 		}
 		this.presentingElement = document.querySelector('.ion-page');
 
-	
 	}
 
 	async addNewList() {
-		if(this.contenidoSecuencia.length < 1) return;
+		if(this.formContenidoSecuencia.getRawValue().length < 1) return;
 		const idLibro = this.dataService.libroActual.Id;
 		//Si libro existe, solo agregar secuencia, sino agregar informacion del libro y secuencia
 		this.libroService.getLibroExiste(idLibro).subscribe(resp => {
 			if(resp) {
 				let datosLibro = {
 						pagina: this.pag,
-						contenido: this.contenidoSecuencia
+						contenido: this.formContenidoSecuencia.getRawValue()
 					};
 				this.libroService.addSecuenciaLibro(idLibro, datosLibro).subscribe(res => {
-					this.contenidoSecuencia = '';
+					this.formContenidoSecuencia.setValue('');
 				});
 			} else {
 				let libro = {
@@ -97,10 +117,10 @@ export class HomePage implements OnInit {
 				this.libroService.createRegistroLibro(libro).subscribe(res => {
 					let secuencias = { 
 						pagina: this.pag,
-						contenido: this.contenidoSecuencia
+						contenido: this.formContenidoSecuencia.getRawValue()
 					};
 					this.libroService.addSecuenciaLibro(idLibro, secuencias).subscribe(res => {
-						this.contenidoSecuencia = '';
+						this.formContenidoSecuencia.setValue('');
 					});
 				 })
 			}
@@ -109,10 +129,41 @@ export class HomePage implements OnInit {
 		this.dataService.abrirModal();
 	  }
 
+	  async guardarEdited() {
+		const alert = await this.alertController.create({
+			subHeader: '¿Desea modificar la secuencia?',
+			buttons: [
+			{
+				text: 'Cancelar',
+				role: 'cancel',
+				handler: () => {
+				},
+			},
+			{
+				text: 'Aceptar',
+				role: 'confirm',
+				handler: async () => {
+					const { id } = this.dataService.secuenciasLibroActual.find((secuencia: { pagina: number; }) => 
+						secuencia.pagina === this.pag);
+					
+					this.libroService.editSecuenciaLibro(id, this.dataService.libroActual.Id, this.formContenidoSecuencia.getRawValue()).subscribe(data => { 
+						console.log(data);		
+					});
+				
+				},
+			},
+			],
+		});
+
+		await alert.present();
+	  }
+
 	onChangePag(event:any) {
 		console.log(event);
 		//window.content.postMessage(datos, 'https://url-del-iframe.com');
 		this.dataService.cambiarPaginaSubejct(event);
+
+		
 
 	}
 
