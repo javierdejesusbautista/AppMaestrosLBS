@@ -43,7 +43,8 @@ export class LibroService {
 
 
 	getTodosLosLibros() {
-		return this.http.get<any[]>(`${this.urlOmega}/${this.ws}/gradosMaestros`);
+		// return this.http.get<any[]>(`${this.urlOmega}/${this.ws}/gradosMaestros`);
+		return this.http.get<any[]>(`${this.urlOmega}/${this.ws}/grados`);
 	}
 
 	/**

@@ -71,9 +71,9 @@ export class FolderComponent implements OnInit {
 	//   }
 	
 	  abrirLibro(libro: any){
-		const mainUrl: string = 'https://desktop.alfalbs.app/books/';
-		let urlTemp = `${mainUrl}${libro.NombreArchivo}/indexAndroid.html`;
-		 this.urlLibro = this.domSanitizer.bypassSecurityTrustResourceUrl(urlTemp);
+		// const mainUrl: string = 'https://desktop.alfalbs.app/books/';
+		// let urlTemp = `${mainUrl}${libro.NombreArchivo}/indexAndroid.html`;
+		//  this.urlLibro = this.domSanitizer.bypassSecurityTrustResourceUrl(urlTemp);
 
 		console.log('abrirLibro', libro);
 		this.dataService.libroActual = libro;
