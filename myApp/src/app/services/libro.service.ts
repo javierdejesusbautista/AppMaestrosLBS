@@ -8,6 +8,10 @@ import { map, delay } from 'rxjs';
 export class LibroService {
 
 	private url: string = 'https://pruebasnek-default-rtdb.firebaseio.com';
+	private urlOmega: string = 'https://www.alfalbs.app/ApiOmega';
+	 //private urlOmega: string ='http://172.16.12.40:5000';
+	//private urlOmega: string ='https://172.16.12.40:5001';
+	ws: string = 'api/codigos';
 
   	constructor(private http: HttpClient) { }
 
@@ -37,6 +41,10 @@ export class LibroService {
 		return this.http.delete(`${this.url}/${idLibro}/secuencias/${idSecuencia}.json`);
 	}
 
+
+	getTodosLosLibros() {
+		return this.http.get<any[]>(`${this.urlOmega}/${this.ws}/gradosMaestros`);
+	}
 
 	/**
 	 * 
