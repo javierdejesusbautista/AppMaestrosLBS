@@ -85,7 +85,8 @@ export class FolderComponent implements OnInit {
 		this.dataService.libroActual = libro;
 		const { Id } = libro;
 		this.librosService.getSecuenciasLibro(Id).subscribe(secuencias => {
-			this.dataService.secuenciasLibroActual = secuencias;
+			console.log(secuencias);
+			//this.dataService.secuenciasLibroActual = secuencias !== undefined ? secuencias : [];
 		});
 		// accion abrir ifrime con link real libro
 		this.dataService.setNombreLibroActual(libro.Nombre);
@@ -97,6 +98,7 @@ export class FolderComponent implements OnInit {
 	  regresar(){
 		this.acordeonEstado = true;
 		this.dataService.stateIframe = false;
+		this.iframeEstado = false;
 		this.botonesEstado = false;
 		this.dataService.setNombreLibroActual('');
 	  }

@@ -187,3 +187,10 @@ h6 {
     margin: 0;
     font-weight: 400;
 }
+  ion-split-pane {
+	--side-min-width: 0 !important;
+  }
+
+  ion-breadcrumb {
+	cursor: pointer;
+  }

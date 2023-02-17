@@ -18,14 +18,14 @@ export class HomePage implements OnInit {
    
 	contenidoSecuencia = ''
 	formContenidoSecuencia: FormControl = new FormControl();
-	pag = 0;
+	pag = 1;
 	numeroPagina$ : any;
 	totalPaginas : any[] = [];
 	presentingElement : any;
 
 	stateBotonGuardarEditarSecuencia: boolean = false;
 
-	nombreLibro: string;
+	nombreLibro: string = '';
 
 	quillModules = {
 		'toolbar': [
@@ -70,8 +70,7 @@ export class HomePage implements OnInit {
 	ngOnInit() {   
 		
 		this.dataService.locations.subscribe(pagina =>{
-			
-		  	this.numeroPagina$ = pagina;
+		  	this.numeroPagina$ = typeof pagina === 'object' ? 1 : pagina;
 		 	this.pag = parseInt(this.numeroPagina$);
 			const {Id} = this.dataService.libroActual;
 			
@@ -168,24 +167,10 @@ export class HomePage implements OnInit {
 		//window.content.postMessage(datos, 'https://url-del-iframe.com');
 		this.dataService.cambiarPaginaSubejct(event);
 
-		
-
 	}
 
-    
-
-	
 	
 	chosePage(pageTipo: string) {
-		console.log("page", pageTipo);
-		// if(pageTipo === 'libros') {
-		// 	this.appPages[0].activo = true;
-		// 	this.appPages[1].activo = false;
-
-		// }else if(pageTipo === 'secuencias') {
-		// 	this.appPages[0].activo = false;
-		// 	this.appPages[1].activo = true;
-		// }
 		this.appPages[0].activo = pageTipo === 'libros';
 		this.appPages[1].activo = pageTipo === 'secuencias';
 	}
@@ -193,6 +178,7 @@ export class HomePage implements OnInit {
 	regresarInicio() {
 		console.log("regresar inicio");
 		const cerrarIframe  = false;
+		this.chosePage('libros');
 		this.dataService.setNombreLibroActual('');
 		this.dataService.setStateIframe( cerrarIframe );
 	}
