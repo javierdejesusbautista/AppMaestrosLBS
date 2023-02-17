@@ -121,8 +121,9 @@ ion-modal#modal-ver-secuencia {
 
 ion-header {
     height: 65px;
-    box-shadow: 0 2px 4px -1px rgb(57 76 96 / 15%);
+    //box-shadow: 0 2px 4px -1px rgb(57 76 96 / 15%);
     background-image: none !important;
+    background: white;
 }
 
 .header-md::after {
