@@ -1,8 +1,23 @@
 <ion-split-pane when="xs" contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu style="border-color: white;    margin-right: 0px;z-index: 10;" contentId="main-content" type="overlay">
+        <ion-header>
+            <span><img style="padding: 17px 0px 0px 26px;" src="https://static.canva.com/web/images/12487a1e0770d29351bd4ce4f87ec8fe.svg" alt="" role="presentation"></span>
+        </ion-header>
         <ion-content style="font-family: Solitreo !important;">
             <ion-list id="inbox-list">
-                <ion-list-header style="padding-bottom: 20px;">LBS+</ion-list-header>
+                <ion-list-header style="padding-bottom: 20px;">
+                    <div class="parent">
+                        <div class="div1">
+                            <div class="circle">EG</div>
+                        </div>
+                        <div class="div2">
+                            <h6>Eduardo Guerra Bobadilla</h6>
+                        </div>
+                        <div class="div3">
+                            <p class="parrafoCirculo">eguerra.bobadilla@gmail.com</p>
+                        </div>
+                    </div>
+                </ion-list-header>
                 <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages; let i = index">
                     <ion-item (click)="chosePage(page.tipo)" lines="none" detail="false" [class.isActive]="page.activo" style="margin-top: 10px; margin-left: 8px; font-family: 'Solitreo';">
                         <ion-label>{{ page.title }}</ion-label>
@@ -43,12 +58,12 @@
                 <quill-editor [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
                 <div style="text-align: center; margin-top: 4px;">
                     <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()">
-						<ion-icon slot="start" name="paper-plane"></ion-icon>
-                        	Enviar
+                        <ion-icon slot="start" name="paper-plane"></ion-icon>
+                        Enviar
                     </ion-button>
-					<ion-button shape="round" color="dark" *ngIf="stateBotonGuardarEditarSecuencia" (click)="guardarEdited()">
-						<ion-icon slot="start" name="create"></ion-icon>
-                        	Editar
+                    <ion-button shape="round" color="dark" *ngIf="stateBotonGuardarEditarSecuencia" (click)="guardarEdited()">
+                        <ion-icon slot="start" name="create"></ion-icon>
+                        Editar
                     </ion-button>
                 </div>
             </ion-content>

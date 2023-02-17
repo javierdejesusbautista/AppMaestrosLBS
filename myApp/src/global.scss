@@ -119,6 +119,16 @@ ion-modal#modal-ver-secuencia {
     align-items: center;
 }
 
+ion-header {
+    height: 65px;
+    box-shadow: 0 2px 4px -1px rgb(57 76 96 / 15%);
+    background-image: none !important;
+}
+
+.header-md::after {
+    background-image: none !important;
+}
+
 #modal-ver-secuencia ion-card ion-card-content {
     padding-left: 5%;
     padding-right: 5%;
@@ -132,4 +142,37 @@ ion-modal#modal-ver-secuencia {
 @font-face {
     font-family: 'Solitreo';
     src: url('./assets/fonts/canva2.woff2')
+}
+
+
+/* Ancho del scroll */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+/* Fondo del scroll */
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+
+/* Color de la barra de desplazamiento */
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+
+/* Hover color de la barra de desplazamiento */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+body {
+    font-family: Solitreo !important;
+    --ion-font-family: Solitreo !important
 }
