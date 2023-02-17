@@ -53,7 +53,7 @@ ion-menu.md ion-item {
 }
 
 ion-menu.md ion-item.isActive {
-    color: white;
+    color: black;
 }
 
 ion-menu.md ion-item.selected {
@@ -92,7 +92,7 @@ ion-menu.ios ion-item {
 }
 
 ion-menu.ios ion-item.selected ion-icon {
-    color: var(--ion-color-medium);
+    color: var(--ion-color-medium); 
 }
 
 ion-menu.ios ion-item ion-icon {
