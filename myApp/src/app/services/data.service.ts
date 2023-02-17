@@ -6,13 +6,17 @@ import { Observable, Subject } from "rxjs";
 })
 export class DataService {
 
-  estadoModal = false;
-  displayModal = 'none';
-  libroActual: any = {};
-  secuenciasLibroActual: any = {};
-  pagina: any;
-  public paginaSubejct$: Subject<any> = new Subject<any>();
-
+	estadoModal = false;
+	displayModal = 'none';
+	libroActual: any = {};
+	secuenciasLibroActual: any = {};
+	pagina: any;
+  	public paginaSubejct$: Subject<any> = new Subject<any>();
+	public nombreLibroActual$: Subject<string> = new Subject<string>();
+	public stateIframe$: Subject<boolean> = new Subject<boolean>();
+  
+	nombreLibro: string;
+	stateIframe = false;
 
   locations = new Observable((pagina) => {
    
@@ -32,6 +36,15 @@ export class DataService {
     this.paginaSubejct$.next(pagina);
   }
 
+  setNombreLibroActual(nombre: string) {
+	this.nombreLibroActual$.next(nombre);
+  }	
+
+  setStateIframe(state: boolean) {
+	console.log("state: ", state);
+	this.stateIframe$.next(state);
+  }
+
 
   constructor() { 
 
@@ -39,6 +52,14 @@ export class DataService {
 		this.pagina = value
 	});
 
+
+	this.nombreLibroActual$.subscribe((nombre) => {
+		this.nombreLibro = nombre;
+	});
+	
+	this.stateIframe$.subscribe((state) => {
+		this.stateIframe = state;
+	});
   }
 
 

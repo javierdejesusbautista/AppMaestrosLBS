@@ -32,7 +32,16 @@
 
 
     <div id="main-content">
-
+		<ion-header>
+			<ion-toolbar>
+				<ion-breadcrumbs>
+					<ion-breadcrumb (click)="regresarInicio()">Inicio</ion-breadcrumb>
+					<ion-breadcrumb *ngIf="appPages[0].activo" (click)="regresarInicio()">Libros</ion-breadcrumb>
+					<ion-breadcrumb *ngIf="appPages[1].activo">Secuencias</ion-breadcrumb>
+					<ion-breadcrumb *ngIf="nombreLibro !== '' && appPages[0].activo">{{nombreLibro}}</ion-breadcrumb>
+				  </ion-breadcrumbs>
+			</ion-toolbar>
+		</ion-header>
         <app-folder *ngIf="appPages[0].activo"></app-folder>
         <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
 
