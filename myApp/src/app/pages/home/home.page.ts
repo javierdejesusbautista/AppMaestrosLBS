@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
 	numeroPagina$ : any;
 	totalPaginas : any[] = [];
 	presentingElement : any;
-
+	selectAcciones: string = '';
 	stateBotonGuardarEditarSecuencia: boolean = false;
 
 	nombreLibro: string = '';
@@ -181,6 +181,22 @@ export class HomePage implements OnInit {
 		this.chosePage('libros');
 		this.dataService.setNombreLibroActual('');
 		this.dataService.setStateIframe( cerrarIframe );
+	}
+
+
+	selectDropDown(event: any) {
+		const opcion = event.detail.value;
+		this.selectAcciones = opcion;
+		console.log(opcion);
+		if(opcion === 'crear-secuencia') this.dataService.abrirModal();
+		if(opcion === 'descargar-zip') console.log("descargar-zip");
+		if(opcion === 'otros') console.log("otros");
+
+		console.log(this.selectAcciones);
+	}
+
+	cleanSelectDropDown() {
+		this.selectAcciones = '';
 	}
 
 	onLogout() {

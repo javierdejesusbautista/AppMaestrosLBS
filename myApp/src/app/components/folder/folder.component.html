@@ -1,27 +1,11 @@
 <ion-content [fullscreen]="true" style="font-family:  Solitreo;">
-    <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true" style="padding-right: 5%;" *ngIf="botonesEstado">
-        <ion-fab-button color="medium">
-            <ion-icon name="caret-down-circle"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-list side="bottom">
-            <ion-fab-button (click)="dataService.abrirModal()">
-                <ion-icon name="receipt-outline"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button>
-                <ion-icon name="arrow-down-outline"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button (click)="crearZip()">
-                <ion-icon name="file-tray-full-outline"></ion-icon>
-            </ion-fab-button>
-        </ion-fab-list>
-    </ion-fab>
     <ion-fab slot="fixed" vertical="center" horizontal="start" style="padding-left: 5%;" *ngIf="botonesEstado">
         <ion-fab-button (click)="regresar()" color="medium">
             <ion-icon name="arrow-undo"></ion-icon>
         </ion-fab-button>
     </ion-fab>
     <!-- Libro sections-->
-    <ion-title style="margin-top: 30px;font-size: 30px;font-weight: 500;">Libros</ion-title>
+    <ion-title style="margin-top: 30px;font-size: 30px;font-weight: 500;" *ngIf="!iframeEstado">Libros</ion-title>
     <ion-accordion-group style="margin-right: 40px;" expand="inset" *ngIf="acordeonEstado">
 		<div *ngFor="let grado of librosAll; index as i;">
 			<ion-accordion [value]="i" *ngIf="grado.Libros.length > 0">
