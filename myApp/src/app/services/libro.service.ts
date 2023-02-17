@@ -80,6 +80,7 @@ export class LibroService {
 
 
 	private createArraySecuencias(data: any) {
+		if (!data) return {};
 		return  Object.keys(data).map(key => ({ id: key, ...data[key] }));
 	}
 

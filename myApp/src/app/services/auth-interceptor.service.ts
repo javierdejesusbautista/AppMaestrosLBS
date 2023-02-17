@@ -16,7 +16,6 @@ export class AuthInterceptorService {
 		let request = req;
 
 		if(!request.url.includes('https://pruebasnek-default-rtdb.firebaseio.com/')) {
-			console.log(request);
 			if (token) {
 				request = req.clone({
 				setHeaders: {

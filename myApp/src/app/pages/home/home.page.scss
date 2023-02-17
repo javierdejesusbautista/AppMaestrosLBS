@@ -53,7 +53,7 @@ ion-menu.md ion-item {
 }
 
 ion-menu.md ion-item.isActive {
-    color: white;
+    color: black;
 }
 
 ion-menu.md ion-item.selected {
@@ -263,4 +263,12 @@ h6 {
 .select-items div:hover,
 .same-as-selected {
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+ion-split-pane {
+    --side-min-width: 0 !important;
+}
+
+ion-breadcrumb {
+    cursor: pointer;
 }
