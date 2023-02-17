@@ -57,25 +57,24 @@
         <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
 
     </div>
-
-    <ion-modal #modal [style.display]="dataService.displayModal" trigger="open-modal" [isOpen]="dataService.estadoModal" [initialBreakpoint]="0.8" [breakpoints]="[0.8, 0.15]" [backdropDismiss]="false" [backdropBreakpoint]="1" handle="false" class="modalService"
-        id="modal-secuencia">
+    <ion-modal style="--border-radius: 8px;" #modal [style.display]="dataService.displayModal" trigger="open-modal" [isOpen]="dataService.estadoModal" [initialBreakpoint]="0.8" [breakpoints]="[0.8, 0.15]" [backdropDismiss]="false" [backdropBreakpoint]="1"
+        handle="false" class="modalService" id="modal-secuencia">
         <ng-template>
-            <ion-header>
-                <ion-toolbar>
-                    <ion-label style="padding-left: 20px; padding-right: 5px;">Pagina :</ion-label>
-                    <ion-buttons slot="end">
+            <div style="height: 40px;width: 100%;">
+                <div style="background: #f2f6fc;height: 40px;width: 100%;    display: flex;">
+                    <ion-label style="padding-left: 18px;padding-right: 4px;padding-top: 9px;font-size: 15px;font-weight: 500;">Pagina:</ion-label>
+                    <ion-buttons style="right: 0;position: absolute;width: 40px;height: 40px;">
                         <ion-button shape="round" fill="clear" (click)="dataService.abrirModal()">
                             <ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <select id="slcModal" #select name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
-			<option *ngFor="let pag of totalPaginas">{{pag}}</option>
-			</select>
-                </ion-toolbar>
-            </ion-header>
+                    <select style="font-weight: 500;padding: 0px;border: none;border-color: #f2f6fc;font-size: 15px;font-family: Solitreo;background-color: #f2f6fc;" id="slcModal" #select name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
+			            <option *ngFor="let pag of totalPaginas">{{pag}}</option>
+			        </select>
+                </div>
+            </div>
             <ion-content class="ion-padding">
-                <quill-editor [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+                <quill-editor style="padding: 2px;margin: 0;" [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
                 <div style="text-align: center; margin-top: 4px;">
                     <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()">
                         <ion-icon slot="start" name="paper-plane"></ion-icon>
