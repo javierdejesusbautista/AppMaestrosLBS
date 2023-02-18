@@ -187,3 +187,13 @@ body {
 .ql-container.ql-snow {
     border: none !important;
 }
+
+.fade-in-down {
+	animation: fadeInDown;
+	animation-duration: 600ms;
+}
+
+.fade-in {
+	animation: fadeIn;
+	animation-duration: 400ms;
+}

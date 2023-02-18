@@ -47,9 +47,13 @@ export class FolderComponent implements OnInit {
 		
 			this.librosAll = grades.reduce((acc: any[], grade, index) => {
 				const libros = this.librosTemp.filter(libro => libro.Grados === grade);
-				acc.push({'Grados': gradeNames[index], 'Libros': libros});
+				if(libros.length > 0) {
+					acc.push({'Grados': gradeNames[index], 'Libros': libros});
+				}
 				return acc;
 			}, []);
+
+			// this.librosAll = this.librosAll.map(libro =>  if( libro.Libros.length >= 0) return l );
 
 			console.log(this.librosAll);
 		});

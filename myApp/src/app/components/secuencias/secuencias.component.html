@@ -8,7 +8,7 @@
 			  <ion-item slot="header" color="light">
 				  <ion-label>{{ libro.nombreLibro}}</ion-label>
 			  </ion-item>
-			  <ion-grid slot="content">	
+			  <ion-grid class="fade-in" slot="content">	
 				  <ion-row *ngIf="!secuenciasIsLoading" class="row-cards">
 						<ion-col *ngFor="let secuencia of libro.secuencias" size-lg="3" size-md="4" size-sm="6" size="12">
 							<ion-card mode="ios" color="dark">
