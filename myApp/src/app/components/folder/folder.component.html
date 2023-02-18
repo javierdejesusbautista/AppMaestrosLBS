@@ -1,9 +1,5 @@
 <ion-content [fullscreen]="true" style="font-family:  Solitreo;">
-    <ion-fab slot="fixed" vertical="center" horizontal="start" style="padding-left: 5%;" *ngIf="botonesEstado">
-        <ion-fab-button (click)="regresar()" color="medium">
-            <ion-icon name="arrow-undo"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
+    
     <!-- Libro sections-->
     <ion-title style="margin-top: 30px;font-size: 30px;font-weight: 500;" *ngIf="!iframeEstado">Libros</ion-title>
     <ion-accordion-group style="margin-right: 40px;" expand="inset" *ngIf="acordeonEstado">
@@ -23,7 +19,12 @@
 
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
         <div class="contenedorIframe">
-            <iframe id="iframe10" #iframe src="http://localhost:8100/assets/ESC_03_science/indexAndroid.html" frameborder="0" style="height: 100%; width: 100%"></iframe>
+			<ion-fab slot="fixed" vertical="bottom" horizontal="start" style="padding-bottom: 40px;" *ngIf="botonesEstado">
+				<ion-fab-button (click)="regresar()" color="medium">
+					<ion-icon name="arrow-undo"></ion-icon>
+				</ion-fab-button>
+			</ion-fab>
+            <iframe id="iframe10" #iframe src="http://localhost:8100/assets/ESC_03_ciencias_naturales_/indexAndroid.html" frameborder="0" style="height: 100%; width: 100%"></iframe>
         </div>
     </div>
 </ion-content>

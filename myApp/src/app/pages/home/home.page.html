@@ -35,7 +35,7 @@
         <ion-header>
 
             <ion-toolbar style="font-family: Solitreo !important">
-                <div style="display: flex;justify-content: space-between;">
+                <div style="display: flex;justify-content: space-between; width: 100%; overflow-x: auto;">
 					<ion-item style="order: 1;" *ngIf="nombreLibro !== '' && appPages[0].activo" class="slide-in-animation">
 						<ion-select interface="popover" [ngModel]="selectAcciones" (ionDismiss)="cleanSelectDropDown()" (ionChange)="selectDropDown( $event )" selected-text="Acciones" placeholder="Acciones">
 							<ion-select-option value="crear-secuencia">Crear Secuencia</ion-select-option>
@@ -43,7 +43,7 @@
 							<ion-select-option value="otros">Otros</ion-select-option>
 						</ion-select>
 					</ion-item>
-                    <ion-breadcrumbs style="order: 2;margin-top: 10px;">
+                    <ion-breadcrumbs style="order: 2;margin-top: 10px; flex: 1; white-space: nowrap;">
                         <ion-breadcrumb (click)="regresarInicio()">Inicio</ion-breadcrumb>
                         <ion-breadcrumb *ngIf="appPages[0].activo" (click)="regresarInicio()">Libros</ion-breadcrumb>
                         <ion-breadcrumb *ngIf="appPages[1].activo">Secuencias</ion-breadcrumb>

@@ -1,0 +1,4526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- v1.4.1 -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<link rel="stylesheet" href="assets/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="assets/idrviewer.css?v=6">
+<link rel="stylesheet" href="assets/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="assets/style_android.css">
+
+<script src="assets/idrviewer.js?v=6" type="text/javascript"></script>
+<script src="assets/idrviewer.querystring-navigation.js"></script>
+<script src="assets/idrviewer.fullscreen.js"></script>
+<script src="assets/idrviewer.search.js"></script>
+<script src="assets/signature_pad.min.js"></script>
+<script src="assets/jquery-3.3.1.slim.min.js"></script>
+<script src="assets/popper.min.js"></script>
+<script src="assets/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.min.js"></script>
+
+
+<!--Componentes LBS-->
+<script src="components/componentBase.js"></script>
+<script src="components/txtLbs/txtLbs.js"></script>
+<script src="components/txtAreaLbs/txtAreaLbs.js"></script>
+<script src="components/encerrarLbs/encerrarLbs.js"></script>
+<script src="components/radioLbs/radioLbs.js"></script>
+
+<script src="assets/dexie.js"></script>
+
+<script src="assets/firebase-app.js"></script>
+<script src="assets/firebase-firestore.js"></script>
+
+<script type="text/javascript">
+var Visor=(function() {
+    "use strict";
+    var tokenUser = {};
+    var dbDexie;
+    var Button = {},
+        pageLabels = [];
+    var ColorSubrayado;
+    var starty = 0;
+    var startx = 0;
+    var dist = 0;
+    var Borrador=false;
+    var signaturePads=[];
+    var preguntas;
+    var password="7";
+    var candadoCerrado=true;
+    var candadoRespuestas=true;
+    var validarCandado="";
+    var Estado=0; //Ejercicio Relacionar
+    var numerolinea=0; //Ejercicio Relacionar
+    var vx1;//Ejercicio Relacionar
+    var vx2;//Ejercicio Relacionar
+    var vy1;//Ejercicio Relacionar
+    var vy2;//Ejercicio Relacionar
+    var punto1;//Ejercicio Relacionar
+    var punto2;//Ejercicio Relacionar
+    var point1;//Ejercicio Relacionar
+    var point2;//Ejercicio Relacionar
+    var ubicacion=0;//Ejercicio Relacionar
+    var ubicacioncolumna=0;//Ejercicio Relacionar
+    var vuelta=0;//Ejercicio Relacionar
+    var divs;//Ejercicio Relacionar
+    var points;//
+    var db;
+    var signaturePad;
+    /******Ejercicio sopa de letras****////
+    var touches=0,divmove,
+        elementFromPoint,cambiocolor,
+        estasdibujandocolorrojo;
+    const colorActual='rgb(255, 255, 255)'
+    var audios={};
+
+    const firebaseConfig = {
+         apiKey: "AIzaSyBEmvsrmYbh0MIRP067ga84jkvQf8OrDNw",
+         authDomain: "lbstest-284a3.firebaseapp.com",
+         projectId: "lbstest-284a3",
+         storageBucket: "lbstest-284a3.appspot.com",
+         messagingSenderId: "721661318975",
+         appId: "1:721661318975:web:4094c0e3f064dbdc97258a",
+         measurementId: "G-MN7S9M9RLS"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.firestore().settings({
+        cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+    });
+    firebase.firestore().enablePersistence();
+
+    // Initialize Cloud Firestore and get a reference to the service
+    const dbFirestore = firebase.firestore(); 
+
+    /**
+     * Shorthand helper function to getElementById
+     * @param id
+     * @returns {Element}
+     */
+    var d = function (id) {
+        return document.getElementById(id);
+    };
+
+    var ClassHelper = (function() {
+        return {
+            addClass: function(ele, name) {
+                var classes = ele.className.length !== 0 ? ele.className.split(" ") : [];
+                var index = classes.indexOf(name);
+                if (index === -1) {
+                    classes.push(name);
+                    ele.className = classes.join(" ");
+                }
+            },
+
+            removeClass: function(ele, name) {
+                var classes = ele.className.length !== 0 ? ele.className.split(" ") : [];
+                var index = classes.indexOf(name);
+                if (index !== -1) {
+                    classes.splice(index, 1);
+                }
+                ele.className = classes.join(" ");
+            },
+
+            toggleClass: function(ele, name) {
+                var classes = ele.className.length !== 0 ? ele.className.split(" ") : [];
+                var index = classes.indexOf(name);
+                var wasClassAdded;
+                if (index === -1) {
+                    classes.push(name);
+                    wasClassAdded = true;
+                } else {
+                    classes.splice(index, 1);
+                    wasClassAdded = false;
+                }
+                ele.className = classes.join(" ");
+                return wasClassAdded;
+            }
+        };
+    })();
+
+    /**
+     * Encapsulation of sidebar functionality
+     */
+    var Sidebar = (function () {
+
+        var Sidebar = {},
+            loadedThumbsArray = [],
+            lastScroll = 0,
+            sidebar,
+            thumbnailBar,
+            imageType,
+            scrollSidebar = true,
+            thumbnailPanel,
+            bookmarkPanel,
+            searchPanel,
+            isSearchLoaded,
+            searchInput,
+            thumbnailScrollPt = 0,
+            bookmarkScrollPt = 0,
+            searchScrollPt = 0,
+            curPg,
+            pgCount;
+
+        /**
+         * Performs the setup for the sidebar
+         * @param initialPage Current page
+         * @param pageCount Page count
+         * @param bounds Page bounds array
+         * @param thumbnailType Image type used for thumbnails
+         * @param bookmarks Object containing any bookmarks
+         */
+        Sidebar.setup = function (initialPage, pageCount, bounds, thumbnailType, bookmarks) {
+
+            curPg = initialPage;
+            pgCount = pageCount;
+            Button.outlines = d('btnOutlines');
+            Button.thumbnails = d('btnThumbnails');
+            Button.search = d('btnSearch');
+            d('btnSideToggle').onclick = function () {
+                Sidebar.toggleSidebar();
+            };
+            Button.outlines.onclick = function () {
+                Sidebar.switchToBookmarks();
+            };
+            Button.thumbnails.onclick = function () {
+                Sidebar.switchToThumbnails();
+            };
+            Button.search.onclick = function () {
+                Sidebar.switchToSearch();
+            };
+
+            thumbnailBar = d('leftContent');
+            sidebar = d('left');
+            thumbnailPanel = d('thumbnailPanel');
+            bookmarkPanel = d('outlinePanel');
+            searchPanel = d('searchPanel');
+            searchInput = d('searchInput');
+            imageType = thumbnailType;
+
+            loadThumbnailFrames(bounds);
+            // Initialise loaded array
+            for (var i = 0; i < pgCount; i++) {
+                loadedThumbsArray[i] = false;
+            }
+
+            Sidebar.switchToThumbnails();
+
+            thumbnailBar.addEventListener("scroll", handleThumbnailBarScroll);
+
+            if (bookmarks.length > 0) {
+                Sidebar.setBookmarks(bookmarks);
+            }
+            bookmarkScrollPt = bookmarkPanel.scrollTop;
+            searchScrollPt = searchPanel.scrollTop;
+            thumbnailBar.scrollTop = thumbnailScrollPt;
+        };
+
+        Sidebar.openSidebar = function() {
+            if (sidebar.className.indexOf("open") === -1) {
+                Sidebar.toggleSidebar();
+            }
+        };
+
+        /**
+         * Toggle the sidebar open and closed
+         */
+        Sidebar.toggleSidebar = function () {
+            if (ClassHelper.toggleClass(sidebar, "open")) {
+                loadVisibleThumbnails();
+            }
+        };
+
+        /**
+         * Display the thumbnail panel in the sidebar
+         */
+        Sidebar.switchToThumbnails = function () {
+            if (bookmarkPanel.className == "visible") {
+                bookmarkScrollPt = thumbnailBar.scrollTop;
+            }
+            if (searchPanel.className == "visible") {
+                searchScrollPt = thumbnailBar.scrollTop;
+            }
+
+            thumbnailPanel.className = "hidden";
+            bookmarkPanel.className = "visible";
+            searchPanel.className = "hidden";
+            updateThumbnailPanelToCurrentPage();
+            Button.thumbnails.className = 'disabled btn';
+            Button.outlines.className = 'btn';
+            Button.search.className = 'btn';
+        };
+
+        /**
+         * Display the bookmarks panel in the sidebar
+         */
+        Sidebar.switchToBookmarks = function () {
+            if (searchPanel.className == "visible") {
+                searchScrollPt = thumbnailBar.scrollTop;
+            }
+            if (thumbnailPanel.className == "visible") {
+                thumbnailScrollPt = thumbnailBar.scrollTop;
+            }
+
+            thumbnailPanel.className = "hidden";
+            bookmarkPanel.className = "visible";
+            searchPanel.className = "hidden";
+            Button.thumbnails.className = 'btn';
+            Button.outlines.className = 'disabled btn';
+            Button.search.className = 'btn';
+            thumbnailBar.scrollTop = bookmarkScrollPt;
+        };
+
+        Sidebar.switchToSearch = function() {
+            if (bookmarkPanel.className == "visible") {
+                bookmarkScrollPt = thumbnailBar.scrollTop;
+            }
+            if (thumbnailPanel.className == "visible") {
+                thumbnailScrollPt = thumbnailBar.scrollTop;
+            }
+
+            thumbnailPanel.className = "hidden";
+            bookmarkPanel.className = "hidden";
+            searchPanel.className = "visible";
+            Button.thumbnails.className = 'btn';
+            Button.outlines.className = 'btn';
+            Button.search.className = 'disabled btn';
+
+            var loadListener = function(loaded) {
+                if (loaded) {
+                    searchInput.value = "";
+                    searchInput.disabled = "";
+                    searchInput.focus();
+                } else {
+                    searchInput.value = "Search not available.";
+                }
+            };
+            var progressListener = function(percentageLoaded) {
+                searchInput.value = "Loading (" + percentageLoaded + "%)";
+            };
+            if (!isSearchLoaded) {
+                IDRViewer.loadSearch(loadListener, progressListener);
+            }
+            searchInput.focus();
+            thumbnailBar.scrollTop = searchScrollPt;
+        };
+
+        /**
+         * Load the frames for all the thumbnails
+         * @param bounds Page bound array
+         */
+        var loadThumbnailFrames = function (bounds) {
+            var heights = [];
+            var MAXWIDTH = 160;
+            var MAXHEIGHT = 200;
+            // Calculate height for max width of 160px and max height of 200px
+            for (var i = 0; i < bounds.length; i++) {
+                var height = Math.floor(bounds[i][1] * (MAXWIDTH / bounds[i][0]));
+                heights[i] = (bounds[i][0] > bounds[i][1] || height <= MAXHEIGHT) ? height : MAXHEIGHT;
+            }
+
+            function makeThumbnailClickHandler(pg) {
+                return function() {
+                    scrollSidebar = false;
+                    IDRViewer.goToPage(pg);
+                    return false;
+                };
+            }
+
+            for (var page = 1; page <= bounds.length; page++) {
+                var ele = document.createElement("a");
+                ele.style.height = heights[page - 1] + "px";
+                ele.className = "thumbnail";
+                ele.href = "?page=" + page;
+                ele.id = "thumb" + page;
+                ele.onclick = makeThumbnailClickHandler(page);
+                ele.setAttribute('title', 'Page ' + page);
+                var margin = Math.floor((heights[page - 1] - 42) / 2);
+                ele.innerHTML = '<div class="spinner" style="margin-top: ' + margin + 'px;"></div>';
+                thumbnailPanel.appendChild(ele);
+            }
+        };
+
+        var handleThumbnailBarScroll = function () {
+            var scrollTop = thumbnailBar.scrollTop;
+            lastScroll = scrollTop;
+            setTimeout(function () {
+                loadVisibleThumbnails(scrollTop);
+            }, 500);
+        };
+
+        var loadVisibleThumbnails = function (scrollTop) {
+            if (typeof scrollTop !== 'undefined' && scrollTop != lastScroll)
+                return;
+
+            // load thumbs in view
+            for (var thumbIndex = 0; thumbIndex < pgCount; thumbIndex++) {
+                if (!loadedThumbsArray[thumbIndex]) {
+                    var curThumb = thumbnailPanel.children[thumbIndex];
+                    // Bails out of the loop when the next thumbnail is below the viewable area
+                    if (curThumb.offsetTop > thumbnailBar.scrollTop + thumbnailBar.clientHeight) {
+                        break;
+                    }
+                    if (curThumb.offsetTop + curThumb.clientHeight > thumbnailBar.scrollTop) {
+                        curThumb.innerHTML = '<img src="thumbnails/' + (thumbIndex + 1) + '.' + imageType + '" />';
+                        loadedThumbsArray[thumbIndex] = true;
+                    }
+                }
+            }
+        };
+
+        /**
+         * Scrolls the thumbnail bar to a specific page and adds currentPageThumbnail class.
+         * @param page Page to scroll to
+         */
+        Sidebar.handlePageChange = function (page) {
+            curPg = page;
+            if (thumbnailPanel.className === "visible") {
+                updateThumbnailPanelToCurrentPage();
+            }
+            scrollSidebar = true;
+        };
+
+        var updateThumbnailPanelToCurrentPage = function() {
+            var curThumb = thumbnailPanel.children[curPg - 1];
+            if (curThumb.className !== "thumbnail currentPageThumbnail") {
+
+                for (var i = 0; i < pgCount; i++) {
+                    thumbnailPanel.children[i].className = "thumbnail";
+                }
+
+                curThumb.className = "thumbnail currentPageThumbnail";
+
+                if (scrollSidebar) {
+                    thumbnailBar.scrollTop = thumbnailBar.scrollTop + curThumb.getBoundingClientRect().top - d('leftContent').getBoundingClientRect().top;
+                }
+            }
+        };
+
+        Sidebar.setBookmarks = function (bookmarks) {
+            ClassHelper.addClass(sidebar, 'hasBookmarks');
+            addBookmark(bookmarkPanel, bookmarks);
+        };
+
+        var addBookmark = function (container, bookmarks) {
+            var outer = document.createElement('ul');
+
+            var makeBookmarkClickHandler = function(pg, zoom) {
+                return function() {
+                    IDRViewer.goToPage(parseInt(pg), zoom);
+                };
+            };
+            for (var i = 0; i < bookmarks.length; i++) {
+                var bookmark = bookmarks[i];
+                var li = document.createElement('li');
+                li.setAttribute('title', 'Page ' + bookmark.page);
+                li.innerHTML = bookmark.title;
+                li.onclick = makeBookmarkClickHandler(bookmark.page, bookmark.zoom);
+                outer.appendChild(li);
+                if (typeof(bookmark.children) != 'undefined') {
+                    addBookmark(outer, bookmark.children);
+                }
+            }
+            container.appendChild(outer);
+        };
+
+        return Sidebar;
+    })();
+
+    var populateGoBtn = function (initialPage, pgCount) {
+        Button.go.className = "";
+        Button.go.innerHTML = "";
+        for (var i = 1; i <= pgCount; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = pageLabels.length ? pageLabels[i - 1] : String(i);
+            Button.go.appendChild(opt);
+        }
+        Button.go.selectedIndex = initialPage - 1;
+    };
+
+    var loadDataFirestore = function() {
+        var promesa= new Promise((resolve,reject)=> {
+
+            const claveLibro = IDRViewer.config.fileName.replace(".pdf",'');
+            console.log(claveLibro);
+
+            Visor.tokenUser = { ...parseJwt(localStorage.getItem('USER_INFO')) };
+
+            /*if(dbFirestoreLocal != null)
+                if(Visor.dbFirestoreLocal.length!=0)
+                    resolve(Visor.dbFirestoreLocal);*/
+
+
+            Visor.dbFirestore.collection(`${Visor.tokenUser.usuario}/libros/${claveLibro}/data/data`).onSnapshot((querySnapshot) => {
+                  // Respond to data
+                  // ...
+                 querySnapshot.docChanges().forEach((change) => {
+                    var source = change.doc.metadata.hasPendingWrites ? "Local" : "Server";
+                    if (change.type === "added") {
+                        //console.log("added");
+                        Visor.store.dispatch({ type: "ADD_BOOKS", payload: change.doc.data() });
+                    }
+                    if (change.type === "modified") {
+                        //console.log("modified");
+                        Visor.store.dispatch({ type: "ADD_BOOKS", payload: change.doc.data() });
+                    }
+                    //console.log(change.doc.data());
+                 });
+
+                 resolve("Data Cargada");
+
+            });
+
+
+        });
+
+        return promesa;
+    };
+
+    var saveDataFireStore = function(data) {
+        console.log("saveDataFireStore");
+        const { usuario } = Visor.tokenUser;
+        const idLibro     = Visor.idLibro;
+        const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
+
+
+        const widgetData = {...data};
+        
+        Visor.dbFirestore.doc(`${usuario}/libros`)
+                         .collection(claveLibro)
+                         .doc("data")
+                         .collection("data")
+                         .doc(widgetData.elemento)
+                         .set(widgetData)
+        .then(()=> console.log)
+        .catch(error => console.error("Error adding document: ", error));
+    };
+
+    var handleGoBtn = function () {
+      IDRViewer.goToPage(parseInt(Button.go.options[Button.go.selectedIndex].value));
+       
+        this.blur();
+    };
+
+    var updateSelectionButtons = function (mode) {
+        switch (mode) {
+            case IDRViewer.SELECT_PAN:
+                Button.select.className = 'btn';
+                Button.move.className = 'disabled btn';
+                break;
+            case IDRViewer.SELECT_SELECT:
+                Button.select.className = 'disabled btn';
+                Button.move.className = 'btn';
+                break;
+        }
+    };
+
+    var handlePageChange = function (data) {
+        d('pgCount').innerHTML = getPageString(data.page, data.pagecount);
+        Sidebar.handlePageChange(data.page);
+        Button.go.selectedIndex = data.page - 1;
+
+        /*****CODIGO AGREGADO****/
+       // var message = ["INVALID","ModusEcho","CambioHoja",[data.page.toString()]];
+        //window.webkit.messageHandlers.cordova.postMessage(message);
+        if (typeof app !== 'undefined') {
+            app.CambioHoja(data.page.toString());
+        }
+        /**********************/
+
+        Button.prev.className = data.isFirstPage ? 'disabled btn' : 'btn';
+        Button.next.className = data.isLastPage ? 'disabled btn' : 'btn';
+    };
+
+    var handleZoomUpdate = function (data) {
+        Button.zoom.value = data.zoomType;
+        Button.zoom.options[0].innerHTML = Math.floor(data.zoomValue * 100) + "%";
+
+        Button.zoomOut.className = data.isMinZoom ? 'disabled btn' : 'btn';
+        Button.zoomIn.className = data.isMaxZoom ? 'disabled btn' : 'btn';
+    };
+
+    var handleSelectionChange = function (data) {
+        updateSelectionButtons(data.type);
+    };
+
+    var handleZoomBtn = function () {
+        var zoomType = Button.zoom.value;
+        if (zoomType != IDRViewer.ZOOM_SPECIFIC) {
+            IDRViewer.setZoom(zoomType);
+        }
+        this.blur();
+    };
+
+    var handleViewBtn = function () {
+        IDRViewer.setLayout(Button.View.value);
+        this.blur();
+    };
+
+    var setupLayoutSwitching = function (pgCount, layout, availableLayouts, isMobile) {
+
+        if (!isMobile) {
+
+            if (availableLayouts.length > 1 && pgCount > 1) {
+                Button.View = document.createElement('select');
+                Button.View.id = 'viewBtn';
+
+                var temp = document.createElement('option');
+                temp.innerHTML = "Presentation";
+                temp.value = IDRViewer.LAYOUT_PRESENTATION;
+                Button.View.appendChild(temp);
+
+                if (availableLayouts.indexOf(IDRViewer.LAYOUT_MAGAZINE) != -1) {
+                    temp = document.createElement('option');
+                    temp.innerHTML = "Magazine";
+                    temp.value = IDRViewer.LAYOUT_MAGAZINE;
+                    Button.View.appendChild(temp);
+                }
+                if (availableLayouts.indexOf(IDRViewer.LAYOUT_CONTINUOUS) != -1) {
+                    temp = document.createElement('option');
+                    temp.innerHTML = "Continuous";
+                    temp.value = IDRViewer.LAYOUT_CONTINUOUS;
+                    Button.View.appendChild(temp);
+                }
+                Button.View.onchange = handleViewBtn;
+                d('controls-center').appendChild(Button.View);
+                Button.View.value = layout;
+            }
+
+        } else {
+            Button.zoom.parentNode.removeChild(Button.zoom);
+            Button.move.parentNode.removeChild(Button.move);
+            Button.select.parentNode.removeChild(Button.select);
+            Button.zoomIn.parentNode.removeChild(Button.zoomIn);
+            Button.zoomOut.parentNode.removeChild(Button.zoomOut);
+        }
+    };
+
+    var handleFullscreenChange = function (data) {
+        if (data.isFullscreen) {
+            Button.fullscreen.className = "btn open";
+        } else {
+            Button.fullscreen.className = "btn closed";
+        }
+    };
+
+    function getPageString(page, pageCount) {
+        var result = "/ " + pageCount;
+        if (pageLabels.length) {
+            result =  "(" + page + " / " + pageCount + ")";
+        }
+        return result;
+    }
+
+    var doSearch = function() {
+        var resultDiv = document.getElementById('searchResults');
+        resultDiv.innerHTML = "";
+
+        var searchTerm = d('searchInput').value;
+        var matchCase = d('cbMatchCase').checked;
+        var limitOnePerPage = d('cbLimitResults').checked;
+
+        var results = IDRViewer.search(searchTerm, matchCase, limitOnePerPage);
+
+        d('searchResultsCount').innerHTML = String(results.length) + " results";
+
+        var docFrag = document.createDocumentFragment();
+        for (var i = 0; i < results.length && i < 500; i++) {
+            var pg = results[i].page;
+
+            var link = document.createElement("a");
+            link.href = "?page=" + pg;
+            link.innerHTML = results[i].snippet;
+            link.className = "result";
+            (function(page) {
+                link.onclick = function() {
+                    IDRViewer.goToPage(page);
+                    return false;
+                };
+            })(pg);
+
+            docFrag.appendChild(link);
+
+        }
+        if (results.length >= 500) {
+            var element = document.createElement("span");
+            element.innerHTML = "Limited to first 500 results.";
+            element.className = "result";
+            docFrag.appendChild(element);
+        }
+        resultDiv.appendChild(docFrag);
+    };
+     /****************Separador*****************************/
+    var cerrarSideBar=function(){
+        if (typeof app !== 'undefined') app.ActivarTap();
+        document.getElementById("left").style.visibility="hidden";
+        Sidebar.toggleSidebar();
+    };
+
+    var parseJwt = function(token){
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    };
+
+    var dibujarSeparador=function(Pagina){
+        var div = document.getElementById('page'+Pagina);
+        div.insertAdjacentHTML("afterbegin",'<div id="separador_'+Pagina+'" class="separador-tablet separador-cel"></div>');
+    };
+
+    var cacharTokendesdeNativo= function(token){
+        localStorage.setItem('INFO_TOKEN',token)
+        console.log(parseJwt(token).tipo)
+
+        if(parseJwt(token).tipo === 'Profesor' || parseJwt(token).tipo === 'Director'){
+            console.log(parseJwt(token).tipo)
+            app.mostrarBotonPanelMaestro();
+        }
+
+    }
+
+    var borrarSeparador=function(Pagina){
+        var pagina = document.getElementById("page"+Pagina);
+        var separador = document.getElementById('separador_'+Pagina);
+        pagina.removeChild(separador);
+    };
+    var LstSeparadores=function(Lstjson){
+        //if (Rayado==true || Subrayar==true)return;
+        //var obj = JSON.parse('["1", "3"]');
+        //var separadores = JSON.parse(Lstjson.toString());
+
+        var bookmarkPanel = document.getElementById('outlinePanel');
+
+         //Limpia el panel de bookmarks
+        while (bookmarkPanel.firstChild) {
+            bookmarkPanel.removeChild(bookmarkPanel.firstChild);
+        }
+
+        function makeThumbnailClickHandler(pg) {
+            return function() {
+               // var message = ["INVALID","ModusEcho","Insertar",[""]];
+                //window.webkit.messageHandlers.cordova.postMessage(message);
+                //scrollSidebar = false;
+
+                document.getElementById("left").style.visibility="hidden";
+                Sidebar.toggleSidebar();
+                if (typeof app !== 'undefined') app.ActivarTap();
+                IDRViewer.goToPage(pg);
+                return false;
+            };
+        }
+
+        Lstjson.sort();
+        Lstjson.forEach(function(Pagina) {
+            var ele = document.createElement("a");
+            ele.className = "thumbnail";
+           // ele.href = "?page=" +  Pagina;
+            ele.id = "thumb" +  Pagina;
+            ele.onclick = makeThumbnailClickHandler(Pagina);
+            ele.setAttribute('title', 'Page ' + Pagina);
+            ele.innerHTML = '<img src="thumbnails/'+ Pagina+'.png"/>';
+            bookmarkPanel.appendChild(ele);
+        });
+        Sidebar.toggleSidebar();
+    };
+     /****************************************************/
+     /*********************Indice************************/
+    var handleIndice=function(){
+         //var message = ["Prologo","Capítulo 1","Capítulo 2","Capítulo 3"];
+         var message = Visor.Indice;
+
+         //window.webkit.messageHandlers.cordova.postMessage(message);
+         if (typeof app !== 'undefined') app.ShowIndice(JSON.stringify(message));
+    };
+    var handleIndiceNative=function(capitulo){
+         var pagina=gotoPageIndice(capitulo);
+
+         if(pagina==0) return;
+
+         document.getElementById('goBtn').value=pagina;
+         document.getElementById('goBtn').onchange();
+    };
+     /***************************************************/
+     /******************Notas***************************/
+    var handleEliminarNota=function(){
+        var PaginaActual=document.getElementById('goBtn').value;
+
+        var pagina = document.getElementById("page"+PaginaActual);
+        var nota = document.getElementById('nota_'+PaginaActual);
+        pagina.removeChild(nota);
+    };
+    var dibujarNota=function(Pagina){
+        var div = document.getElementById('page'+Pagina);
+        div.insertAdjacentHTML("afterbegin",'<div id="nota_'+Pagina+'" class="nota-cel nota-tablet"><p class="verticaltext">Nota</p></div>');
+    };
+     /**************************************************/
+     /******************Rayado**************************/
+     var ActivarRayadoEjercicio=function(div,data){
+
+       var canvas= document.getElementById(div);
+
+       var numEjercicio=canvas.getAttribute("ejercicio");
+       var numCapitulo=canvas.getAttribute("capitulo");
+       var numLeccion=canvas.getAttribute("leccion");
+
+       db.escribir.where({ ejercicio: numEjercicio,libroid: Visor.idLibro,capitulo:numCapitulo,leccion:numLeccion }).first(function(rayar) {
+                signaturePad = new SignaturePad(canvas,{
+                        //minWidth: 5,
+                        //maxWidth: 10,
+                        //penColor: "rgba(0,0,0,0)"
+                });
+
+                if(rayar != undefined){
+                    signaturePad.fromData(JSON.parse(rayar.data));
+                }
+
+                signaturePad.penColor="black";
+
+                /*if(data === null)
+                    signaturePad.on();
+                else
+                    signaturePad.off();*/
+
+                var ctx = canvas.getContext('2d');
+                ctx.globalCompositeOperation = 'source-over';
+        }).catch(function(error) {
+            console.error(error);
+        });
+
+     };
+    var eliminarMensajeRayado=function(Pagina){
+        document.getElementById("mensajeTop_"+Pagina).style.left="-1000px";
+
+        var pagina = document.getElementById("page"+Pagina);
+
+        setTimeout(function(){ 
+            document.getElementById("mensajeTop_"+Pagina).removeEventListener("touchend",handlerRayarMensaje,false);
+            document.getElementById("mensajeTop_"+Pagina).removeEventListener("touchmove",handlerRayarMensajeMover,false);
+
+            pagina.removeChild(document.getElementById("mensajeTop_"+Pagina));
+
+        }, 500);
+    }
+    var dibujarMensajeRayado=function(Pagina){
+        var div = document.getElementById('page'+Pagina);
+
+        div.insertAdjacentHTML("afterbegin",'<div id="mensajeTop_'+Pagina+'" class="mensajeTop-tablet mensajeTop-cel"></div>');
+
+        setTimeout(function(){ 
+            document.getElementById("mensajeTop_"+Pagina).style.left="0px"; 
+
+            document.getElementById("mensajeTop_"+Pagina).addEventListener("touchend",handlerRayarMensaje,false);
+
+            document.getElementById("mensajeTop_"+Pagina).addEventListener("touchmove",handlerRayarMensajeMover,false);
+
+        }, 5);
+    };
+    var handlerRayarMensaje=function(evt) {
+        var msg = document.getElementById("snackbar");
+        msg.className = "show";
+        setTimeout(function(){ msg.className = msg.className.replace("show", ""); }, 3000);
+    };
+    var handlerRayarMensajeMover=function(evt) {
+        console.log("moverse");
+        evt.preventDefault();
+    };
+     var ActivarRayado=function(rayas,hoja){
+            //var data=Libros[IndexLibro].Rayado.find(x => x.Hoja==i).rayas;
+            /*for(var i=0;i < Visor.BloqueoRayar.length; i++)
+            {
+                if(hoja.toString() === Visor.BloqueoRayar[i].toString())
+                    return;
+            }*/
+
+            var inputText = document.getElementById("iframe"+hoja.toString()).contentWindow.document.querySelectorAll("input[type=text],textarea,img,video,[tipo=r],[tipo=e],[tipo=radio],[tipo=sopa]");
+
+            if(inputText.length > 0)
+            {
+                dibujarMensajeRayado(hoja);
+                return;
+            }
+
+            var canvas= document.getElementById("signatureCanvas"+hoja);
+
+
+            var signaturePad = new SignaturePad(canvas,{
+                //minWidth: 5,
+                //maxWidth: 10,
+                //penColor: "rgba(0,0,0,0)"
+            });
+
+
+            if(IsJsonString(rayas))
+            {
+                var data=JSON.parse(rayas);
+                signaturePad.fromData(data);
+            }
+            else
+            {
+                if(isCanvasBlank(canvas)){
+                    var ctx = canvas.getContext("2d");
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    var image = new Image();
+                    image.onload = function() {
+                      ctx.drawImage(image, 0, 0);
+                    };
+                    image.src =rayas;
+                }
+            }
+               
+          
+            signaturePad.penColor="black";
+            signaturePad.on();
+
+
+            var ctx = canvas.getContext('2d');
+            ctx.globalCompositeOperation = 'source-over';
+
+            var Rayas={
+                signaturePad :signaturePad,
+                Hoja:hoja
+            };
+
+            signaturePads.push(Rayas);
+
+            //return;
+    };
+    var isCanvasBlank=function(canvas){
+        var blank = document.createElement('canvas');
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+
+        return canvas.toDataURL() == blank.toDataURL();
+    };
+   var DesactivarRayado=function(){
+        var PaginaActual=document.getElementById('goBtn').value;
+        var inicio=0;
+        var fin   =0;
+        if(PaginaActual>=1 && PaginaActual < IDRViewer.config.pagecount)
+        {
+            inicio = PaginaActual == 1 ? parseInt(PaginaActual) : parseInt(PaginaActual)-1;
+            fin   = PaginaActual == 1 ?  parseInt(PaginaActual) + 1 : parseInt(PaginaActual)+1;
+        }
+        else
+        {
+            inicio = parseInt(PaginaActual) -1;
+            fin    = parseInt(PaginaActual);
+        }
+
+        for (var i = inicio; i <= fin; i++) {
+                var banderaRayado=true;
+
+                //Checa si se puede dibujar en la hoja
+                /*for(var index=0;index < Visor.BloqueoRayar.length; index++)
+                {
+                    if(i.toString() === Visor.BloqueoRayar[index].toString())
+                        banderaRayado=false;
+                }*/
+
+                var divRayado= document.getElementById("iframe"+i.toString());
+
+                if(divRayado!=null)
+                {
+
+                    var inputText = divRayado.contentWindow.document.querySelectorAll("input[type=text],textarea,img,video,[tipo=r],[tipo=e],[tipo=radio],[tipo=sopa]");
+
+                    if(inputText.length > 0)
+                    {
+                        banderaRayado=false;
+                        eliminarMensajeRayado(i);
+                    }
+
+                    if(banderaRayado===true) {
+                        //Desaparece los botones flotantes
+                        var indexPad;
+                        for(var x=0; x < signaturePads.length; x++){
+                            if(signaturePads[x].Hoja==i)
+                                indexPad=x;
+                        }
+
+                        signaturePads[indexPad].signaturePad.off();
+                        //console.log(JSON.stringify(rayado));
+
+                        //var rayado=signaturePads[indexPad].signaturePad.toData();
+                        var canvas= document.getElementById("signatureCanvas"+i);
+                        var rayado= canvas.toDataURL("image/svg+xml");
+
+                        signaturePads.splice(indexPad,1);
+
+                        //var message = ["INVALID","ModusEcho","GuardarRayado",[i.toString(),JSON.stringify(rayado)]];
+                      //  var message = ["INVALID","ModusEcho","GuardarRayado",[i.toString(),rayado]];
+                      //  window.webkit.messageHandlers.cordova.postMessage(message);
+                        if (typeof app !== 'undefined') app.GuardarRayado(i.toString(),rayado);
+
+                        document.getElementById("signatureCanvas"+i).removeAttribute("style");
+                    }
+                }
+        }
+
+            document.getElementById("idrviewer").style["touch-action"]  = null;
+            //Regresa el icono de color en los botones flotantes a negro
+
+    };
+     var dibujarRayado=function(Pagina,data){
+            /*for(var i=0;i < Visor.BloqueoRayar.length; i++)
+            {
+                if(Pagina.toString() === Visor.BloqueoRayar[i].toString())
+                    return;
+            }*/
+            try {
+            var inputText = document.getElementById("iframe"+Pagina.toString()).contentWindow.document.querySelectorAll("input[type=text],textarea,img,video,[tipo=r],[tipo=e],[tipo=radio],[tipo=sopa]");
+
+                if(inputText.length > 0){
+                    dibujarMensajeRayado(Pagina);
+                    return;
+                }
+            }
+            catch(err) {
+
+            }
+
+            var div = document.getElementById('page'+Pagina);
+
+            //Obtengo el tamaño de la pagina
+            var width = div.offsetWidth;
+            var height = div.offsetHeight;
+
+            if(document.getElementById('signatureCanvas'+Pagina) == null)
+                div.insertAdjacentHTML("afterbegin",'<canvas id="signatureCanvas'+Pagina+'" width="'+width+'" height="'+height+'" page="'+Pagina+'" class="RayarActivo"></canvas>');
+
+            var canvas = document.getElementById('signatureCanvas'+Pagina);
+            var signaturePad = new SignaturePad(canvas,{
+                //minWidth: 5,
+                //maxWidth: 10,
+                //penColor: "rgba(0,0,0,0)"
+            });
+            //var signaturePad = new SignaturePad(canvas);
+
+            if(data!=null)
+            {
+                if(IsJsonString(data))
+                {
+                    var data_final=JSON.parse(data);
+                    signaturePad.fromData(data_final);
+                }
+                else
+                {
+                    if(isCanvasBlank(canvas)){
+                        var ctx = canvas.getContext("2d");
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        var image = new Image();
+                        image.onload = function() {
+                          ctx.drawImage(image, 0, 0);
+                        };
+                        image.src = data;
+                        ctx.globalCompositeOperation = 'source-over';
+                    }
+                }
+                signaturePad.off();
+            }
+
+            var Rayas={
+                signaturePad :signaturePad,
+                Hoja:Pagina
+            }
+
+            if(data===null)
+                signaturePads.push(Rayas);
+    };
+    //Valida si el json es valido
+    var IsJsonString=function(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    };
+
+   var handleTamanoLienzo=function(tamano){
+        for(var i=0; i < signaturePads.length; i++){
+            signaturePads[i].signaturePad.minWidth=tamano;
+            signaturePads[i].signaturePad.maxWidth=tamano;
+        }
+    };
+
+    var handleColorRayado=function(color){
+        /*for(var i=0; i < signaturePads.length; i++){
+            signaturePads[i].signaturePad.penColor=color;
+        }*/
+        var PaginaActual=document.getElementById('goBtn').value;
+        var inicio=0;
+        var fin   =0;
+        if(PaginaActual>=1 && PaginaActual < IDRViewer.config.pagecount)
+        {
+            inicio = PaginaActual == 1 ? parseInt(PaginaActual) : parseInt(PaginaActual)-1;
+            fin   = PaginaActual == 1 ?  parseInt(PaginaActual) + 1 : parseInt(PaginaActual)+1;
+        }
+        else
+        {
+            inicio = parseInt(PaginaActual) -1;
+            fin    = parseInt(PaginaActual);
+        }
+
+        for (var i = inicio; i <= fin; i++) {
+                var banderaRayado=true;
+
+                //Checa si se puede dibujar en la hoja
+                /*for(var index=0;index < Visor.BloqueoRayar.length; index++)
+                {
+                    if(i.toString() === Visor.BloqueoRayar[index].toString())
+                        banderaRayado=false;
+                }*/
+                var divColorRayado = document.getElementById("iframe"+i.toString());
+                
+                if(divColorRayado != null)
+                {
+                    var inputText = divColorRayado.contentWindow.document.querySelectorAll("input[type=text],textarea,img,video,[tipo=r],[tipo=e],[tipo=radio],[tipo=sopa]");
+
+                    if(inputText.length > 0)
+                        banderaRayado=false;
+
+                    if(banderaRayado===true) {
+                        var indexPad;
+                        for(var x=0; x < signaturePads.length; x++){
+                            if(signaturePads[x].Hoja==i)
+                                indexPad=x;
+                        }
+
+                        var canvas = document.getElementById('signatureCanvas'+i);
+
+                        var ctx = canvas.getContext('2d');
+                        ctx.globalCompositeOperation = 'source-over'; 
+                        signaturePads[indexPad].signaturePad.minWidth=0.5;
+                        signaturePads[indexPad].signaturePad.maxWidth=2.5;
+                        signaturePads[indexPad].signaturePad.penColor=color;
+                    }
+                }
+        }
+    };
+   var handleUndo=function(){
+        /*var PaginaActual=document.getElementById('goBtn').value;
+        var indexPad;
+
+        for(var i=0; i < signaturePads.length; i++){
+            if(signaturePads[i].Hoja==PaginaActual)
+                indexPad=i;
+        }
+
+         var data =  signaturePads[indexPad].signaturePad.toData();
+         if (data) {
+            data.pop(); // remove the last dot or line
+             signaturePads[indexPad].signaturePad.fromData(data);
+        }*/
+
+        var PaginaActual=document.getElementById('goBtn').value;
+        var inicio=0;
+        var fin   =0;
+        if(PaginaActual>=1 && PaginaActual < IDRViewer.config.pagecount)
+        {
+            inicio = PaginaActual == 1 ? parseInt(PaginaActual) : parseInt(PaginaActual)-1;
+            fin   = PaginaActual == 1 ?  parseInt(PaginaActual) + 1 : parseInt(PaginaActual)+1;
+        }
+        else
+        {
+            inicio = parseInt(PaginaActual) -1;
+            fin    = parseInt(PaginaActual);
+        }
+
+        for (var i = inicio; i <= fin; i++) {
+                var banderaRayado=true;
+
+
+                //Checa si se puede dibujar en la hoja
+                /*for(var index=0;index < Visor.BloqueoRayar.length; index++)
+                {
+                    if(i.toString() === Visor.BloqueoRayar[index].toString())
+                        banderaRayado=false;
+                }*/
+                var divUndo= document.getElementById("iframe"+i.toString());
+                if(divUndo != null)
+                {
+                    var inputText = divUndo.contentWindow.document.querySelectorAll("input[type=text],textarea,img,video,[tipo=r],[tipo=e],[tipo=radio],[tipo=sopa]");
+
+                    if(inputText.length > 0)
+                        banderaRayado=false;
+
+                    if(banderaRayado===true) {
+                        var indexPad;
+                        for(var x=0; x < signaturePads.length; x++){
+                            if(signaturePads[x].Hoja==i)
+                                indexPad=x;
+                        }
+
+                        var canvas = document.getElementById('signatureCanvas'+i);
+
+                        var ctx = canvas.getContext('2d');
+                        ctx.globalCompositeOperation = 'destination-out';
+                        signaturePads[indexPad].signaturePad.minWidth=50;
+                        signaturePads[indexPad].signaturePad.maxWidth=50;
+                    }
+                }
+        }
+    };
+    var handleClear=function(){
+        var PaginaActual=document.getElementById('goBtn').value;
+        var indexPad;
+        for(var i=0; i < signaturePads.length; i++){
+            if(signaturePads[i].Hoja==PaginaActual)
+                indexPad=i;
+        }
+        signaturePads[indexPad].signaturePad.clear();
+    };
+     /**************************************************/
+     /*****************Subrayado************************/
+    var handleBorrarSubrayado=function(){
+        Borrador= Borrador == true ? false : true;
+    };
+    var ActivarSubrayado=function(i){
+
+
+            if(document.getElementById('signatureCanvas'+i) == null){
+                var div = document.getElementById('page'+i);
+
+                //Obtengo el tamaño de la pagina
+                var width = div.offsetWidth;
+                var height = div.offsetHeight;
+
+                div.insertAdjacentHTML("afterbegin",'<canvas id="signatureCanvas'+i+'" width="'+width+'" height="'+height+'" page="'+i+'" class="RayarActivo"></canvas>');
+            }
+
+            //document.getElementById("signatureCanvas"+PaginaActual).style["z-index"]=5;
+            var canvas=document.getElementById("signatureCanvas"+i);
+            canvas.style["z-index"]=5;
+
+            canvas.addEventListener("touchstart", handletouchStartCanvas, false);
+            canvas.addEventListener("touchmove", handletouchMoveCanvas, false);
+            //canvas.addEventListener("touchend", handletouchEndCanvas, false);
+
+        //document.getElementById("BtnColorSubrayado").style["background-color"]="yellow";
+        ColorSubrayado="rgba(255, 255, 0, 0.25)";
+        //Aparece los botones flotantes
+        //document.getElementById('TooblarSubrayado').style.display="inline";
+
+        //Bloquea las hoja de trabajo exepto la acutal
+        document.getElementById("idrviewer").style["touch-action"]  = "none";
+       // BloquearHojas(PaginaActual,"none"); //CODIGO COMENTADO EDUARDO
+    };
+    var handleColorSubRayado=function(color){
+        ColorSubrayado=color;
+    };
+    var handletouchStartCanvas=function(e){
+        //tap=0;
+
+        if(Borrador==true) return;
+
+        //Si esta activo el rayado la barra no puede desaparecer
+        //if(Rayado==true || Subrayar==false) return;
+        var touchobj = e.changedTouches[0] // reference first touch point (ie: first finger)
+        startx = parseInt(touchobj.clientX) // get x position of touch point relative to left edge of browser
+        starty = parseInt(touchobj.clientY)
+
+        var rect = e.target.getBoundingClientRect();
+
+        //var dist_final=Math.abs(dist)-10;
+        var dist_final=10;
+        var x_final=dist < 0 ? (startx-rect.left)-dist_final : (startx-rect.left);
+        var y_final=(starty-rect.top)-5;
+
+
+
+        var PaginaSeleccionada=e.target.getAttribute("page");
+        var div= document.getElementById("page"+ PaginaSeleccionada);
+
+        div.insertAdjacentHTML("afterbegin",'<div id="Subrayar'+PaginaSeleccionada+'" page="'+PaginaSeleccionada+'" class="Subrayar" onclick="Visor.handletouchMarcador(this)" style="left:'+x_final+'px;top:'+ y_final +'px;width:'+dist_final+'px;background-color:'+ColorSubrayado+'"></div>');
+
+        //e.preventDefault()
+    };
+    var handletouchMoveCanvas=function(e){
+
+       // tap=1;
+        if(Borrador==true) return;
+
+        //var PaginaActual=document.getElementById('goBtn').value;
+
+        //Si esta activo el rayado la barra no puede desaparecer
+        //if(Rayado==true || Subrayar==false) return;
+        //codigo agregado eduardo tap
+        var touchobj = e.changedTouches[0] // reference first touch point for this event
+        //var dist = parseInt(touchobj.clientY) - starty
+        var dist = parseInt(touchobj.clientX) - startx
+
+
+        var PaginaSeleccionada=e.target.getAttribute("page");
+        var color=document.getElementById("Subrayar"+ PaginaSeleccionada);
+        color.style["width"]=dist + "px";
+    };
+    var dibujarMarcatexto=function(Pagina,data_in){
+
+        var div = document.getElementById('page'+Pagina);
+        var data=JSON.parse(data_in);
+        if(data==null)
+        {
+            div.insertAdjacentHTML("afterbegin",'<div id="Subrayar'+Pagina+'" class="Subrayar"></div>');
+
+            document.getElementById("Subrayar"+Pagina).style.width="100px";
+            document.getElementById("Subrayar"+Pagina).style["background-color"]=ColorSubrayado;
+            document.getElementById("Subrayar"+Pagina).style.top="25%";
+
+            var marcador=document.getElementById("Subrayar"+Pagina);
+            marcador.addEventListener("touchstart", handletouchMarcador, false);
+        }
+        else
+        {
+            for(var i=0; i < data.length; i++)
+            {
+                div.insertAdjacentHTML("afterbegin",'<div id="Subrayar'+Pagina+'" class="Subrayar" data-x="'+data[i].datax+'" data-y="'+data[i].datay+'" style="'+data[i].style+'" page="'+Pagina+'" onclick="Visor.handletouchMarcador(this)"></div>');
+
+
+                var marcador=document.getElementById("Subrayar"+Pagina);
+                marcador.addEventListener("touchstart", handletouchMarcador, false);
+            }
+        }
+    };
+    var handletouchMarcador=function(subrayado){
+        if(Borrador==false)
+            return;
+
+        var PaginaActual=subrayado.getAttribute("page");
+        var pagina = document.getElementById("page"+PaginaActual);
+        pagina.removeChild(subrayado);
+    };
+    var DesactivarSubrayado=function(){
+        var PaginaActual=document.getElementById('goBtn').value;
+        var inicio=0;
+        var fin   =0;
+        if(PaginaActual>=1 && PaginaActual < IDRViewer.config.pagecount)
+        {
+            inicio = PaginaActual == 1 ? parseInt(PaginaActual) : parseInt(PaginaActual)-1;
+            fin   = PaginaActual == 1 ?  parseInt(PaginaActual) + 1 : parseInt(PaginaActual)+1;
+        }
+        else
+        {
+            inicio = parseInt(PaginaActual) -1;
+            fin    = parseInt(PaginaActual);
+        }
+
+         for (var i = inicio; i <= fin; i++) {
+
+                var divSubrayado = document.getElementById("iframe"+i);
+
+                if(divSubrayado!=null)
+                {
+                     //document.getElementById("signatureCanvas"+PaginaActual).style["z-index"]=7;
+                    var canvas=document.getElementById("signatureCanvas"+i);
+                    canvas.style["z-index"]=7;
+
+
+                    canvas.removeEventListener("touchstart", handletouchStartCanvas, false);
+                    canvas.removeEventListener("touchmove", handletouchMoveCanvas, false);
+                    //scanvas.removeEventListener("touchend", handletouchEndCanvas, false);
+
+                    document.getElementById("idrviewer").style["touch-action"]  = null;
+                    //BloquearHojas(PaginaActual,"null");//CODIGO COMENTADO EDUARDO
+
+                    Borrador=false;
+
+                    var pagina=document.getElementById("page"+i);
+                    var subrayados_html = pagina.querySelectorAll('.Subrayar');
+
+                    var subrayados=[];
+                    for(var y=0; y < subrayados_html.length; y++)
+                    {
+                        var cuadro={
+                            id: subrayados_html[y].id,
+                            datax: subrayados_html[y].getAttribute("data-x"),
+                            datay: subrayados_html[y].getAttribute("data-y"),
+                            style: subrayados_html[y].getAttribute("style")
+                        }
+                        subrayados.push(cuadro);
+                    }
+
+                    var inputText = divSubrayado.contentWindow.document.querySelectorAll("input[type=text],textarea,img,video,[tipo=r],[tipo=e],[tipo=radio],[tipo=sopa]");
+
+                     //ESTE BLOQUE DE CODIGO SE ENCARGA DE BOORAR EL CANVAS SI DENTRO DE LA HOJA EXISTE CAJAS DE TEXTO        
+                    //if(isCanvasBlank(canvas))
+                    if(inputText.length>0)
+                    {
+                        pagina.removeChild(canvas);
+                    }
+
+                   // var message = ["INVALID","ModusEcho","GuardarSubrayado",[i.toString(),JSON.stringify(subrayados)]];
+                    //window.webkit.messageHandlers.cordova.postMessage(message);
+                    app.GuardarSubrayado(i.toString(),JSON.stringify(subrayados));
+                }
+            }
+    };
+     /********************Termina Subyrayado*****************************/
+     /*****************Foto****************************/
+    var dibujarFoto=function(Pagina){
+        var div = document.getElementById('page'+Pagina);
+
+        if(document.getElementById('foto_'+Pagina) == null)
+                div.insertAdjacentHTML("afterbegin",'<div id="foto_'+Pagina+'" class="foto-tablet foto-cel"></div>');
+    };
+     /*************************************************/
+     /****************Ejercicios***********************/
+    var GuardarEscribir=function(element){
+        /*var message = ["INVALID","ModusEcho","InsertarEscribir",[element.getAttribute("ejercicio"),element.value,element.id]];
+        window.webkit.messageHandlers.cordova.postMessage(message);*/
+
+        //Estado preguntas 0=Incorrecta, 1= Correcta, 2=Sin calificar
+        var numEjercicio= element.getAttribute("ejercicio");
+
+         db.escribir.where({elemento: element.id, ejercicio: numEjercicio,libroid: Visor.idLibro}).first(function(caja) {
+
+                var estadoCalificar= caja == undefined ? 2 : caja.estado;
+                
+                db.escribir.put({
+                    elemento: element.id,
+                    libroid: Visor.idLibro,
+                    ejercicio: element.getAttribute("ejercicio"),
+                    data: element.value,
+                    estado: estadoCalificar,
+                    }).then(function(){
+                    //pagina: element.getAttribute("pagina")
+                });
+
+        }).catch(function(error) {
+            console.error(error);
+        });
+
+    };
+
+    var GuardarFecha=function(element){
+         var PaginaActual=document.getElementById('goBtn').value;
+         db.escribir.where({elemento: element.id,libroid: Visor.idLibro}).first(function(caja) {
+                
+                db.escribir.put({
+                    elemento: element.id,
+                    libroid: Visor.idLibro,
+                    data: element.value,
+                    pagina :PaginaActual
+                    }).then(function(){
+                    //pagina: element.getAttribute("pagina")
+                });
+
+        }).catch(function(error) {
+            console.error(error);
+        });
+
+    };
+
+    var GuardarRadio=function(element){
+     
+           console.log(element)
+            db.escribir.put({
+                elemento: element.id,
+                libroid: Visor.idLibro,
+                ejercicio: element.getAttribute("ejercicio"),
+                data: element.innerHTML,
+                estado: 2,
+                tipo:"radio",
+                pagina :element.getAttribute("pagina"),
+                }).then(function(){
+
+            });
+
+    };
+
+    var GuardarRelacionar=function(element){
+
+        console.log(element.getAttribute("class"));
+        if(element.getAttribute("class")=="line"){
+            db.escribir.put({
+                elemento: element.id,
+                libroid: Visor.idLibro,
+                ejercicio: element.getAttribute("ejercicio"),
+                data: element.outerHTML,
+                estado: 2,
+                tipo:"line"}).then(function(){
+
+            });
+
+        }
+        else{
+            db.escribir.put({
+                elemento: element.id,
+                libroid: Visor.idLibro,
+                ejercicio: element.getAttribute("ejercicio"),
+                data: element.getAttribute("name"),
+                estado: 2,
+                tipo:"div" }).then(function(){
+
+            });
+        }
+    };
+
+    var GuardarRelacionarDentroLibro=function(element,pagina){
+
+
+        var PaginaActual=document.getElementById('goBtn').value;
+        if(element.getAttribute("class")=="line"){
+            db.escribir.put({
+                elemento: element.id,
+                libroid: Visor.idLibro,
+                ejercicio: element.getAttribute("ejercicio"),
+                data: element.outerHTML,
+                estado: 2,
+                tipo:"linenew",
+                pagina :pagina}).then(function(){
+
+            });
+
+        }
+        else{
+            db.escribir.put({
+                elemento: element.id,
+                libroid: Visor.idLibro,
+                ejercicio: element.getAttribute("ejercicio"),
+                data: element.getAttribute("name"),
+                estado: 2,
+                tipo:"div",
+                pagina :pagina }).then(function(){
+
+            });
+        }
+    };
+    var GuardarEncerrarCirculo=function(element){
+
+
+        //var PaginaActual=document.getElementById('goBtn').value;
+        var PaginaActual= element.parentNode.getAttribute("id").replace("p","");
+
+            db.escribir.put({
+                elemento: element.id,
+                libroid: Visor.idLibro,
+                ejercicio: element.getAttribute("ejercicio"),
+                data: element.getAttribute("name"),
+                estado: 2,
+                tipo:"circulo",
+                pagina :PaginaActual,
+                color: element.style.borderColor}).then(function(){
+
+            });
+
+    };
+    var CargarEncerrarCirculo=function(pagina){
+
+      /*     console.log(vuelta);
+        db.escribir.where({pagina: pagina.toString(),libroid: Visor.idLibro, tipo: "circulo"}).each(function(caja) {
+  
+            if(caja.tipo=="circulo")
+            document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).style.borderColor=caja.color.toString();
+ 
+           
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });*/
+
+        loadData().then(function(data){
+            const result = data.filter(item => item.tipo =="circulo" && item.pagina==pagina);
+
+            result.forEach(function(caja){
+               document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).style.borderColor=caja.color.toString();
+            });
+        });  
+
+    };
+    var EliminarRelacionar=function(element){
+
+       db.escribir.where("elemento").equals(element.id).delete();
+    };
+     var GuardarRayadoEjercicio=function(element){
+        /*var message = ["INVALID","ModusEcho","InsertarEscribir",[element.getAttribute("ejercicio"),element.value,element.id]];
+        window.webkit.messageHandlers.cordova.postMessage(message);*/
+
+        if(signaturePad==undefined)
+                return;
+
+        console.log(signaturePad.toData());
+        console.log("Guarda rayado");
+        console.log(element);
+        //Estado preguntas 0=Incorrecta, 1= Correcta, 2=Sin calificar
+        db.escribir.put({
+            elemento: element.id,
+            libroid: Visor.idLibro,
+            ejercicio: element.getAttribute("ejercicio"),
+            data: JSON.stringify(signaturePad.toData()),
+            estado: 2 }).then(function(){
+                console.log("Rayas guardadas");
+
+        });
+    };
+    var VerEjercicios=function (){
+        document.getElementById("btnEjercicios").click();
+        preguntas=JSON.parse(Visor.Preguntas);
+
+        // El candado siempre inicia cerrado
+        candadoCerrado=true;
+
+        var contentPreguntas = document.getElementById("contentPreguntas");
+
+        var html= '<div class="align-self-center" style="text-align: center;">'
+            html+='<h1>'+Visor.TituloEjercicios+'</h1>';
+            html+=' </div>';
+        contentPreguntas.innerHTML ='';
+        contentPreguntas.insertAdjacentHTML("beforeend",html);
+
+        var badgesConteiner = document.getElementById("badgeEjercicios");
+        badgesConteiner.innerHTML ='';
+
+        for(var key in preguntas) {
+            badgesConteiner.insertAdjacentHTML("beforeend",'<span onclick="Visor.VerEjercicio(&#39'+key+'&#39,'+ preguntas[key][0].ejercicio +',&#39'+ preguntas[key][0].tipo+'&#39)" id="'+key+'" class="badge badge-primary">'+key+'</span>');
+        }
+    };
+ var VerEjercicio=function(index,ejercicio,tipo) {
+        console.log(tipo);
+         Estado=0;
+         document.getElementById("tituloEjercicios").innerHTML=index;
+
+         var badges = document.querySelectorAll(".badge");
+         for (var i = 0; i < badges.length; i++) {
+           if(badges[i].id===index)
+           {
+                badges[i].classList.remove('badge-primary');
+                badges[i].classList.add('badge-success');
+           }
+           else
+           {
+              badges[i].classList.add('badge-primary');
+              badges[i].classList.remove('badge-success');
+           }
+         }
+
+        var contentPreguntas = document.getElementById("contentPreguntas");
+        contentPreguntas.innerHTML ='';
+
+        var candado_html ='<div class="row justify-content-center">'
+        candado_html+= '<div id="respuestasCandado" onclick="Visor.activarCandados(1)" style="font-size: 33px;margin-right: 12px;"></div>';
+        candado_html+= '<div id="candado" onclick="Visor.activarCandados(2)" style="font-size:35px"></div>';
+        candado_html+= '</div>';
+
+        contentPreguntas.insertAdjacentHTML("beforeend",candado_html);
+
+        var candado=document.getElementById("candado");
+        if(candadoCerrado==false) {
+            candado.classList.remove('fa','fa-lock');
+            candado.classList.add('fa','fa-unlock-alt');
+        }
+        else {
+            candado.classList.remove('fa','fa-unlock-alt');
+            candado.classList.add('fa','fa-lock');
+        }
+
+        var candadoRespuestas=document.getElementById("respuestasCandado");
+        if(candadoRespuestas==false) {
+            candadoRespuestas.classList.add('fa','fa-pencil-square');
+            candadoRespuestas.classList.remove('fa','fa-pencil-square-o');
+        }
+        else {
+            candadoRespuestas.classList.remove('fa','fa-pencil-square');
+            candadoRespuestas.classList.add('fa','fa-pencil-square-o');
+        }
+
+
+         switch(tipo) {
+            case "preguntas":
+                VerEjercicioPreguntas(index,ejercicio);
+                break;
+            case "imagenes":
+                VerEjercicioImagenes(index,ejercicio);
+                break;
+            case "tablas":
+                VerEjercicioTablas(index,ejercicio);
+                break;
+            case "foto":
+                VerEjercicioFotos(index,ejercicio);
+                break;
+            case "Relacionar":
+                VerEjercicioRelacionar(index,ejercicio);
+                break;
+            case "multiple":
+                VerEjercicioPreguntasMultiple(index,ejercicio);
+                break;
+        }
+    };
+      var VerEjercicioPreguntasMultiple=function(index,ejercicio) {
+        console.log(ejercicio);
+         var total=preguntas[index].length-1;
+         var contentPreguntas = document.getElementById("contentPreguntas");
+         var res="";
+          var idCaja=1;
+         for(var i=0;i<=total;i++)
+         {
+
+            var numerodeamperson=preguntas[index][i].pregunta.match((/&/g) || []).length;
+
+            res = preguntas[index][i].pregunta;
+            for(var o=1;o<=numerodeamperson;o++){
+                var id="e"+preguntas[index][i].ejercicio+"_txt" + idCaja +  "\"";
+                 res = res.replace("&", "<input id=\""+ id + "ejercicio=\""+preguntas[index][i].ejercicio+ "\"" + "onkeypress=\"this.style.width = ((this.value.length + 2) * 8) + 'px';\" " +"placeholder=\" Escribe tu respuesta\" " +"onblur=\"Visor.GuardarEscribir(this);\"" + "type=\"text\" style=\"width: 140px; margin-right: 4px; border: none; min-width: 140px;\" > <span  id=\"bien_" +id+ "\" ejercicio=\""+preguntas[index][i].ejercicio+ "\" onclick=\"Visor.CalificarPregunta(this," + ejercicio +",'"+ id +"')\" style=\"color: gray;font-size: 20px;padding-right: 7px;\" class=\"fa fa-check\" aria-hidden=\"true\"></span> <span  id=\"mal_" +id+"\" ejercicio=\""+preguntas[index][i].ejercicio+ "\" onclick=\"Visor.CalificarPregunta(this," + ejercicio +",'"+ id +"')\"  style=\"color: gray;font-size: 20px;padding-right: 7px;\" class=\"fa fa-exclamation\" aria-hidden=\"true\"></span> </input>" );
+                 idCaja++;
+            }
+
+            var html='<div>';
+                    if(i==0)
+                    {
+                        //Imprime las indicaciones solo la primera vez
+                        html+='<div class="row" style="margin-bottom: 9px"><strong>';
+                            html+= preguntas[index][i].indicacion;
+                        html+='</strong></div>';
+                    }
+                    html+='<div class="row"><strong>';
+                      html+= res ;
+                       html+='</strong></div>';
+                        html+='<div class="row">';
+                          html+='<div class="col-10">';
+                            html+='<div class="row justify-content-center">'
+
+                        html+='</div>';
+                        html+='</div>';
+                        html+='<div class="col-2 justify-content-center" style="margin-bottom: 30px;" >';
+
+                            html+='</div>';
+                    html+='</div>';
+            html+='</div>';
+
+            contentPreguntas.insertAdjacentHTML("beforeend",html);
+         }
+
+         //Carga las respuestas de las preguntas
+         //var message = ["INVALID","ModusEcho","dibujarEjercicios",[ejercicio]];
+         //window.webkit.messageHandlers.cordova.postMessage(message);
+         dibujarEstadoResultado(contentPreguntas,ejercicio);
+         cargarEjercicio(ejercicio);
+    };
+
+       var cargarEjercicioRelacionar=function(numEjercicio) {
+
+        console.log(vuelta);
+
+
+        db.escribir.where({ejercicio: numEjercicio.toString(),libroid: Visor.idLibro}).each(function(caja) {
+
+            // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+
+            if(caja.estado != 2)
+            {
+                if(candadoCerrado===true)
+                    document.getElementById(caja.elemento).readOnly=true;
+
+                if(caja.estado === 1) {
+                    document.getElementById('bien_' + caja.elemento).style.color='green';
+                }
+                else if(caja.estado === 0){
+                    document.getElementById('mal_' + caja.elemento).style.color='orange';
+                }
+            }
+
+
+            if(caja.tipo=="line"){
+
+               var h = document.getElementById("relacionsContainer");
+               if(document.getElementById(caja.elemento)==null)
+                   h.insertAdjacentHTML("beforeend",caja.data);
+
+            }
+            else{
+
+                document.getElementById(caja.elemento).setAttribute("class", "borde_relacionar");
+                document.getElementById(caja.elemento).setAttribute("name", caja.data);
+            }
+
+            if((!(caja.estado==2)) && caja.tipo=="div"){
+
+               var div =document.getElementById(caja.elemento);
+               var divsplit=div.getAttribute("name").split('_', 4);
+               var txtpregunta1=document.getElementById(divsplit[1]+"_"+divsplit[2]);
+                   div.setAttribute("calificado","SI");
+                   txtpregunta1.setAttribute("calificado","SI");
+
+
+
+            }
+
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });
+    }
+
+    var myFunction= function (div){
+        //if para cerrar el proceso si ya esta calificado
+        if(candadoRespuestas){
+        if(div.getAttribute("calificado")=="SI") return;
+        }
+        Estado++;
+        var point =document.getElementById("point_"+div.id);
+        var rect = point.getBoundingClientRect();
+        var divsplit=div.id.split('_', 3);
+
+       if(Estado==1){
+            punto1=div;
+            //********************si ya esta relacionado**********
+
+            if(!(punto1.getAttribute("name")=== undefined || punto1.getAttribute("name") === null || punto1.getAttribute("name").length === 0 ) ) {
+               Estado=0;
+               //se elimina de la bd
+               EliminarRelacionar(document.getElementById("line_"+div.getAttribute("name")));
+               //se elimina del html
+               document.getElementById("line_"+div.getAttribute("name")).remove();
+               divs=document.getElementsByName(div.getAttribute("name"));
+
+                for(var i=0; i < 2 ;i++) {
+                     EliminarRelacionar(divs[0]);
+                     divs[0].removeAttribute("class");
+                     divs[0].setAttribute("name","");
+                }
+
+               return;
+            }
+
+         vx1=rect.left;
+         var scroly=document.getElementsByClassName("modal-body")[0].scrollTop;
+         vy1=(rect.top-52)+scroly;
+         ubicacioncolumna=divsplit[1].substring(0,1);
+         punto1.setAttribute("class", "borde_relacionar");
+         ubicacion=div.id;
+
+
+         }
+
+       if(Estado==2)
+       {
+
+         punto2=div;
+         //CONDICIONANTES AL MOMENTO DE RELACIONAR
+
+        if (ubicacion==div.id){Estado=0;punto1.name="";punto1.removeAttribute("class");return;} //si vuelve a tocar el mismo punto
+        if (ubicacioncolumna==divsplit[1].substring(0,1)){Estado=0;punto1.name="";punto1.removeAttribute("class");return;} // si toca en la misma columna
+        if(!(punto2.getAttribute("name")=== undefined || punto2.getAttribute("name") === null || punto2.getAttribute("name").length === 0 ) ){
+            //si en el segundo touch, toca uno que ya esta relaciondo no hace nada, debe de tocar uno que no esta relacionado
+            Estado=1;
+            return;
+        }
+         vx2=rect.left;
+         var scroly=document.getElementsByClassName("modal-body")[0].scrollTop;
+         vy2=(rect.top-52)+scroly;
+         punto2.setAttribute("class", "borde_relacionar");
+         Estado=0;
+         numerolinea++;
+         ubicacion+="_"+div.id;
+         punto1.setAttribute("name","relacionado_" + ubicacion);
+         punto2.setAttribute("name","relacionado_" + ubicacion);
+         vuelta=1;
+
+
+        var h = document.getElementById("relacionsContainer");
+            h.insertAdjacentHTML("beforeend", "<div class='line' id='line_relacionado_"+ubicacion+"' ejercicio='"+ div.getAttribute("ejercicio") + "'></div>");
+         createLine(vx1,vy1,vx2,vy2,"line_relacionado_"+ubicacion);
+         GuardarRelacionar(punto1);
+         GuardarRelacionar(punto2);
+   }
+
+};
+
+var myFunctionDentroLibro= function (div,pagina){
+
+    if(candadoCerrado==false){
+
+        return;
+    }
+    else if(!(div.getAttribute("estado")==null || div.getAttribute("estado")=="2")){
+        return;
+    }
+
+   Estado++;
+    var divsplit=div.id.split('_', 3);
+   // var point =document.getElementById("iframe"+pagina).contentWindow.document.getElementById("point_"+div.id);
+   var point =document.getElementById("iframe"+pagina).contentWindow.document.querySelectorAll('[id2=point_'+div.id+']')
+    var rect = point[0].getBoundingClientRect();
+   if(Estado==1){
+      
+        punto1=div;
+        point1=document.getElementById("iframe"+pagina).contentWindow.document.querySelectorAll('[id2=point_'+div.id+']');
+        //********************si ya esta relacionado**********
+        if(!(punto1.getAttribute("name")=== undefined || punto1.getAttribute("name") === null || punto1.getAttribute("name").length === 0 ) ) {
+           Estado=0;
+           //se elimina de la bd
+           EliminarRelacionar(document.getElementById("iframe"+pagina).contentWindow.document.getElementById("line_"+div.getAttribute("name"))); 
+           //se elimina del html
+           document.getElementById("iframe"+pagina).contentWindow.document.getElementById("line_"+div.getAttribute("name")).remove(); 
+           divs=document.getElementById("iframe"+pagina).contentWindow.document.getElementsByName(div.getAttribute("name"));
+           points=document.getElementById("iframe"+pagina).contentWindow.document.getElementsByName(point1[0].getAttribute("name"));
+
+
+            for(var i=0; i < 2 ;i++) {
+                 EliminarRelacionar(divs[0]);
+                 divs[0].setAttribute("name","");
+
+
+            }
+            points[0].style.webkitTextStroke=0+"px";
+            points[1].style.webkitTextStroke=0+"px";
+            points[0].setAttribute("name","");
+            points[0].setAttribute("name","");
+
+           return;
+        }
+
+     vx1=rect.left+2;
+     vy1=rect.top+9;//el mas 52 es para ajustar el top al idrview
+     punto1.setAttribute("class", "borde_relacionar");
+     point1[0].style.webkitTextStroke=110+"px";
+     ubicacion=div.id;
+     ubicacioncolumna=divsplit[1].substring(0,1);
+
+     }
+        
+   if(Estado==2)
+   {
+     point2=document.getElementById("iframe"+pagina).contentWindow.document.querySelectorAll('[id2=point_'+div.id+']');
+     punto2=div;
+     //CONDICIONANTES AL MOMENTO DE RELACIONAR
+
+    if (ubicacion==div.id){Estado=0;punto1.name=undefined;punto1.removeAttribute("class");point1[0].style.webkitTextStroke=0+"px";return;} //si vuelve a tocar el mismo punto
+    if (ubicacioncolumna==divsplit[1].substring(0,1)){Estado=0;punto1.name=undefined;punto1.removeAttribute("class");point1[0].style.webkitTextStroke=0+"px";return;} // si toca en la misma columna
+    if(!(punto2.getAttribute("name")=== undefined || punto2.getAttribute("name") === null || punto2.getAttribute("name").length === 0 ) ){
+        //si en el segundo touch, toca uno que ya esta relaciondo no hace nada, debe de tocar uno que no esta relacionado
+        Estado=1;
+        return;    
+    }
+     vx2=rect.left+2;
+     vy2=rect.top+9;//el mas 52 es para ajustar el top al idrview
+     punto2.setAttribute("class", "borde_relacionar");
+     Estado=0;
+     numerolinea++;
+     ubicacion+=div.id;
+     punto1.setAttribute("name","relacionado_" + ubicacion);
+     punto2.setAttribute("name","relacionado_" + ubicacion);
+     point1[0].setAttribute("name","point_" + ubicacion);
+     point2[0].setAttribute("name","point_" + ubicacion);
+     point2[0].style.webkitTextStroke=110+"px";
+     vuelta=1;
+
+     var h = document.getElementById("iframe"+pagina).contentWindow.document.getElementById("p"+pagina);
+         h.insertAdjacentHTML("beforeend", "<div class='line' id='line_relacionado_"+ubicacion+"' ejercicio='"+ div.getAttribute("ejercicio") + "'></div>");
+     createLineDentroLibro(vx1,vy1,vx2,vy2,"line_relacionado_"+ubicacion,pagina);
+     GuardarRelacionarDentroLibro(punto1,pagina);
+     GuardarRelacionarDentroLibro(punto2,pagina);
+   }
+};
+//Dibuja la linea del ejercicio de relacionar
+    function createLine(x1,y1,x2,y2,lineId)
+    {
+
+        var distance=Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2))-4000);
+
+        var xMid= (x1+x2)/2
+        var yMid= (y1+y2)/2
+
+        var salopeInRadian= Math.atan2(y1-y2, x1-x2 )
+        var salopeInDegrees= (salopeInRadian*180)/Math.PI;
+
+        var line= document.getElementById(lineId)
+        line.style.width=distance  + "px";
+        line.style.top=yMid  + "px";
+        line.style.left=xMid - (distance/2)  + "px";
+        line.style.transform="rotate("+salopeInDegrees+"deg)";
+        line.style.webkitTransform="rotate("+salopeInDegrees+"deg)";
+        GuardarRelacionar(line);
+    }
+
+    function createLineDentroLibro(x1,y1,x2,y2,lineId,pagina)
+    {
+
+        var distance=Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2))-4000);
+
+        var xMid= (x1+x2)/2
+        var yMid= (y1+y2)/2
+
+        var salopeInRadian= Math.atan2(y1-y2, x1-x2 )
+        var salopeInDegrees= ((salopeInRadian*180)/Math.PI);
+
+        var line= document.getElementById("iframe"+pagina).contentWindow.document.getElementById(lineId)
+        line.style.width=distance  + "px";
+        line.style.top=yMid  + "px";
+        line.style.left=xMid - (distance/2)  + "px";
+        line.style.transform="rotate("+salopeInDegrees+"deg)";
+        line.style.webkitTransform="rotate("+salopeInDegrees+"deg)";
+        GuardarRelacionarDentroLibro(line,pagina);
+    }
+    var eliminarlinea = function(element) {
+        element.parentNode.removeChild(element);
+    };
+
+
+    var CargarRadio=function(pagina){
+     
+       /* db.escribir.where({pagina: pagina.toString(),libroid: Visor.idLibro,tipo: "radio"}).each(function(caja) {
+
+
+            var a= document.getElementById(""+caja.elemento);
+
+
+             document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).innerHTML=caja.data;
+ 
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });*/
+
+        loadData().then(function(data){
+            const result = data.filter(item => item.tipo =="radio" && item.pagina==pagina);
+
+            result.forEach(function(caja){
+              var a= document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento);
+              if(a!=null)a.innerHTML=caja.data;
+            });
+        })
+
+
+     
+
+
+    };
+
+    var encerrarCirculoColor = function(element) {
+    if(candadoCerrado==false){
+
+        return;
+    }
+    else if(!(element.getAttribute("estado")==null || element.getAttribute("estado")=="2")){
+        return;
+    }
+
+        var tipo=element.id.split("_",5);
+        if(tipo[4]=="u"){
+             if(element.style.borderColor==='transparent')
+                {
+                element.style.borderColor="rgb(255, 67, 139)";
+
+                }
+             else if(element.style.borderColor==="rgb(255, 67, 139)")
+                {
+                element.style.borderColor="transparent";
+                }
+
+        }
+        else if (tipo[4]=="d"){
+
+            if(element.style.borderColor==='transparent')
+                {
+                element.style.borderColor="red";
+
+                }
+             else if(element.style.borderColor==="red")
+                {
+                element.style.borderColor="green";
+                }
+             else if(element.style.borderColor==="green")
+                {
+                element.style.borderColor="transparent";
+                }
+          
+        }
+        else if(tipo[4]=="m5"){
+             if(element.style.borderColor==='transparent')
+                {
+                element.style.borderColor="red";
+
+                }
+             else if(element.style.borderColor==="red")
+                {
+                element.style.borderColor="green";
+                }
+             else if(element.style.borderColor==="green")
+                {
+                element.style.borderColor="blue";
+                }
+             else if(element.style.borderColor==="blue")
+                {
+                element.style.borderColor="orange";
+                }
+            else if(element.style.borderColor==="orange")
+                {
+                element.style.borderColor="purple";
+                }
+            else if(element.style.borderColor==="purple")
+                {
+                element.style.borderColor="transparent";
+                }
+
+        }
+        else{
+
+             if(element.style.borderColor==='transparent')
+                {
+                element.style.borderColor="red";
+
+                }
+             else if(element.style.borderColor==="red")
+                {
+                element.style.borderColor="green";
+                }
+             else if(element.style.borderColor==="green")
+                {
+                element.style.borderColor="blue";
+                }
+             else if(element.style.borderColor==="blue")
+                {
+                element.style.borderColor="transparent";
+                }
+        }
+                GuardarEncerrarCirculo(element);
+    };
+
+    var sopadeletras = function(element) {
+      
+
+    //   element.preventDefault();
+     element.target.parentNode.setAttribute("ontouchstart", "");
+     console.log("startarriba")
+       cambiocolor =getComputedStyle(element.target).getPropertyValue("color");
+      
+        if(cambiocolor!="rgb(255, 229, 38)"){
+            element.target.style.color='rgb(255, 229, 38)';
+            estasdibujandocolorrojo=true;
+        }  
+        else{
+
+            element.target.style.color=colorActual;
+            estasdibujandocolorrojo=false;
+
+        }
+        console.log("startabajo")
+
+    };
+
+  var sopadeletrasMove = function(element) {
+         
+console.log("move")
+     element.preventDefault();
+       var touch = element.touches[0];
+        divmove=element;
+  
+        elementFromPoint = document.getElementById("iframe"+element.target.getAttribute("pagina")).contentWindow.document.elementFromPoint(touch.pageX - window.pageXOffset, touch.pageY - window.pageYOffset);
+
+       if(getComputedStyle(elementFromPoint).color==colorActual &&  divmove.target!=elementFromPoint && estasdibujandocolorrojo==true )
+       {
+               elementFromPoint.style.color='rgb(255, 229, 38)';
+         }
+        else if(getComputedStyle(elementFromPoint).color=='rgb(255, 229, 38)'  &&               estasdibujandocolorrojo==false)
+        {
+
+            elementFromPoint.style.color=colorActual ;
+
+
+        }
+   
+      
+
+    };
+
+    var sopadeletrasEnd = function(element) {
+            GuardarSopaLetras(element.target.parentNode.parentNode)
+
+    };
+
+    var GuardarSopaLetras=function(element){
+     
+        //var PaginaActual=document.getElementById('goBtn').value;
+        var PaginaActual= element.parentNode.getAttribute("id").replace("p","");
+         
+            db.escribir.put({
+                elemento: element.id,
+                libroid: Visor.idLibro,
+                ejercicio: element.getAttribute("ejercicio"),
+                data: element.innerHTML,
+                estado: 2,
+                tipo:"sopa",
+                pagina :PaginaActual,
+                }).then(function(){
+
+            });
+
+    };
+
+    var CargarSopaLetras=function(pagina){
+     
+      /*  db.escribir.where({pagina: pagina.toString(),libroid: Visor.idLibro,tipo: "sopa"}).each(function(caja) {
+            document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).innerHTML=caja.data;
+ 
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });*/
+       loadData().then(function(data){
+            const result = data.filter(item => item.tipo =="sopa" && item.pagina==pagina);
+
+            result.forEach(function(caja){
+              var a= document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento);
+              if(a!=null)a.innerHTML=caja.data;
+            });
+
+        });
+
+
+    };
+
+    var cargarEjercicioRelacionarDentroLibro=function(pagina) {
+        
+    /*    console.log(vuelta);
+        db.escribir.where({pagina: pagina.toString(),libroid: Visor.idLibro}).each(function(caja) {
+            if(caja.tipo=="linenew"){
+               
+               //var h = document.getElementById("p" + page);
+               var h=document.getElementById("iframe"+pagina).contentWindow.document.getElementById("p" + pagina);
+               if(document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento)==null)
+                   h.insertAdjacentHTML("beforeend",caja.data);
+                   
+            }
+            else if (caja.tipo=="div"){
+
+                document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).setAttribute("class", "borde_relacionar");
+              
+                document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).setAttribute("class", "borde_relacionar");
+                document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).setAttribute("name", caja.data);
+                document.getElementById("iframe"+pagina).contentWindow.document.querySelectorAll('[id2=point_'+caja.elemento+']')[0].style.webkitTextStroke=110+"px";;
+                document.getElementById("iframe"+pagina).contentWindow.document.querySelectorAll('[id2=point_'+caja.elemento+']')[0].setAttribute("name", "point_"+caja.data);;
+                //document.getElementById("iframe"+pagina).contentWindow.document.getElementById("point_"+caja.elemento).style.webkitTextStroke=110+"px";
+            }
+           
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });*/
+
+
+        loadData().then(function(data){
+            const result = data.filter(item => (item.tipo =="linenew" || item.tipo =="div")  && item.pagina==pagina);
+
+            result.forEach(function(caja){
+              if(caja.tipo=="linenew"){
+               
+               //var h = document.getElementById("p" + page);
+               var h=document.getElementById("iframe"+pagina).contentWindow.document.getElementById("p" + pagina);
+               if(document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento)==null)
+                   h.insertAdjacentHTML("beforeend",caja.data);     
+            }
+            else if(caja.tipo=="div"){
+
+                document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).setAttribute("class", "borde_relacionar");
+                document.getElementById("iframe"+pagina).contentWindow.document.getElementById(caja.elemento).setAttribute("name", caja.data);
+                document.getElementById("iframe"+pagina).contentWindow.document.querySelectorAll('[id2=point_'+caja.elemento+']')[0].style.webkitTextStroke=110+"px";;
+                document.getElementById("iframe"+pagina).contentWindow.document.querySelectorAll('[id2=point_'+caja.elemento+']')[0].setAttribute("name", "point_"+caja.data);;
+                //document.getElementById("iframe"+pagina).contentWindow.document.getElementById("point_"+caja.elemento).style.webkitTextStroke=110+"px";
+            }
+            });
+        })
+    };
+
+    var loadData = function() {
+        var promesa= new Promise((resolve,reject)=> {
+            if(dbDexie != null)
+                resolve(dbDexie);
+            //Obtiene todos los registros de la bd
+            db.escribir.toArray().then(function(data){
+                dbDexie = data;
+                resolve(data);
+            });
+        });
+
+        return promesa;
+    };
+
+    var VerEjercicioRelacionar = function(index, ejercicio) {
+                var tipoejercicio = parseInt(preguntas[index][0].tipoRelacion);
+                var f1 = preguntas[index][0].fila1.length - 1;
+                var f2 = preguntas[index][0].fila2.length - 1;
+                var contentPreguntas = document.getElementById("contentPreguntas");
+                var indicaciones = '<div class="row" style="margin-bottom: 9px"><strong>';
+
+
+                // REALACIONAR IMG TEXTO
+                if (tipoejercicio == 1) {
+                    indicaciones += preguntas[index][0].indicacion;
+                    indicaciones += '</strong></div>';
+                    contentPreguntas.insertAdjacentHTML("beforeend", indicaciones);
+                    var relacionContainer = '<div id="relacionsContainer" class="container-fluid"></div>';
+                    contentPreguntas.insertAdjacentHTML("beforeend", relacionContainer);
+                    // *******************  HTML VISUAL *************************
+
+                    var html = '<div class="row col-12">';
+                    html += '<div style="padding: 30px;" class="col-sm-6">'
+                    for (var i = 0; i <= f1; i++) {
+                        html += '<div style="padding: 15px;" class="text-center">';
+                        html += '<label><img ejercicio="'+preguntas[index][0].ejercicio+'" id="e'+ preguntas[index][0].ejercicio +'_I'+i+'" ontouchstart="Visor.myFunction(this,2)"   class="rounded" style="width: 160px; height:180px;" src="assets/img/' + preguntas[index][0].fila1[i].img + '">';
+                        html += '<div id="point_e'+ preguntas[index][0].ejercicio +'_I'+i+'" style="display: initial;width: 1px;height: 1px;color: #ffffff;" >•</div></label>';
+                        html += '</div>';
+
+                    }
+                    html += '</div>'
+                    html += '<div style="padding: 30px;" class="col-sm-6 ">'
+
+                    for (var y = 0; y <= f2; y++) {
+
+                        html += '<div style="padding: 15px;" class="text-center">';
+                        html += '<div id="point_e'+ preguntas[index][0].ejercicio +'_D'+y+'" style="display: initial;width: 1px;height: 1px;color: #ffffff;" class="ts7_15">•</div>'
+                        html += '<div ejercicio="'+preguntas[index][0].ejercicio+'" id="e'+ preguntas[index][0].ejercicio +'_D'+y+'" ontouchstart="Visor.myFunction(this,2)"   class="rounded" style="text-align:center;width: 160px; height:180px;"><br><br><mark id="point_e'+ preguntas[index][0].ejercicio +'_D'+y+'" >ZAPATERO: ¿Y qué pasaría si yo bebiera también?(El Zapatero se acerca y se aleja varias veces de la botella, hasta que al fin, decidido, agarra la botella y bebe de ella).</div>';
+                        html += '</div>';
+                    }
+                    html += '</div>'
+
+                    html += '</div>';
+
+                    // *******************  HTML FINAL  *************************
+                    relacionsContainer.insertAdjacentHTML("beforeend", html);
+                }
+                // REALACION IMG IMG
+                if (tipoejercicio == 2) {
+                    indicaciones += preguntas[index][0].indicacion;
+                    indicaciones += '</strong></div>';
+                    contentPreguntas.insertAdjacentHTML("beforeend", indicaciones);
+                    var relacionContainer = '<div id="relacionsContainer" style="padding-right:0px;padding-left:0px;" class="container-fluid"></div>';
+                    contentPreguntas.insertAdjacentHTML("beforeend", relacionContainer);
+                    // *******************  HTML VISUAL *************************
+
+                    var html = '<div class="row col-12">';
+
+                    html += '<div  class="col-sm-6">'
+                    for (var i = 0; i <= f1; i++) {
+                        html += '<div style="padding: 15px;" >';
+                        html += '<label><img ejercicio="'+preguntas[index][0].ejercicio+'" id="e'+ preguntas[index][0].ejercicio +'_I'+i+'" ontouchstart="Visor.myFunction(this)"   class="rounded" style="width: 160px; height:180px;" src="assets/img/' + preguntas[index][0].fila1[i].img + '">';
+                        html += '<div id="point_e'+ preguntas[index][0].ejercicio +'_I'+i+'" style="display: initial;width: 1px;height: 1px;color: #ffffff;" >•</div></label>';
+                        html += '</div>';
+                    }
+                    html += '</div>'
+
+                    html += '<div  class="col-sm-6">'
+                    for (var y = 0; y <= f2; y++) {
+                        var idcaja=preguntas[index][0].ejercicio +"_D"+y;
+                        html += '<div style="padding: 15px;" >';
+                        html += '<label><div id="point_e'+ preguntas[index][0].ejercicio +'_D'+y+'" style="display: initial;width: 1px;height: 1px;color: #ffffff;" class="ts7_15">• </div>'
+                        html += '<img ejercicio="'+preguntas[index][0].ejercicio+'" id="e'+ preguntas[index][0].ejercicio +'_D'+y+'" ontouchstart="Visor.myFunction(this)"  class="rounded" style="width: 160px; height:180px;" src="assets/img/' + preguntas[index][0].fila2[y].img + '"></label>';
+                       // CalificarPregunta(this,'+ ejercicio +',&#39'+IdCaja+'&#39)"
+                        html += '<span  id="bien_e'+ preguntas[index][0].ejercicio +'_D'+y+'" onclick="Visor.CalificarPreguntaRelacionar(this,'+ ejercicio +',\'e'+idcaja+'\')" style="color: gray;font-size: 20px;margin-bottom: 7px;" class="col-sm-2 fa fa-check" aria-hidden="true"></span>';
+                        html += '<span  id="mal_e' + preguntas[index][0].ejercicio +'_D'+y+'" onclick="Visor.CalificarPreguntaRelacionar(this,' + ejercicio + ',\'e' + idcaja + '\')" style="color: gray;font-size: 20px;" class="col-sm-2 fa fa-exclamation" aria-hidden="true"></span>';
+                        html += '</div>';
+                    }
+                    html += '</div>'
+                    html += '</div>';
+
+                    // *******************  HTML FINAL  *************************
+                    relacionsContainer.insertAdjacentHTML("beforeend", html);
+                }
+                // RELACION TEXTO TEXTO
+                if (tipoejercicio == 3) {
+                    indicaciones += preguntas[index][0].indicacion;
+                    indicaciones += '</strong></div>';
+                    contentPreguntas.insertAdjacentHTML("beforeend", indicaciones);
+                    var relacionContainer = '<div id="relacionsContainer" class="container-fluid"></div>';
+                    contentPreguntas.insertAdjacentHTML("beforeend", relacionContainer);
+                    // *******************  HTML VISUAL *************************
+
+                    var html = '<div class="row col-12">';
+                    html += '<div style="padding: 30px;" class="col-sm-6">'
+                    for (var i = 0; i <= f1; i++) {
+                        html += '<div style="witdh: 150px; height: 150px;" id="text' + y + '"  style="padding: 15px;" >';
+                        html += '<label><input type="checkbox" id="cbox1" value="first_checkbox">' + preguntas[index][0].fila1[i].respuesta + '</label><br>'
+                        html += '</div>';
+                    }
+                    html += '</div>'
+                    html += '<div style="padding: 30px;" class="col-sm-6">'
+                    for (var y = 0; y <= f2; y++) {
+                        html += '<div style="witdh: 150px; height: 150px;" id="text' + y + '"  style="padding: 15px;" >';
+                        html += '<label><input type="checkbox" id="cbox1" value="first_checkbox">' + preguntas[index][0].fila2[y].respuesta + '</label><br>'
+                        html += '</div>';
+                    }
+                    html += '</div>'
+                    html += '</div>';
+
+                    // *******************  HTML FINAL  *************************
+                    relacionsContainer.insertAdjacentHTML("beforeend", html);
+                }
+                Visor.cargarEjercicioRelacionar(preguntas[index][0].ejercicio);
+                dibujarEstadoResultado(contentPreguntas,ejercicio);
+            };
+
+    var VerEjercicioFotos = function(index,ejercicio) {
+        var total=preguntas[index][0].NumeroFotos;
+        console.log("Filas",total);
+
+        var contentPreguntas = document.getElementById("contentPreguntas");
+
+        var indicaciones='<div class="row" style="margin-bottom: 9px"><strong>';
+                            indicaciones+= preguntas[index][0].indicacion;
+          indicaciones+='</strong></div>';
+
+        contentPreguntas.insertAdjacentHTML("beforeend",indicaciones);
+
+        var cardsContainer='<div id="cadrsContainer" class="card-columns" style="column-count: 1;"></div>';
+        contentPreguntas.insertAdjacentHTML("beforeend",cardsContainer);
+
+        var IdCajaTexto=1;
+
+        for(var i=1;i<=total;i++){
+            var IdCaja="e" + preguntas[index][0].ejercicio + "_txt" + IdCajaTexto;
+
+            var DateTime= new Date().getTime();
+
+            console.log(DateTime);
+
+            var html='<div class="card">';
+                html+='<img class="card-img-top" onerror="this.src=\'assets/img/camera.svg\'" src="assets/img/'+ "e" + preguntas[index][0].ejercicio + "_img" + IdCajaTexto+'.png?t='+DateTime+'" alt="Card image cap" onclick="Visor.TomarFoto(this)" id="'+ "e" + preguntas[index][0].ejercicio + "_img" + IdCajaTexto+'">';
+                html+='<div class="card-body">';
+                    //html+='<h5 class="card-title">Card title that wraps to a new line</h5>';
+                        html+='<div class="row card-text">';
+                            html+='<div class="col-10">';
+                                html+='<div class="row justify-content-center">'
+                                    html+='<textarea id="'+ IdCaja +'" ejercicio="'+ preguntas[index][0].ejercicio+'" onblur="Visor.GuardarEscribir(this);" placeholder="Escribe tu respuesta" style="width:100%;border:none;" class="txtrespuestas"></textarea>';
+                                html+='</div>';
+                            html+='</div>';
+                            html+='<div class="col-2 justify-content-center">';
+                                html+='<div class="row justify-content-center">';
+                                    html+='<span  id="bien_'+ IdCaja +'" onclick="Visor.CalificarPregunta(this,'+ ejercicio +',&#39'+IdCaja+'&#39)" style="color: gray;font-size: 20px;margin-bottom: 7px;" class="fa fa-check" aria-hidden="true"></span>';
+                                html+='</div>';
+                                html+='<div class="row justify-content-center">';
+                                    html+='<span id="mal_'+IdCaja+'" onclick="Visor.CalificarPregunta(this,'+ ejercicio + ',&#39'+IdCaja+'&#39)" style="color: gray;font-size: 20px;" class="fa fa-exclamation" aria-hidden="true"></span>';
+                                html+='</div>';
+                            html+='</div>';
+                        html+='</div>';
+                html+='</div>';
+            html+='</div>';
+
+            IdCajaTexto++;
+            cadrsContainer.insertAdjacentHTML("beforeend",html);
+        }
+
+        //Carga las respuestas de las preguntas
+        var message = ["INVALID","ModusEcho","dibujarEjercicios",[ejercicio]];
+        window.webkit.messageHandlers.cordova.postMessage(message);
+    };
+
+    var mostrarFoto = function(img,paginaid) {
+        console.log("img");
+        console.log(img)
+        console.log("paginaid");
+        console.log(paginaid)
+        var DateTime= new Date().getTime();
+        document.getElementById("iframe"+paginaid).contentWindow.document.getElementById(img).src=  paginaid + "/" + img+ ".png?t="+ DateTime;
+    };
+    var LimpiarFoto = function(img){
+       document.getElementById(img).src= null;
+    };
+    var TomarFoto = function(img)
+    {
+        var paginaid=img.parentNode.parentNode.id.substring(1);
+        //Tomar foto
+        app.TomarFoto(img.id,paginaid);
+    };
+    var EliminarFoto = function(img)
+    {
+        console.log(img)
+        var paginaid=img.parentNode.parentNode.id.substring(1);
+        document.getElementById("iframe"+paginaid).contentWindow.document.getElementById(img.id).src= null;
+        app.EliminarFoto(img.id,paginaid);
+        
+    };
+
+    var playAudio = function(audio, bocina)
+    {
+        var audio = new Audio('assets/audio/'+ audio);
+        audio.play();
+        bocina.style.color = "rgb(42, 255, 42)";
+        bocina.style.fontSize= (parseFloat(window.getComputedStyle(bocina).fontSize)+30)+"px";
+        audio.addEventListener('loadedmetadata', function(){
+            var fin=window.setInterval(function(){
+               bocina.style.color = "red";
+               bocina.style.fontSize= "inherit";
+
+            },audio.duration*1000);
+        })
+    };
+    var playAudioPlayer = function(audiotxt, bocina)
+    {
+        console.log(audios);
+        if(audios[audiotxt] == undefined) {
+            bocina.style.background = `url("assets/play_color.png") no-repeat center`;
+            bocina.style.backgroundSize = `contain`;
+        }
+
+
+        if(audios[audiotxt] != undefined) {
+            console.log("pause");
+            if(audios[audiotxt].audio.paused) {
+                bocina.style.background = `url("assets/play_color.png") no-repeat center`;
+                bocina.style.backgroundSize = `contain`
+                setTimeout(function(){ 
+                    audios[audiotxt].audio.play();
+                    bocina.style.background = `url("assets/pause.png") no-repeat center`;
+                    bocina.style.backgroundSize = `contain`;
+                }, 150);
+            }
+            else {
+                bocina.style.background = `url("assets/pause_color.png") no-repeat center`;
+                bocina.style.backgroundSize = `contain`
+                setTimeout(function(){ 
+                    audios[audiotxt].audio.pause();
+                    bocina.style.background = `url("assets/play.png") no-repeat center`;
+                    bocina.style.backgroundSize= `contain`;
+                }, 150);
+            }
+            
+            return;
+        }
+
+        try {
+        //Detener audios que esten sonando
+        for (const key in audios) {
+            audios[key].audio.pause();
+        }
+        }
+        catch(error){}
+
+        var audio = new Audio('assets/audio/'+ audiotxt);
+        audios[audiotxt] = {audio:audio,bocina:bocina};
+        audios[audiotxt].audio.play();
+        setTimeout(function(){ 
+            bocina.style.background = `url("assets/pause.png") no-repeat center`;
+            bocina.style.backgroundSize = `contain`;
+        }, 150);
+        //bocina.style.color = "rgb(42, 255, 42)";
+        //bocina.style.fontSize= (parseFloat(window.getComputedStyle(bocina).fontSize)+30)+"px";
+
+        audios[audiotxt].audio.addEventListener("ended", function(){
+            audios[audiotxt].audio.currentTime = 0;
+            bocina.style.color = "red";
+            bocina.style.fontSize= "inherit";
+            audios[audiotxt] = undefined;
+            bocina.style.background = `url("assets/play.png") no-repeat center`;
+            bocina.style.backgroundSize= `contain`;
+            bocina.nextElementSibling.firstChild.nextElementSibling.firstChild.nextElementSibling.style.width=`0%`
+            bocina.nextElementSibling.nextElementSibling.firstChild.innerHTML='00:00';
+            console.log("ended");
+        });
+
+        audios[audiotxt].audio.addEventListener("timeupdate", function(){
+
+            function calculatePercentPlayed() {
+              let percentage = (audios[audiotxt].audio.currentTime / audios[audiotxt].audio.duration).toFixed(2) * 100;
+              bocina.nextElementSibling.firstChild.nextElementSibling.firstChild.nextElementSibling.style.width=`${percentage}%`;
+            }
+
+            function calculateCurrentValue(currentTime) {
+              const currentMinute = parseInt(currentTime / 60) % 60;
+              const currentSecondsLong = currentTime % 60;
+              const currentSeconds = currentSecondsLong.toFixed();
+              const currentTimeFormatted = `${currentMinute < 10 ? `0${currentMinute}` : currentMinute}:${
+              currentSeconds < 10 ? `0${currentSeconds}` : currentSeconds
+              }`;
+              
+              return currentTimeFormatted;
+            }
+
+            bocina.nextElementSibling.firstChild.nextElementSibling.addEventListener("click",function(e){
+                const percent = e.offsetX / this.offsetWidth;
+                audios[audiotxt].audio.currentTime = percent * audios[audiotxt].audio.duration;
+            });
+
+            const currentTime = calculateCurrentValue(audios[audiotxt].audio.currentTime);
+            bocina.nextElementSibling.nextElementSibling.firstChild.innerHTML=currentTime;
+
+            calculatePercentPlayed();
+        });
+    };
+    var stopAudio = function(audiotxt, bocina)
+    {
+        bocina.style.color = "rgb(42, 255, 42)";
+        setTimeout(function(){ 
+            bocina.style.color = "red";
+        }, 150);
+
+
+        if(audios[audiotxt] == undefined) return;
+
+        audios[audiotxt].audio.pause();
+        audios[audiotxt].audio.currentTime = 0;
+        audios[audiotxt].bocina.style.color = "red";
+        audios[audiotxt].bocina.style.fontSize= "inherit";
+        audios[audiotxt] = undefined;
+    };
+    var restartAudio = function(audiotxt, restarBoton)
+    {
+        console.log("restartAudio");
+        restarBoton.style.background = `url("assets/restart_color.png") no-repeat center`;
+        restarBoton.style.backgroundSize = `contain`;
+        setTimeout(function(){ 
+            //bocina.style.color = "red";
+            console.log("color");
+            restarBoton.style.background = `url("assets/restart.png") no-repeat center`;
+            restarBoton.style.backgroundSize = `contain`;
+        }, 150);
+
+        if(audios[audiotxt] == undefined) return;
+
+
+        audios[audiotxt].audio.pause();
+        audios[audiotxt].audio.currentTime = 0;
+
+        const playBoton = restarBoton.nextElementSibling;
+
+        if(audios[audiotxt].audio.paused) {
+            audios[audiotxt].audio.play();
+            playBoton.style.background = `url("assets/pause.png") no-repeat center`;
+            playBoton.style.backgroundSize = `contain`;
+        }
+        else {
+            audios[audiotxt].audio.pause();
+            playBoton.style.background = `url("assets/play.png") no-repeat center`;
+            playBoton.style.backgroundSize= `contain`;
+        }
+    };
+    var playAudioPlayerAdvance5seconds = function(audiotxt, bocina)
+    {
+        bocina.style.background = `url("assets/rewind_color.png") no-repeat center`;
+        bocina.style.backgroundSize = `contain`
+
+        setTimeout(function(){ 
+            bocina.style.background = `url("assets/rewind.png") no-repeat center`;
+            bocina.style.backgroundSize = `contain`;
+        }, 150);
+
+        if(audios[audiotxt] == undefined) return;
+
+        audios[audiotxt].audio.currentTime = audios[audiotxt].audio.currentTime + 5;
+    }
+    var playAudioPlayerGoBack5seconds = function(audiotxt, bocina)
+    {
+        bocina.style.background = `url("assets/rewind_color.png") no-repeat center`;
+        bocina.style.backgroundSize = `contain`
+        
+        setTimeout(function(){ 
+            bocina.style.background = `url("assets/rewind.png") no-repeat center`;
+            bocina.style.backgroundSize = `contain`;
+        }, 150);
+
+        if(audios[audiotxt] == undefined) return;
+
+        audios[audiotxt].audio.currentTime = audios[audiotxt].audio.currentTime - 5;
+    }
+    var VerEjercicioTablas=function(index,ejercicio) {
+        var total=preguntas[index].length-1;
+        var contentPreguntas = document.getElementById("contentPreguntas");
+
+        var indicaciones='<div class="row" style="margin-bottom: 9px"><strong>';
+                            indicaciones+= preguntas[index][0].indicacion;
+          indicaciones+='</strong></div>';
+
+        contentPreguntas.insertAdjacentHTML("beforeend",indicaciones);
+
+        var TotalColumnas=preguntas[index][0].columnas.length;
+        var TotalFilas=preguntas[index][0].filas.length;
+
+        console.log('Columnas=',TotalColumnas);
+        console.log('Filas=',TotalFilas);
+
+        var preguntasContainer='<div id="preguntasContainer" class="container-fluid"></div>';
+        contentPreguntas.insertAdjacentHTML("beforeend",preguntasContainer);
+        preguntasContainer=document.getElementById("preguntasContainer");
+
+        var IdCajaTexto=1;
+        //inicia desde 0 para agregar la fila extra
+        for(var i=0;i<=TotalFilas;i++)
+        {
+            var html='<div class="row">';
+            //inicia desde 0 para agregar la columna extra
+            console.log(preguntas[index][0].filas[0].encabezado);
+            for(var y= preguntas[index][0].filas[1].encabezado ==="" ? 1 : 0;y<TotalColumnas;y++)
+            {
+                if(i===0) {
+                    //Primera fila
+                    html+='<div class="col text-center" style="min-height:80px;border-style:solid solid solid solid;border-color: black;">';
+                    html+= preguntas[index][0].columnas[y]['encabezado'];
+                    html+='</div>';
+                }
+                else {
+                    html+='<div class="col text-center" style="min-height: 107px;border-style:solid solid solid solid;border-color: black;">';
+
+                    var fieldContent;
+                    if(y===0){
+                        fieldContent=preguntas[index][0].filas[i-1]['encabezado'];
+                    }
+                    else {
+                        var IdCaja="e" + preguntas[index][0].ejercicio + "_txt" + IdCajaTexto;
+                        IdCajaTexto++;
+                        fieldContent ='<div class="row">';
+                                fieldContent+='<div class="col-12">';
+                                    fieldContent+='<div class="row justify-content-center">'
+                                        fieldContent+='<textarea id="'+ IdCaja +'" ejercicio="'+ preguntas[index][0].ejercicio+'" onblur="Visor.GuardarEscribir(this);" placeholder="Escribe tu respuesta" style="width:100%;border:none;text-align-last: center;" class="txtrespuestas"></textarea>';
+                                    fieldContent+='</div>';
+                                fieldContent+='</div>';
+                        fieldContent+='</div>';
+                        fieldContent +='<div class="row">';
+                                fieldContent+='<div class="col-12">';
+                                    fieldContent+='<div class="row">';
+                                        fieldContent+='<div class="col-12" style="text-align:right">';
+                                            fieldContent+='<span  id="bien_'+ IdCaja +'" onclick="Visor.CalificarPregunta(this,'+ ejercicio +',&#39'+IdCaja+'&#39)" style="color: gray;font-size: 20px;margin-bottom: 7px;" class="fa fa-check" aria-hidden="true"></span>';
+                                        //fieldContent+='</div>';
+                                        //fieldContent+='<div class="col-6">';
+                                            fieldContent+='<span id="mal_'+IdCaja+'" onclick="Visor.CalificarPregunta(this,'+ ejercicio + ',&#39'+IdCaja +'&#39)" style="color: gray;font-size: 20px;margin-left: 12px" class="fa fa-exclamation" aria-hidden="true"></span>';
+                                        fieldContent+='</div>';
+                                    fieldContent+='</div>';
+                                fieldContent+='</div>';
+                            fieldContent+='</div>';
+                    }
+                    html+= fieldContent;
+                    html+='</div>';
+                }
+            }
+            html+='</div>';
+            preguntasContainer.insertAdjacentHTML("beforeend",html);
+        }
+
+        //Carga las respuestas de las preguntas
+        //var message = ["INVALID","ModusEcho","dibujarEjercicios",[ejercicio]];
+        //window.webkit.messageHandlers.cordova.postMessage(message);
+        dibujarEstadoResultado(contentPreguntas,ejercicio);
+        cargarEjercicio(ejercicio);
+    };
+    var VerEjercicioImagenes=function(index,ejercicio) {
+        console.log("ejercicio imagenes");
+
+        var total=preguntas[index].length-1;
+        var contentPreguntas = document.getElementById("contentPreguntas");
+
+        var indicaciones='<div class="row" style="margin-bottom: 9px"><strong>';
+                            indicaciones+= preguntas[index][0].indicacion;
+          indicaciones+='</strong></div>';
+
+        contentPreguntas.insertAdjacentHTML("beforeend",indicaciones);
+
+        var cardsContainer='<div id="cadrsContainer" class="card-columns"></div>';
+        contentPreguntas.insertAdjacentHTML("beforeend",cardsContainer);
+
+        for(var i=0;i<=total;i++)
+         {
+            //e12_txt1
+            var caja="e" + preguntas[index][i].ejercicio + "_txt" + (i +1);
+
+            var html='<div class="card">';
+                    html+='<img class="card-img-top" src="assets/img/'+preguntas[index][i].img+'" alt="Card image cap">';
+                    html+='<div class="card-body">';
+                        //html+='<h5 class="card-title">Card title that wraps to a new line</h5>';
+                            html+='<div class="row card-text">';
+                                html+='<div class="col-10">';
+                                    html+='<div class="row justify-content-center">'
+                                        html+='<textarea id="'+ caja +'" ejercicio="'+ preguntas[index][i].ejercicio+'" onblur="Visor.GuardarEscribir(this);" placeholder="Escribe tu respuesta" style="width:100%;border:none;" class="txtrespuestas"></textarea>';
+                                    html+='</div>';
+                                html+='</div>';
+                                html+='<div class="col-2 justify-content-center">';
+                                    html+='<div class="row justify-content-center">';
+                                        html+='<span  id="bien_'+ caja +'" onclick="Visor.CalificarPregunta(this,'+ ejercicio +',&#39'+caja+'&#39)" style="color: gray;font-size: 20px;margin-bottom: 7px;" class="fa fa-check" aria-hidden="true"></span>';
+                                    html+='</div>';
+                                    html+='<div class="row justify-content-center">';
+                                        html+='<span id="mal_'+caja+'" onclick="Visor.CalificarPregunta(this,'+ ejercicio + ',&#39'+caja+'&#39)" style="color: gray;font-size: 20px;" class="fa fa-exclamation" aria-hidden="true"></span>';
+                                    html+='</div>';
+                                html+='</div>';
+                            html+='</div>';
+                    html+='</div>';
+                html+='</div>';
+            cadrsContainer.insertAdjacentHTML("beforeend",html);
+         }
+
+        //Carga las respuestas de las preguntas
+        //var message = ["INVALID","ModusEcho","dibujarEjercicios",[ejercicio]];
+        //window.webkit.messageHandlers.cordova.postMessage(message);
+        dibujarEstadoResultado(contentPreguntas,ejercicio);
+        cargarEjercicio(ejercicio);
+    };
+    var VerEjercicioPreguntas=function(index,ejercicio) {
+         var total=preguntas[index].length-1;
+         var contentPreguntas = document.getElementById("contentPreguntas");
+
+         for(var i=0;i<=total;i++)
+         {
+            var html='<div>';
+                    if(i==0)
+                    {
+                        //Imprime las indicaciones solo la primera vez
+                        html+='<div class="row" style="margin-bottom: 9px"><strong>';
+                            html+= preguntas[index][i].indicacion;
+                        html+='</strong></div>';
+                    }
+                    //e12_txt1
+                    var caja="e" + preguntas[index][i].ejercicio + "_txt" + (i +1);
+
+                    html+='<div class="row"><strong>';
+                        html+= (i+1) + '.-' + preguntas[index][i].pregunta;
+                    html+='</strong></div>';
+                    html+='<div class="row">';
+                        html+='<div class="col-10">';
+                            html+='<div class="row justify-content-center">'
+                                html+='<textarea id="'+ caja +'" ejercicio="'+ preguntas[index][i].ejercicio+'" onblur="Visor.GuardarEscribir(this);" placeholder="Escribe tu respuesta" style="width:100%;border:none;" class="txtrespuestas"></textarea>';
+                            html+='</div>';
+                        html+='</div>';
+                        html+='<div class="col-2 justify-content-center">';
+                                html+='<div class="row justify-content-center">';
+                                    html+='<span  id="bien_'+ caja +'" onclick="Visor.CalificarPregunta(this,'+ ejercicio +',&#39'+caja+'&#39)" style="color: gray;font-size: 20px;margin-bottom: 7px;" class="fa fa-check" aria-hidden="true"></span>';
+                                html+='</div>';
+                                 html+='<div class="row justify-content-center">';
+                                    html+='<span id="mal_'+caja+'" onclick="Visor.CalificarPregunta(this,'+ ejercicio + ',&#39'+caja+'&#39)" style="color: gray;font-size: 20px;" class="fa fa-exclamation" aria-hidden="true"></span>';
+                                html+='</div>';
+                            html+='</div>';
+                    html+='</div>';
+            html+='</div>';
+
+            contentPreguntas.insertAdjacentHTML("beforeend",html);
+         }
+
+         //Carga las respuestas de las preguntas
+         //var message = ["INVALID","ModusEcho","dibujarEjercicios",[ejercicio]];
+         //window.webkit.messageHandlers.cordova.postMessage(message);
+         dibujarEstadoResultado(contentPreguntas,ejercicio);
+         cargarEjercicio(ejercicio);
+    };
+    var dibujarEstadoResultado=function(contentPreguntas,ejercicio){
+           var estado= '<div class="row" style="padding-top: 34px;">';
+                                estado+='<div class="col-sm">';
+                                    estado+='<div class="row justify-content-center">'
+
+                                    estado+='</div>';
+                                estado+='</div>';
+                                estado+='<div class="col-sm" id="sigueIntentando" style="border-style: solid none none none;border-color: black;color: black;" onclick="Visor.colorResultado(this,'+ejercicio+')">';
+                                    estado+='<div class="row justify-content-center" style="padding-top: 9px;padding-right: 11px;">'
+                                        estado+= Visor.SeguiIntentando;
+                                    estado+='</div>';
+                                estado+='</div>';
+                                estado+='<div class="col-sm" id="buenTrabajo" style="border-style: solid solid none solid;border-color: black;color: black;" onclick="Visor.colorResultado(this,'+ejercicio+')">';
+                                    estado+='<div class="row justify-content-center" style="padding-top: 9px;">'
+                                        estado+= Visor.BuenTrabajo;
+                                    estado+='</div>';
+                                estado+='</div>';
+                                estado+='<div class="col-sm" id="excelente" style="border-style: solid none none none;border-color: black;color: black;" onclick="Visor.colorResultado(this,'+ejercicio+')">';
+                                    estado+='<div class="row justify-content-center" style="padding-top: 9px;padding-left: 11px;">'
+                                        estado+= Visor.Excelente;
+                                    estado+='</div>';
+                                estado+='</div>';
+                                estado+='<div class="col-sm">';
+                                    estado+='<div class="row justify-content-center">'
+
+                                    estado+='</div>';
+                                estado+='</div>';
+                        estado+='</div>';
+        contentPreguntas.insertAdjacentHTML("beforeend",estado);
+
+        cargarResultado(ejercicio);
+    };
+    var cargarResultado= function(numEjercicio){
+        db.resultado.where({ejercicio: numEjercicio.toString(),libroid: Visor.idLibro}).each(function(item) {
+
+            document.getElementById(item.estado).style.borderColor="#28a745";
+            document.getElementById(item.estado).style.color="#28a745";
+
+            if(item.estado==="sigueIntentando") {
+                document.getElementById("sigueIntentando").style.borderStyle="solid solid none none";
+                document.getElementById("buenTrabajo").style.borderStyle="solid solid none none";
+            }
+            else if(item.estado==="buenTrabajo") {
+                document.getElementById("buenTrabajo").style.borderStyle="solid solid none solid";
+            }
+            else if(item.estado==="excelente") {
+                document.getElementById("excelente").style.borderStyle="solid none none solid";
+                document.getElementById("buenTrabajo").style.borderStyle="solid none none solid";
+            }
+
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });
+    };
+    var colorResultado= function(element,numEjercicio){
+        if(candadoCerrado==true) return;
+
+        var index=  Visor.idLibro + "_" + "e" + numEjercicio;
+        console.log(index);
+
+        db.resultado.put({
+            elemento: index,
+            libroid: Visor.idLibro,
+            ejercicio: numEjercicio.toString(),
+            estado: element.id }).then(function(){
+                console.log("Resultado guardado");
+        });
+
+        if(element.id==="sigueIntentando")
+        {
+            element.style.borderColor = element.style.borderColor === "black" ? "#28a745" : "black";
+            element.style.color       = element.style.color === "black" ? "#28a745" : "black";
+            element.style.borderStyle =  "solid solid none none";
+
+            document.getElementById("buenTrabajo").style.borderColor="black";
+            document.getElementById("buenTrabajo").style.color="black";
+            document.getElementById("buenTrabajo").style.borderStyle="solid solid none none";
+
+            document.getElementById("excelente").style.borderColor="black";
+            document.getElementById("excelente").style.color="black";
+            document.getElementById("excelente").style.borderStyle="solid none none none";
+        }
+        else if(element.id==="buenTrabajo")
+        {
+            element.style.borderColor= element.style.borderColor === "black" ? "#28a745" : "black";
+            element.style.color      = element.style.color === "black" ? "#28a745" : "black";
+            element.style.borderStyle = "solid solid none solid";
+
+            document.getElementById("sigueIntentando").style.borderColor="black";
+            document.getElementById("sigueIntentando").style.color="black";
+            document.getElementById("sigueIntentando").style.borderStyle="solid none none none";
+
+            document.getElementById("excelente").style.borderColor="black";
+            document.getElementById("excelente").style.color="black";
+            document.getElementById("excelente").style.borderStyle="solid none none none";
+        }
+        else if(element.id==="excelente")
+        {
+            element.style.borderColor= element.style.borderColor === "black" ? "#28a745" : "black";
+            element.style.color      = element.style.color === "black" ? "#28a745" : "black";
+            element.style.borderStyle = "solid none none solid";
+
+            document.getElementById("sigueIntentando").style.borderColor="black";
+            document.getElementById("sigueIntentando").style.color="black";
+            document.getElementById("sigueIntentando").style.borderStyle="solid none none none";
+
+            document.getElementById("buenTrabajo").style.borderColor="black";
+            document.getElementById("buenTrabajo").style.color="black";
+            document.getElementById("buenTrabajo").style.borderStyle="solid none none solid";
+        }
+
+    };
+    //Capitulo,Leccion,Ejercicio
+    var cargarEjercicio=function(numEjercicio) {
+        console.log("cargar ejercicio");
+        var PaginaActual=document.getElementById('goBtn').value;
+
+        db.escribir.where({ ejercicio: numEjercicio.toString(),libroid: Visor.idLibro }).each(function(caja) {
+            //console.log("Ejercicio" , caja);
+            console.log("cargando");
+            if(Visor.Preguntas.length===0) {
+                document.getElementById('iframe'+PaginaActual).contentWindow.document.getElementById(caja.elemento).value=caja.data;
+            }
+            else {
+
+                document.getElementById(caja.elemento).value=caja.data;
+
+                // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+                if(caja.estado != 2)
+                {
+                    if(candadoCerrado===true)
+                        document.getElementById(caja.elemento).readOnly=true;
+
+                    if(caja.estado === 1) {
+                        document.getElementById('bien_' + caja.elemento).style.color='green';
+                    }
+                    else if(caja.estado === 0){
+                        document.getElementById('mal_' + caja.elemento).style.color='orange';
+                    }
+                }
+            }
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });
+
+         //var message = ["INVALID","ModusEcho","dibujarEjercicios",[ejercicio]];
+         //window.webkit.messageHandlers.cordova.postMessage(message);
+    };
+    var cargarEjercicioRayar=function(numCapitulo,numLeccion,numEjercicio) {
+        console.log("carjar ejercicio rayar");
+
+        db.escribir.where({ejercicio: numEjercicio.toString(),libroid: Visor.idLibro,capitulo:numCapitulo,leccion:numLeccion}).each(function(canvas) {
+            console.log("Ejercicio" , canvas);
+
+            ActivarRayadoEjercicio(canvas.elemento,JSON.parse(canvas.data));
+            //document.getElementById(caja.elemento).value=caja.data;
+        }).catch(function(error) {
+            console.error(error.stack || error);
+        });
+
+         //var message = ["INVALID","ModusEcho","dibujarEjercicios",[ejercicio]];
+         //window.webkit.messageHandlers.cordova.postMessage(message);
+    };
+    var activarCandados=function(TCandado){
+         // 1=Respuestas 2=Calificar
+        if(TCandado==1)
+        {
+            validarCandado="Respuestas";
+            activarRespuestas();
+        }
+        else if(TCandado==2)
+        {
+            validarCandado="Calificar";
+            passwordMaestro();
+        }
+    };
+    var activarRespuestas=function(){
+        // Si el candado esta abierto se cierra
+        if(candadoRespuestas==false) {
+            var candado=document.getElementById("respuestasCandado");
+            candado.classList.remove('fa','fa-pencil-square');
+            candado.classList.add('fa','fa-pencil-square-o');
+
+            candadoRespuestas=true;
+            return;
+        }
+
+        document.getElementById("txtpassword").value="";
+        document.getElementById("btnPassword").click();
+        setTimeout(function (){
+            document.getElementById("txtpassword").focus();
+         // validarPassword("Xxv");
+        }, 500);
+    };
+    var passwordMaestro=function(){
+        // Si el candado esta abierto se cierra
+        if(candadoCerrado==false) {
+            try {
+            var candado=document.getElementById("candado");
+            candado.classList.remove('fa','fa-unlock-alt');
+            candado.classList.add('fa','fa-lock');
+            }
+            catch(err) {
+                console.log(err);
+            }
+
+            candadoCerrado=true;
+            app.cambiarCandado("cerrar");
+            return;
+        }
+
+        document.getElementById("txtpassword").value="";
+        document.getElementById("btnPassword").click();
+        setTimeout(function (){
+            document.getElementById("txtpassword").focus();
+          //  validarPassword("Xxv");
+        }, 500);
+
+        
+    };
+ /*  var validarPassword=function(e){
+
+        if(document.getElementById("txtpassword").value===password)
+        {
+            if(validarCandado=="Calificar")
+            {
+                if(candadoRespuestas==false)
+                    activarRespuestas();
+               try {
+                var candado=document.getElementById("candado");
+                candado.classList.remove('fa','fa-lock');
+                candado.classList.add('fa','fa-unlock-alt');
+                }
+                catch(err) {
+                    console.log(err);
+                }
+
+
+                document.getElementById("btnCerraPassword").click();
+
+                document.getElementById("txtpassword").value="";
+                candadoCerrado=false;
+            }
+            else if(validarCandado="Respuestas")
+            {
+                if(candadoCerrado==false)
+                    passwordMaestro();
+
+                var candado=document.getElementById("respuestasCandado");
+                candado.classList.remove('fa','fa-pencil-square-o');
+                candado.classList.add('fa','fa-pencil-square');
+
+
+                var respuestas = document.querySelectorAll(".txtrespuestas");
+                for (var i = 0; i < respuestas.length; i++) {
+                  respuestas[i].readOnly=false;
+                  respuestas[i].disabled=false;
+                }
+
+                document.getElementById("btnCerraPassword").click();
+
+                document.getElementById("txtpassword").value="";
+                candadoRespuestas=false;
+            }
+        }
+    };*/
+    var validarPassword=function(e){
+
+
+        if(document.getElementById("txtpassword").value===password)
+        {
+            if(validarCandado=="Calificar")
+            {
+                if(candadoRespuestas==false)
+                    activarRespuestas();
+                try {
+                    var candado=document.getElementById("candado");
+                    candado.classList.remove('fa','fa-lock');
+                    candado.classList.add('fa','fa-unlock-alt');
+                }
+                catch(err) {
+                    console.log(err);
+                }
+
+                var respuestas = document.querySelectorAll(".txtrespuestas");
+
+                for (var i = 0; i < respuestas.length; i++) {
+                  respuestas[i].readOnly=true;
+                  //respuestas[i].disabled=true;
+                }
+
+                //document.getElementById("btnCerraPassword").click();
+
+                //document.getElementById("txtpassword").value="";
+            setTimeout(function (){
+              document.getElementById("btnCerraPassword").click();
+            }, 500);
+                candadoCerrado=false;
+
+              //  var message = ["INVALID","ModusEcho","cambiarCandado",["abrir"]];
+              //  window.webkit.messageHandlers.cordova.postMessage(message);
+              app.cambiarCandado("abrir");
+            }
+            else if(validarCandado="Respuestas")
+            {
+                if(candadoCerrado==false)
+                    passwordMaestro();
+
+                var candado=document.getElementById("respuestasCandado");
+                candado.classList.remove('fa','fa-pencil-square-o');
+                candado.classList.add('fa','fa-pencil-square');
+
+
+                var respuestas = document.querySelectorAll(".txtrespuestas");
+
+                for (var i = 0; i < respuestas.length; i++) {
+                  respuestas[i].readOnly=false;
+                  //respuestas[i].disabled=false;
+                }
+
+                document.getElementById("btnCerraPassword").click();
+
+                document.getElementById("txtpassword").value="";
+                candadoRespuestas=false;
+            }
+        }
+    };
+    var cerrarEjercicio=function(){
+        console.log("cerrando ejercicio");
+        app.cerrarEjercicio();
+       // var message = ["INVALID","ModusEcho","CerrarEjercicios",[""]];
+        //window.webkit.messageHandlers.cordova.postMessage(message);
+    };
+    var CalificarPregunta=function(element,ejercicio,pregunta){
+        /*console.log(element);
+        console.log(element.style.color);
+        console.log(ejercicio);
+        console.log(pregunta);*/
+
+       if(candadoCerrado==true) return;
+
+       var txtpregunta=document.getElementById(pregunta);
+       console.log(txtpregunta);
+
+       if(element.style.color && element.id=="bien_" + pregunta && element.style.color != "green")
+       {
+            console.log("bien");
+            element.style.color="green";
+            document.getElementById("mal_" + pregunta).style.color="gray";
+
+            // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+           //app.calificarEjercicios(1,ejercicio,txtpregunta.id);
+            db.escribir.update(txtpregunta.id, {estado: 1 }).then(function (updated) {
+              if (updated)
+                console.log ("Friend number 2 was renamed to Number 2");
+              else
+                console.log ("Nothing was updated - there were no friend with primary key: 2");
+            });
+       }
+       else if(element.style.color && element.id=="mal_" + pregunta  && element.style.color != "orange")
+       {
+            console.log("mal");
+            element.style.color="orange";
+            document.getElementById("bien_" + pregunta).style.color="gray";
+
+            // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+            //app.calificarEjercicios(0,ejercicio,txtpregunta.id);
+            db.escribir.update(txtpregunta.id, {estado: 0 }).then(function (updated) {
+              if (updated)
+                console.log ("Friend number 2 was renamed to Number 2");
+              else
+                console.log ("Nothing was updated - there were no friend with primary key: 2");
+            });
+       }
+
+    };
+
+var CalificarPreguntaRelacionar=function(element,ejercicio,pregunta){
+
+       if(candadoCerrado==true) return;
+
+       var txtpregunta=document.getElementById(pregunta);
+
+       txtpregunta.getAttribute("name")
+       var divsplit=txtpregunta.getAttribute("name").split('_', 4);
+       var txtpregunta1=document.getElementById(divsplit[1]+"_"+divsplit[2]);
+       txtpregunta.setAttribute("calificado","SI");
+       txtpregunta1.setAttribute("calificado","SI");
+
+
+       if(element.style.color && element.id=="bien_" + pregunta && element.style.color != "green")
+       {
+
+            element.style.color="green";
+            document.getElementById("mal_" + pregunta).style.color="gray";
+
+            // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+            //var message = ["INVALID","ModusEcho","calificarEjercicios",[1,ejercicio,txtpregunta.id]];
+            //window.webkit.messageHandlers.cordova.postMessage(message);
+
+            db.escribir.update(txtpregunta.id, {estado: 1 }).then(function (updated) {
+              if (updated)
+                console.log ("Friend number 2 was renamed to Number 2");
+              else
+                console.log ("Nothing was updated - there were no friend with primary key: 2");
+            });
+       }
+       else if(element.style.color && element.id=="mal_" + pregunta  && element.style.color != "orange")
+       {
+            console.log("mal");
+            element.style.color="orange";
+            document.getElementById("bien_" + pregunta).style.color="gray";
+
+
+            //var message = ["INVALID","ModusEcho","calificarEjercicios",[0,ejercicio,txtpregunta.id]];
+            //window.webkit.messageHandlers.cordova.postMessage(message);
+            // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+            db.escribir.update(txtpregunta.id, {estado: 0 }).then(function (updated) {
+              if (updated)
+                console.log ("Friend number 2 was renamed to Number 2");
+              else
+                console.log ("Nothing was updated - there were no friend with primary key: 2");
+            });
+       }
+
+    };
+var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
+  
+    var iddivcajatexto=element.parentNode.id.split('_',2);
+    if(element.getAttribute("tipo")=="r" || element.getAttribute("tipo")=="e" )
+    var txtpregunta=document.getElementById("iframe"+iddivcajatexto[0].substring(1)).contentWindow.document.getElementById(pregunta);
+    else
+    var txtpregunta=document.getElementById("iframe"+iddivcajatexto[1]).contentWindow.document.getElementById(pregunta);  
+    //tipo 1 = cuadriculas tipo 2=preguntas abiertas
+    if(candadoCerrado==true){
+        if(element.getAttribute("estado")==null || element.getAttribute("estado")=="2")
+        {
+            //element.readOnly=false 
+            element.readOnly=false;
+            element.focus();
+            //setTimeout(function(){ element.focus(); }, 300);
+        }
+        return;
+    }
+    else{
+        element.readOnly=true;
+        //setTimeout(function(){ element.readOnly=true }, 2000);
+    }
+            if(tipo==1){
+                if(element.style.backgroundColor == "" || element.style.backgroundColor == "transparent" ){
+                    
+                    // COLOR VERDE BIEN
+                    var txtpregunta=document.getElementById("iframe"+iddivcajatexto[1]).contentWindow.document.getElementById(pregunta);
+                    txtpregunta.setAttribute("estado","1");
+                    txtpregunta.style.backgroundColor="rgb(42, 255, 42)";
+                    // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+                    db.escribir.update(txtpregunta.id, {estado: 1 }).then(function (updated) {});
+                 }
+                 else if(element.style.backgroundColor == "rgb(42, 255, 42)"){
+                    // COLOR ROJO MAL
+                    var txtpregunta=document.getElementById("iframe"+iddivcajatexto[1]).contentWindow.document.getElementById(pregunta);
+                    txtpregunta.style.backgroundColor="red";
+                    txtpregunta.setAttribute("estado","0");
+                    // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+                    db.escribir.update(txtpregunta.id, {estado: 0 }).then(function (updated) {});
+                 }
+                 else{
+                    // SIN COLOR 
+                  var txtpregunta=document.getElementById("iframe"+iddivcajatexto[1]).contentWindow.document.getElementById(pregunta);
+                  txtpregunta.style.backgroundColor="";
+                  txtpregunta.setAttribute("estado","2");
+                  db.escribir.update(txtpregunta.id, {estado: 2 }).then(function (updated) {});
+                  }
+            }
+    //es de tipo paloma
+            else{
+               
+             var idsplit=pregunta.split('_', 3);
+             var size =TamañoCaja(idsplit);
+             if(idsplit[2]=="s11" || idsplit[2]=="s12"){
+                var posicion=getComputedStyle(element);
+                var Paginaclick= document.getElementById("iframe"+iddivcajatexto[0].substring(1)).contentWindow.document.getElementById(element.parentNode.id);
+                var elemento= document.getElementById("iframe"+iddivcajatexto[0].substring(1)).contentWindow.document.getElementById(pregunta+"_paloma");
+                }
+             else{
+                var posicion=getComputedStyle(element.parentNode);
+                var Paginaclick= document.getElementById("iframe"+iddivcajatexto[1]).contentWindow.document.getElementById(element.parentNode.parentNode.id);
+                var elemento= document.getElementById("iframe"+iddivcajatexto[1]).contentWindow.document.getElementById(pregunta+"_paloma");
+
+                }
+            
+             if(!elemento){
+                if(element.getAttribute("tipo")=="e")
+                    var dibujarpaloma='<div id="'+pregunta+'_paloma" style="left:'+(parseInt(posicion.left.replace(/px/,""))+size)+"px"+';bottom:'+(parseInt(posicion.bottom.replace(/px/,""))+70)+"px"+'"></div>';
+                else
+                  var dibujarpaloma='<div id="'+pregunta+'_paloma" style="left:'+(parseInt(posicion.left.replace(/px/,""))+size)+"px"+';bottom:'+posicion.bottom+'"></div>';
+                    Paginaclick.insertAdjacentHTML("beforeend",dibujarpaloma);
+                    if(idsplit[2]=="s11" || idsplit[2]=="s12")
+                    elemento= document.getElementById("iframe"+iddivcajatexto[0].substring(1)).contentWindow.document.getElementById(pregunta+"_paloma");
+                    else
+                    elemento= document.getElementById("iframe"+iddivcajatexto[1]).contentWindow.document.getElementById(pregunta+"_paloma");
+                }
+
+                if(elemento.classList[0] == undefined){
+                    elemento.classList.add('check_bien');
+                    addstyleinline(elemento,1);
+                   // "background: url(assets/Checkmark.svg);width: 70px;height: 69px;position: absolute;background-repeat: no-repeat;background-size: contain;"
+                    // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+                    txtpregunta.setAttribute("estado","1");
+                    db.escribir.update(txtpregunta.id, {estado: 1 }).then(function (updated) {});    
+                 }
+                 else if(elemento.classList[0] == "check_bien"){
+                    elemento.classList.remove('check_bien');
+                    elemento.classList.add('check_mal');
+                    addstyleinline(elemento,0);
+                    txtpregunta.setAttribute("estado","0");
+                    // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+                    db.escribir.update(txtpregunta.id, {estado: 0 }).then(function (updated) {});
+                 }
+                 else {
+                    elemento.classList.remove('check_mal');
+                    addstyleinline(elemento,2);
+                    txtpregunta.setAttribute("estado","2");
+                    db.escribir.update(txtpregunta.id, {estado: 2 }).then(function (updated) {});
+                 }
+               
+            }
+
+    };
+
+    var EjercicioRadio=function(elemento){
+     //   var totalCalificar=document.getElementById("page135").querySelector("[ejercicio='"+elemento.getAttribute("ejercicio")+"']");
+   //  var divseleccionado=document.getElementById("page135").querySelector("[seleccionado='true']");
+  // console.log(document.documentElement.parentNode)
+  console.log("elemento ejercicio radio---------")
+   console.log(elemento.children[0])
+   var divseleccionado=elemento.parentNode.querySelector("[seleccionado='true']");
+
+        elemento.children[0].style.textDecoration="inherit";
+        elemento.children[0].style.textDecorationColor="inherit";
+        elemento.children[0].style.color="inherit";
+
+         if(divseleccionado){
+            divseleccionado.style.color="black"
+            divseleccionado.style.textDecoration="none";
+            divseleccionado.setAttribute("seleccionado","false");
+            elemento.style.color="red"; 
+            elemento.style.textDecoration="underline";
+            elemento.style.textDecorationColor="black";
+            elemento.setAttribute("seleccionado","true");
+           // GuardarRadio(document.getElementById("page135").querySelector("[id='radio_72_135']"))
+           GuardarRadio(elemento.parentNode)
+         }
+         else{
+
+            elemento.style.color="red";
+            elemento.setAttribute("seleccionado","true");
+            elemento.style.textDecoration="underline";
+            elemento.style.textDecorationColor="black";
+          //  GuardarRadio(document.getElementById("page135").querySelector("[id='radio_72_135']"))
+           GuardarRadio(elemento.parentNode)
+        }
+      
+    };
+
+    var TamañoCaja=function(tipo){
+        switch (tipo[2]) {
+                case "s1": 
+                   var size=354;
+                    break;
+                case "s2": 
+                   var size=484;
+                    break;
+                case "s3": 
+                   var size=234;
+                    break;
+                case "s4": 
+                   var size=256;
+                    break;
+                case "s5": 
+                   var size=62;
+                    break;
+                case "s8": 
+                   var size=234;
+                    break;
+                case "s10": 
+                   var size=62;
+                    break;
+                case "s11": 
+                   var size=-70;
+                    break;
+                case "s12": 
+                   var size=64;
+                    break;
+            }
+            return size;
+    };
+    var addstyleinline=function(elemento,estado){
+        // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+            switch (estado) {
+                case 0: 
+                elemento.style.background="url(assets/bad.svg)";
+                break;
+                case 1: 
+                elemento.style.background="url(assets/Checkmark.svg)";
+                break;
+                case 2: 
+                elemento.style.background="none";
+                break;
+            }
+            elemento.style.width="70px";
+            elemento.style.height="69px";
+            elemento.style.position="absolute";
+            elemento.style.backgroundRepeat="no-repeat";
+            elemento.style.backgroundSize="contain";
+
+    };
+    var dibujarCargadores=function(Pagina){
+      /*  var div = document.getElementById('page'+Pagina);
+        div.insertAdjacentHTML("afterbegin",'<span id="cargadorResfresh'+Pagina+'" class="fa fa-refresh cargadoRefresh-tablet cargadoRefresh-cel" style="display:none"></span>');
+
+        //div.insertAdjacentHTML("afterbegin",'<span id="cargadorTexto'+Pagina+'" class="fa fa-repeat fa-rotate-180 cargadorTexto-tablet cargadorTexto-cel"></span>');
+
+        document.getElementById("cargadorResfresh"+Pagina).addEventListener("click",function(){
+            var data = {page: Pagina}
+            handlePageChange(data);
+        })
+
+        /*document.getElementById("cargadorTexto"+Pagina).addEventListener("click",function(){
+            console.log("refrescar");
+            location.replace(location.origin+location.pathname+"?page="+Pagina);
+            //location.reload();
+        })
+    */
+    };
+     /*************************************************/
+    /**
+     * Main setup function that runs on load
+     */
+    IDRViewer.on('ready', function (data) {
+        /*Genera base de datos*/
+        db = new Dexie("Libro"+Visor.idLibro);
+        db.version(1).stores({
+              escribir: 'elemento,libroid,ejercicio,data,estado',
+              resultado: 'elemento,libroid,ejercicio,estado' // 1=Siguiente intentnado,2=Buen trabajo,3= Excelente
+        });
+
+
+
+        /**********************/
+
+        // Grab buttons
+        Button.go = d('goBtn');
+        Button.zoom = d('zoomBtn');
+        Button.fullscreen = d('btnFullScreen');
+        Button.prev = d('btnPrev');
+        Button.next = d('btnNext');
+        Button.move = d('btnMove');
+        Button.select = d('btnSelect');
+        Button.zoomIn = d('btnZoomIn');
+        Button.zoomOut = d('btnZoomOut');
+
+        Button.prev.className = data.isFirstPage ? 'disabled btn' : 'btn';
+        Button.next.className = data.isLastPage ? 'disabled btn' : 'btn';
+
+        // Set button actions
+        Button.go.onchange = handleGoBtn;
+        Button.zoom.onchange = handleZoomBtn;
+        Button.prev.onclick = function (e) { IDRViewer.prev(); e.preventDefault(); };
+        Button.next.onclick = function (e) { IDRViewer.next(); e.preventDefault(); };
+        Button.move.onclick = function (e) { IDRViewer.setSelectMode(IDRViewer.SELECT_PAN); e.preventDefault(); };
+        Button.select.onclick = function (e) { IDRViewer.setSelectMode(IDRViewer.SELECT_SELECT); e.preventDefault(); };
+        Button.zoomIn.onclick = function (e) { IDRViewer.zoomIn(); e.preventDefault(); };
+        Button.zoomOut.onclick = function (e) { IDRViewer.zoomOut(); e.preventDefault(); };
+
+        document.onkeydown = function(e) {
+            switch (e.keyCode) {
+                case 33: // Page Up
+                case 37: // Left Arrow
+                    IDRViewer.prev();
+                    e.preventDefault();
+                    break;
+                case 34: // Page Down
+                case 39: // Right Arrow
+                    IDRViewer.next();
+                    e.preventDefault();
+                    break;
+                case 36: // Home
+                    IDRViewer.goToPage(1);
+                    e.preventDefault();
+                    break;
+                case 35: // End
+                    IDRViewer.goToPage(data.pagecount);
+                    e.preventDefault();
+                    break;
+            }
+        };
+
+        // Misc setup
+        document.title = data.title ? data.title : data.fileName;
+        updateSelectionButtons(data.selectMode);
+        pageLabels = data.pageLabels;
+
+        populateGoBtn(data.page, data.pagecount);
+
+        Sidebar.setup(data.page, data.pagecount, data.bounds, data.thumbnailType, data.bookmarks);
+        d('pgCount').innerHTML = getPageString(data.page, data.pagecount);
+
+        if (IDRViewer.isFullscreenEnabled()) {
+            Button.fullscreen.onclick = function () {
+                IDRViewer.toggleFullScreen();
+            };
+            IDRViewer.on('fullscreenchange', handleFullscreenChange);
+        } else {
+            Button.fullscreen.parentNode.removeChild(Button.fullscreen);
+        }
+
+        setupLayoutSwitching(data.pagecount, data.layout, data.availableLayouts, data.isMobile);
+        Button.zoom.value = IDRViewer.ZOOM_AUTO;
+
+        // Add event listeners
+        IDRViewer.on('selectchange', handleSelectionChange);
+        IDRViewer.on('pagechange', handlePageChange);
+        IDRViewer.on('zoomchange', handleZoomUpdate);
+        IDRViewer.on('pageload', function(data){
+            var inputText=null;
+                try{
+            //Busca todas los input dentro de la caja
+                 inputText = document.getElementById("iframe"+data.page).contentWindow.document.querySelectorAll("input[type=text],input[type=date],textarea,img,[tipo=r],[tipo=e],[tipo=radio],[tipo=sopa]");
+                }
+                catch(err){
+                    console.log(err);
+                }
+                try{
+                    Visor.cargarEjercicioRelacionarDentroLibro(data.page);
+                    Visor.CargarEncerrarCirculo(data.page);
+                    Visor.CargarSopaLetras(data.page);
+                    Visor.CargarRadio(data.page);
+                }
+                catch(err){
+                    console.log(err);
+                }
+
+                if(inputText.length>0)
+                {
+                  loadData().then(function (dataDB) {
+                    for (var i = 0; i < inputText.length; i++) {
+                         inputText[i].setAttribute("pagina",data.page);
+
+                         if(inputText[i].nodeName=="IMG"){
+                            var DateTime= new Date().getTime();
+                            inputText[i].src=data.page + "/" + inputText[i].id + ".png?t="+ DateTime;
+                         }
+
+                         if(inputText[i].getAttribute("type")=="date"){
+                            const result = dataDB.filter(item => item.elemento == inputText[i].id && item.libroid==Visor.idLibro);
+
+                            result.forEach(function(caja){
+                                var inputcaja=document.getElementById("iframe"+data.page).contentWindow.document.getElementById(caja.elemento);
+                                if(inputcaja){
+                                    inputcaja.value=caja.data;
+                                }
+                            });
+                         }
+                         else
+                         {
+                           const result = dataDB.filter(item => item.elemento ==inputText[i].id && item.libroid==Visor.idLibro);
+
+                           result.forEach(function(caja){
+                            var inputcaja=document.getElementById("iframe"+data.page).contentWindow.document.getElementById(caja.elemento);
+                            if(inputcaja && !(inputcaja.getAttribute("tipo")=="radio" || inputcaja.getAttribute("tipo")=="sopa" )){
+
+                             inputcaja.value=caja.data;
+                             inputcaja.setAttribute("estado",caja.estado.toString())
+                             var tipocalificar=inputcaja.ontouchstart.toString().split(',',5)[3].substring(0,1);
+                             if (tipocalificar=="2" || inputcaja.getAttribute("tipo")=="r"  )
+                             {
+                                var idsplit=caja.elemento.split('_', 3);
+                                if(idsplit[2]=="s11" || idsplit[2]=="s12")
+                                   var posicion=getComputedStyle(inputcaja);
+                                else
+                                   var posicion=getComputedStyle(inputcaja.parentNode);
+
+                               var Paginaclick= document.getElementById("iframe"+data.page).contentWindow.document.getElementById("p"+data.page);
+                               var size =TamañoCaja(idsplit);
+                               var elemento=document.getElementById("iframe"+data.page).contentWindow.document.getElementById(caja.elemento+"_paloma");
+                            if(!elemento){
+                                if (caja.tipo=="circulo")
+                                    var dibujarpaloma='<div id="'+caja.elemento+'_paloma" style="left:'+(parseInt(posicion.left.replace(/px/,""))+size)+"px"+';bottom:'+(parseInt(posicion.bottom.replace(/px/,""))+70)+"px"+'"></div>';
+                                else
+                                    var dibujarpaloma='<div id="'+caja.elemento+'_paloma" style="left:'+(parseInt(posicion.left.replace(/px/,""))+size)+"px"+';bottom:'+posicion.bottom+'"></div>';
+                                Paginaclick.insertAdjacentHTML("beforeend",dibujarpaloma);
+                                elemento= document.getElementById("iframe"+data.page).contentWindow.document.getElementById(caja.elemento+"_paloma");
+                            }
+
+                                // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+                            if(caja.estado != 2)
+                            {
+                                // if(candadoCerrado===true)
+                                document.getElementById("iframe"+data.page).contentWindow.document.getElementById(caja.elemento).readOnly=true;
+
+                                if(caja.estado === 1) {
+                                    elemento.classList.add('check_bien');
+                                    addstyleinline(elemento,1);
+                                }
+                                else if(caja.estado === 0){
+                                    elemento.classList.add('check_mal');
+                                    addstyleinline(elemento,0);
+                                }
+                            }
+
+                            }
+
+                        else
+                        {
+                            // Estado pregunta 0=Incorrecta, 1= correcta, 2= Sin calificar
+                            if(caja.estado != 2){
+                          // if(candadoCerrado===true)
+                            document.getElementById("iframe"+data.page).contentWindow.document.getElementById(caja.elemento).readOnly=true;
+
+                                if(caja.estado === 1) {
+                                    //  elemento.classList.add('check_bien');
+                                    inputcaja.style.backgroundColor="rgb(42, 255, 42)";
+                                                
+                                }
+                                else if(caja.estado === 0){
+                                    //  elemento.classList.add('check_mal');
+                                    inputcaja.style.backgroundColor="red";
+                                }
+                            }
+                        }  
+                        }  
+
+                        });//Cierra ciclo foreach cajas de texto result.forEach(function(caja){
+                    }
+                } // Cierre de ciclo for
+
+            }); //Cierra loadData  
+
+        }//Termina llave  if(inputText.length>0)
+
+        });
+
+        var themeToggle = false;
+        d('btnThemeToggle').addEventListener('click', function() {
+            ClassHelper.removeClass(document.body, "light-theme");
+            ClassHelper.removeClass(document.body, "dark-theme");
+            ClassHelper.addClass(document.body, themeToggle ? "light-theme" : "dark-theme");
+            themeToggle = !themeToggle;
+        });
+
+        var searchInput = d('searchInput');
+        searchInput.value = "Loading";
+        searchInput.disabled = "disabled";
+        searchInput.oninput = doSearch;
+        d('cbMatchCase').onclick = doSearch;
+        d('cbLimitResults').onclick = doSearch;
+
+        document.addEventListener('keydown', function(event) {
+            if (event.keyCode == 70 && (event.ctrlKey || event.metaKey)) {
+                Sidebar.openSidebar();
+                Sidebar.switchToSearch();
+                event.preventDefault();
+            }
+        });
+
+        for(var i=1;i<=IDRViewer.config.pagecount;i++){
+            dibujarCargadores(i);
+        }
+
+        /*~*/
+         /*****CODIGO AGREGADO****/
+       // var message = ["INVALID","ModusEcho","TotalHojas",[IDRViewer.config.pagecount]];
+        //window.webkit.messageHandlers.cordova.postMessage(message);
+        if (typeof app !== 'undefined') app.TotalHojas(IDRViewer.config.pagecount);
+        var data = {page: data.page}
+        handlePageChange(data);
+        /*************************/
+          
+
+    });
+    return {
+        ///////////Separador///////////////////
+        cerrarSideBar        : cerrarSideBar,
+        dibujarSeparador     : dibujarSeparador,
+        borrarSeparador      : borrarSeparador,
+        LstSeparadores       : LstSeparadores,
+        ////////////Indice/////////////////////
+        handleIndice         : handleIndice,
+        handleIndiceNative   : handleIndiceNative,
+        ////////////Notas///////////////////////
+        dibujarNota          : dibujarNota,
+        handleEliminarNota   : handleEliminarNota,
+        /////////////Rayado//////////////////////
+        ActivarRayado        : ActivarRayado,
+        dibujarRayado        : dibujarRayado,
+        DesactivarRayado     : DesactivarRayado,
+        handleColorRayado    : handleColorRayado,
+        handleUndo           : handleUndo,
+        handleClear          : handleClear,
+        handleTamanoLienzo   : handleTamanoLienzo,
+        dibujarMensajeRayado : dibujarMensajeRayado,
+        eliminarMensajeRayado: eliminarMensajeRayado,
+        /////////////Subrayado///////////////////
+        dibujarMarcatexto    : dibujarMarcatexto,
+        handletouchMarcador  : handletouchMarcador,
+        ActivarSubrayado     : ActivarSubrayado,
+        DesactivarSubrayado  : DesactivarSubrayado,
+        handleBorrarSubrayado: handleBorrarSubrayado,
+        handleColorSubRayado : handleColorSubRayado,
+        /////////////Foto////////////////////////
+        dibujarFoto          : dibujarFoto,
+        ////////////Ejercicios//////////////////
+        GuardarEscribir      : GuardarEscribir,
+        GuardarFecha         : GuardarFecha,
+        VerEjercicios        : VerEjercicios,
+        VerEjercicio         : VerEjercicio,
+        passwordMaestro      : passwordMaestro,
+        validarPassword      : validarPassword,
+        cerrarEjercicio      : cerrarEjercicio,
+        CalificarPregunta    : CalificarPregunta,
+        CalificarPregunta1    : CalificarPregunta1,
+        CalificarPreguntaRelacionar : CalificarPreguntaRelacionar,
+        activarRespuestas    : activarRespuestas,
+        activarCandados      : activarCandados,
+        TomarFoto            : TomarFoto,
+        mostrarFoto          : mostrarFoto,
+        myFunction           : myFunction,
+        myFunctionDentroLibro : myFunctionDentroLibro,
+        eliminarlinea        : eliminarlinea,
+        cargarEjercicio      : cargarEjercicio,
+        GuardarRelacionar    : GuardarRelacionar,
+        EliminarRelacionar   : EliminarRelacionar,
+        cargarEjercicioRelacionar    :  cargarEjercicioRelacionar,
+        cargarEjercicioRelacionarDentroLibro : cargarEjercicioRelacionarDentroLibro,
+        ActivarRayadoEjercicio : ActivarRayadoEjercicio,
+        GuardarRayadoEjercicio : GuardarRayadoEjercicio,
+        cargarEjercicioRayar : cargarEjercicioRayar,
+        colorResultado       : colorResultado,
+        playAudio            : playAudio,
+        playAudioPlayer      : playAudioPlayer,
+        stopAudio            : stopAudio,
+        restartAudio         : restartAudio,
+        playAudioPlayerAdvance5seconds : playAudioPlayerAdvance5seconds,
+        playAudioPlayerGoBack5seconds  : playAudioPlayerGoBack5seconds,
+        encerrarCirculoColor : encerrarCirculoColor,
+        CargarEncerrarCirculo : CargarEncerrarCirculo,
+        sopadeletras         : sopadeletras,
+        sopadeletrasMove         : sopadeletrasMove,
+        sopadeletrasEnd : sopadeletrasEnd,
+        CargarSopaLetras    : CargarSopaLetras,
+        EjercicioRadio       : EjercicioRadio,
+        CargarRadio : CargarRadio,
+        EliminarFoto : EliminarFoto,
+        LimpiarFoto : LimpiarFoto,  
+        loadDataFirestore : loadDataFirestore,
+        dbFirestore : dbFirestore,
+        saveDataFireStore : saveDataFireStore,
+        tokenUser : tokenUser,
+        cacharTokendesdeNativo  : cacharTokendesdeNativo
+
+    };
+})();
+</script>
+<style type="text/css">
+    #left {
+        transition-timing-function: ease;
+        transition-duration: 200ms;
+        top: 0px;
+        bottom: 0;
+        position: absolute;
+        overflow: hidden;
+        z-index: 999;
+        left: -350px;
+        width: 350px;
+    }
+    .light-theme #left {
+        border-right: 1px solid #7b8793;
+    }
+    .dark-theme #left {
+        border-right: 1px solid #000;
+    }
+    #left.open {
+        left: 0;
+    }
+    #left-controls {
+        height: 44px;
+        display: block;
+    }
+    #leftContent {
+        top: 45px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+        overflow-y: scroll;
+        background-color: #eee;
+        -webkit-overflow-scrolling: touch;
+    }
+    #btnOutlines {
+        display: none;
+    }
+    #left.hasBookmarks #btnOutlines {
+        display: inline;
+    }
+    #outlinePanel {
+        display: none;
+    }
+
+    #pgCount {
+        font-family: Arial,serif;
+        vertical-align: middle;
+        font-size: 15px;
+    }
+    #btnSelect, #btnZoomOut, #viewBtn {
+        margin-left: 20px;
+    }
+
+
+    #goBtn, #zoomBtn, #viewBtn {
+        height: 25px;
+    }
+    #goBtn {
+        width: 55px;
+    }
+    #viewBtn {
+        width: 105px;
+    }
+    #zoomBtn {
+        width: 95px;
+    }
+    .thumbnail {
+        cursor: pointer;
+        display: block;
+        padding: 8px 0;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .thumbnail img{
+        max-width: 160px;
+        border-radius: 5px;
+        border: 1px solid #bbb;
+    }
+    .currentPageThumbnail, .thumbnail:hover {
+        background-color: #ddd;
+    }
+    .currentPageThumbnail img, .thumbnail:hover img {
+        border: 1px solid #999;
+    }
+
+    #thumbnailPanel.visible, #outlinePanel.visible, #searchPanel.visible {
+        display: inline;
+    }
+    #thumbnailPanel.hidden, #outlinePanel.hidden, #searchPanel.hidden {
+        display: none;
+    }
+    #outlinePanel ul {
+        list-style-type: none;
+        padding: 0 5px;
+    }
+    #outlinePanel ul ul {
+        padding-left: 15px;
+        padding-right: 0;
+    }
+    #outlinePanel li {
+        color: #333;
+        padding: 2px;
+        font-family: Arial,serif;
+        font-size: 15px;
+    }
+    #outlinePanel li:hover {
+        background-color: #ddd;
+        cursor: pointer;
+    }
+    #searchPanel {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+    #searchPanel * {
+        color: #333;
+        margin: 5px;
+    }
+    #searchPanel #searchInput {
+        color: black;
+        border: 1px solid #666;
+        width: 288px;
+        display: block;
+        padding: 5px;
+        margin: 20px auto 10px;
+    }
+    #searchPanel .searchOption {
+        margin: 0 20px;
+        display: block;
+    }
+    #searchPanel hr {
+        margin-top: 18px;
+    }
+    #searchPanel #searchResultsCount {
+        text-align: center;
+        display: block;
+    }
+    #searchPanel .result {
+        text-decoration: none;
+        display: block;
+        word-wrap: break-word;
+    }
+    #searchPanel .result:hover {
+        background-color: #ddd;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .btn {
+        border: 0 none;
+        height: 30px;
+        padding: 0;
+        width: 30px;
+        background-color: transparent;
+        display: inline-block;
+        margin: 7px 5px 0;
+        vertical-align: top;
+        cursor: pointer;
+    }
+
+    .page {
+        box-shadow: none;
+    }
+
+    #controls {
+        height: 44px;
+        position: fixed;
+        text-align: center;
+        top: 0;
+        left: 0;
+        right: 0;
+        transition: 0.3s ease 0s;
+    }
+
+    #controls select {
+        margin-top: 10px;
+    }
+
+    #controls-left {
+        display: inline-block;
+        left: 0;
+        position: absolute;
+    }
+    #controls-center {
+        display: inline-block;
+    }
+    #controls-right {
+        display: inline-block;
+        right: 0;
+        position: absolute;
+    }
+
+    .light-theme #idrviewer {
+        background: #fff none repeat scroll 0 0;
+    }
+    .light-theme #controls,
+    .light-theme #left-controls {
+        background: #9eacba none repeat scroll 0 0;
+        border-bottom: 1px solid #7b8793;
+    }
+
+    .light-theme #pgCount,
+    .light-theme .btn {
+        color: white;
+        text-shadow: 0 0 1px #595959;
+    }
+    .light-theme .btn:hover {
+        opacity: 0.6;
+    }
+    .light-theme .btn.disabled {
+        opacity: 0.4;
+    }
+
+    .light-theme #goBtn,
+    .light-theme #zoomBtn,
+    .light-theme #viewBtn {
+        background-color: #9aa8b6;
+        color: white;
+        border: 1px solid #7b8793;
+    }
+
+    .dark-theme #idrviewer {
+        background: #fff none repeat scroll 0 0;
+    }
+    .dark-theme #controls,
+    .dark-theme #left-controls {
+        background: #444 none repeat scroll 0 0;
+        border-bottom: 1px solid #000;
+    }
+    .dark-theme #pgCount {
+        color: white;
+        opacity: 0.8;
+    }
+    .dark-theme .btn {
+        opacity: 0.7;
+        color: white;
+    }
+    .dark-theme .btn:hover {
+        opacity: 0.95;
+    }
+    .dark-theme .btn.disabled {
+        opacity: 0.2;
+    }
+
+    .dark-theme #goBtn,
+    .dark-theme #zoomBtn,
+    .dark-theme #viewBtn {
+        background-color: #656565;
+        color: white;
+        border: 1px solid #000;
+    }
+
+    #idrviewer {
+        top: 45px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+    }
+
+    .visible .spinner {
+        border: 6px solid #bbb;
+        border-top: 6px solid #3c9fe1;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+        /*Codigo Agregado*/
+      @media only screen and (min-width: 200px) {
+        /*Celular*/
+        .separador-cel{
+            position: absolute;
+            left: 0px;
+            top: 60px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            background: url('assets/favorito.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            z-index: 15;
+            /*background-color: red;*/
+            width: 3%;
+            height: 37px;
+            float: left;
+        }
+        .nota-cel{
+            position: absolute;
+            left: 0px;
+            top: 96px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            background: url('assets/nota.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            z-index: 15;
+            /*background-color: blue;*/
+            width: 6%;
+            height: 37px;
+            float: left;
+        }
+        .foto-cel{
+            position: absolute;
+            left: 0px;
+            top: 132px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            z-index: 15;
+            /*background-color: black;*/
+            background: url('assets/fotografia.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 6%;
+            height: 37px;
+            float: left;
+        }
+        .cargadoRefresh-cel{
+            position: absolute;
+            right: 0px;
+            top: 43%;
+            color: white;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            padding: 6px;
+            z-index: 1000;
+            background-color: #a626a6;
+            float: left;
+        }
+        .cargadorTexto-cel{
+            position: absolute;
+            right: 0px;
+            top: 50%;
+            color: white;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            padding: 5px;
+            z-index: 1000;
+            background-color: #a626a6;
+            float: left;
+        }
+        .verticaltext {
+            visibility: hidden;
+            position: absolute;
+            transform: rotate(-90deg);
+            transform-origin: right, top;
+            -ms-transform: rotate(-90deg);
+            -ms-transform-origin: right, top;
+            -webkit-transform: rotate(-90deg);
+            -webkit-transform-origin: right, top;
+            color: white;
+            z-index: 15;
+            top: 5px;
+            left: -5px;
+            font-size: 8px;
+        }
+        .mensajeTop-cel{
+            position: absolute;
+            left: -1000px;
+            top: 0px;
+            text-align: center;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            /*background: url('assets/favorito.svg');*/
+            background-repeat: no-repeat;
+            background-size: contain;
+            z-index: 15;
+            /*background-color: red;*/
+            -webkit-transition: left 1s; /* For Safari 3.1 to 6.0 */
+            transition: left 1s;
+            width: 100%;
+            height: 100%;
+            float: left;
+            font-size: 22em;
+            opacity: 0.2;
+            touch-action: none;
+        }
+        .mensajeBottom-cel{
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            /*background: url('assets/favorito.svg');*/
+            background-repeat: no-repeat;
+            background-size: contain;
+            z-index: 15;
+            /*background-color: red;*/
+            width: 3%;
+            height: 0px;
+            float: left;
+            -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+            transition: height 1s;
+        }
+    }
+    @media only screen and (min-width: 500px) {
+        /*Tablet*/
+        .separador-tablet{
+            position: absolute;
+            left: 0px;
+            top: 60px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            z-index: 15;
+            background-color: red;
+            width: 3%;
+            height: 70px;
+            float: left;
+        }
+        .nota-tablet{
+            position: absolute;
+            left: 0px;
+            top: 130px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            z-index: 15;
+            /*background-color: blue;*/
+            width: 3%;
+            height: 70px;
+            float: left;
+        }
+        .foto-tablet{
+            position: absolute;
+            left: 0px;
+            top: 194px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            z-index: 15;
+            /*background-color: black;*/
+            width: 3%;
+            height: 70px;
+            float: left;
+        }
+       .cargadoRefresh-tablet{
+            font-size: 22px;
+            position: absolute;
+            right: 0px;
+            top: 37%;
+            color: white;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            padding: 16px;
+            z-index: 10000;
+            background-color: #a626a6;
+            float: left;
+        }
+        .cargadorTexto-tablet{
+            font-size: 22px;
+            position: absolute;
+            right: 0px;
+            top: 43%;
+            color: white;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            padding: 16px;
+            z-index: 10000;
+            background-color: #a626a6;
+            float: left;
+        }
+        .verticaltext {
+            visibility: hidden;
+            position: absolute;
+            transform: rotate(-90deg);
+            transform-origin: right, top;
+           -ms-transform: rotate(-90deg);
+           -ms-transform-origin: right, top;
+           -webkit-transform: rotate(-90deg);
+           -webkit-transform-origin: right, top;
+           color: white;
+           z-index: 15;
+           top: 23px;
+          left: -10px;
+        }
+        .mensajeTop-tablet{
+            position: absolute;
+            top: 0px;
+            left: -1000px;
+            overflow: visible;
+            z-index: 15;
+            color: #9E9E9E;
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: center;
+            -webkit-transition: left 1s; /* For Safari 3.1 to 6.0 */
+            transition: left 1s;
+            font-size: 43em;
+            opacity: 0.2;
+            touch-action: none;
+        }
+        .mensajeBottom-tablet{
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            /* padding-bottom: 37px; */
+            /* padding-top: 10px; */
+            overflow: visible;
+            z-index: 15;
+            color: white;
+            background-color: black;
+            width: 100%;
+            height: 0px;
+            float: left;
+            text-align: center;
+            -webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+            transition: height 1s;
+        }
+    }
+    .candado_cerrado {
+        background: url(assets/Lock_full.svg);
+        width: 25px;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-size: contain
+    }
+    .candado_abierto {
+        background: url(assets/Lock_semi.svg);
+        width: 25px;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-size: contain
+    }
+    .line{
+        background-color:#ff428c;
+        position:absolute;;
+        height:2px;
+    }
+
+    .check_bien {
+        background: url(assets/Checkmark.svg);
+        width: 70px;
+        height: 69px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: absolute
+    }
+    .check_mal {
+        background: url(assets/bad.svg);
+        width: 70px;
+        height: 69px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: absolute
+    }
+    .borde_relacionar{
+        border-style:
+        solid;border-width:
+        3px;border-color: #563bff;
+    }
+      /******Snackbar***********/
+    #snackbar {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -159px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      font-size: 17px;
+    }
+
+    #snackbar.show {
+      visibility: visible;
+      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @-webkit-keyframes fadein {
+      from {bottom: 0; opacity: 0;} 
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @-webkit-keyframes fadeout {
+      from {bottom: 30px; opacity: 1;} 
+      to {bottom: 0; opacity: 0;}
+    }
+
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }
+    /************************/
+    /*Termina Codigo Agregado*/
+</style>
+</head>
+<body class="light-theme">
+    <div id="left" style="visibility: hidden;">
+        <div id="left-controls">
+            <button id="btnThumbnails" title="Thumbnails" class="btn" style="display: none"><i class="fa fa-picture-o fa-lg" aria-hidden="true"></i></button>
+            <button id="btnOutlines" title="Bookmarks" class="btn"><i class="fa fa-list-ul fa-lg" aria-hidden="true"></i></button>
+            <button id="btnSearch" title="Search" class="btn" style="display: none"><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
+            <button id="btnCerrarSlide" onclick="Visor.cerrarSideBar()" title="Cerrar" class="btn" style="float: right;"><i class="fa fa-close fa-lg" aria-hidden="true"></i></button>
+        </div>
+        <div id="leftContent">
+            <div id="thumbnailPanel"></div>
+            <div id="outlinePanel"></div>
+            <div id="searchPanel">
+                <input id="searchInput" title="Search" type="text">
+                <label class="searchOption"><input type="checkbox" id="cbMatchCase"> Match case</label>
+                <label class="searchOption"><input type="checkbox" id="cbLimitResults"> Limit results 1 per page</label>
+                <hr>
+                <span id="searchResultsCount"></span>
+                <div id="searchResults"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main">
+        <button type="button" id="BtnBorrarSubrayado" style="display:none" onclick="Visor.handleBorrarSubrayado()"></button>
+        <button type="button" id="BtnUndo" style="display:none" onclick="Visor.handleUndo()"></button>
+        <button type="button" id="BtnClear" style="display:none" onclick="Visor.handleClear()"></button>
+        <button type="button" id="BtnEliminarNota" style="display:none" onclick="Visor.handleEliminarNota()"></button>
+        <div id="controls" style="visibility: hidden;">
+            <div id="controls-left">
+                <button id="btnSideToggle" title="Sidebar" class="btn"><i class="fa fa-th fa-lg" aria-hidden="true"></i></button>
+                <button id="btnThemeToggle" title="Theme Toggle" class="btn"><i class="fa fa-lightbulb-o fa-lg" aria-hidden="true"></i></button>
+            </div>
+
+            <div id="controls-center">
+                <button id="btnPrev" title="Previous Page" class="btn"><i class="fa fa-caret-left fa-2x" aria-hidden="true"></i></button>
+                <select id="goBtn">
+
+                </select>
+                <span id="pgCount"></span>
+                <button id="btnNext" title="Next Page" class="btn"><i class="fa fa-caret-right fa-2x" aria-hidden="true"></i></button>
+
+                <button id="btnSelect" title="Select" class="btn"><i class="fa fa-i-cursor fa-lg" aria-hidden="true"></i></button>
+                <button id="btnMove" title="Pan" class="btn"><i class="fa fa-arrows fa-lg" aria-hidden="true"></i></button>
+
+                <button id="btnZoomOut" title="Zoom Out" class="btn"><i class="fa fa-minus fa-lg" aria-hidden="true"></i></button>
+                <select id="zoomBtn">
+                    <option value="specific">100%</option>
+                    <option value="actualsize">Actual Size</option>
+                    <option value="fitwidth">Fit Width</option>
+                    <option value="fitheight">Fit Height</option>
+                    <option value="fitpage">Fit Page</option>
+                    <option value="auto">Automatic</option>
+
+                </select>
+                <button id="btnZoomIn" title="Zoom In" class="btn"><i class="fa fa-plus fa-lg" aria-hidden="true"></i></button>
+            </div>
+            <div id="controls-right">
+                <button id="btnFullScreen" title="Fullscreen" class="btn"><i class="fa fa-arrows-alt fa-lg" aria-hidden="true"></i></button>
+            </div>
+        </div>
+
+        <div id="idrviewer" style="top: 0;">
+
+        </div>
+        <!-- Boton para activar el modal de ejercicios -->
+        <button  style="display:none" type="button" id="btnEjercicios" data-toggle="modal" data-target="#FrmEjercicio"></button>
+        <!-- Boton para activar el modal del password -->
+        <button style="display:none" type="button" id="btnPassword" data-toggle="modal" data-target="#FrmPassword"></button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="FrmEjercicio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="width: 100%;height: 100%;margin: 0;padding: 0;max-width: 100%;">
+        <div class="modal-content" style="min-height: 100%;">
+          <div class="modal-header" style="background: yellow;">
+            <h5 class="modal-title" id="tituloEjercicios">Ejercicios</h5>
+            <button type="button" class="close" onclick="Visor.cerrarEjercicio()"data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="max-height: calc(100vh - 110px);overflow-y: auto;">
+                <div class="container-fluid" id="contentPreguntas">
+
+                </div>
+          </div>
+          <div class="modal-footer" id="badgeEjercicios" style="justify-content: flex-start;overflow-x: auto;white-space: nowrap;">
+
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- Modal -->
+    <div class="modal fade" id="FrmPassword" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Enter your password</h5>
+            <button id="btnCerraPassword" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+                <input type="password" id="txtpassword" onkeyup="Visor.validarPassword(event)" style="width: 100%;height: 40px;border: 0px;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="BtnColor" style="display: none"></div>
+    <div id="snackbar">Esta hoja no esta disponible para rayar</div>
+    <!--<script src="config.js" type="text/javascript"></script>-->
+    <!--<script src="assets/preguntas.js" type="text/javascript"></script>-->
+    <!--<script src="assets/indice.js" type="text/javascript"></script>-->
+    <script type="text/javascript">
+       var DateTime= new Date().getTime();
+
+       var config = document.createElement('script');
+       config.setAttribute('src','config.js?t='+ DateTime);
+       document.head.appendChild(config);   
+       
+       config.onload = function(){
+            var DateTime= new Date().getTime();
+
+            //document.body.addEventListener("touchstart",Visor.touchstartBody,false);
+            //document.body.addEventListener("touchend",Visor.touchendBody,false);
+
+            var preguntas = document.createElement('script');
+            preguntas.setAttribute('src','assets/preguntas.js?t='+ DateTime);
+            document.head.appendChild(preguntas);
+
+            var indice = document.createElement('script');
+            indice.setAttribute('src','assets/indice.js?t='+ DateTime);
+            document.head.appendChild(indice);
+
+            var reduxLbs = document.createElement('script');
+            reduxLbs.setAttribute('src','assets/reduxLbs.js?t='+ DateTime);
+            document.head.appendChild(reduxLbs);
+
+            /*var txtLbs = document.createElement('script');
+            txtLbs.setAttribute('src','components/txtLbs/txtLbs.js?t='+ DateTime);
+            document.head.appendChild(txtLbs);*/
+
+            preguntas.onload = function(){
+                console.log(Visor.idLibro);
+                Visor.loadDataFirestore().then(data =>{
+                    //Visor.createObserverData();
+                    console.log(data);
+                    //Visor.store.dispatch({ type: "INIT_BOOKS", payload: data });
+                    IDRViewer.setup();
+                });
+            }; 
+        }; 
+    </script>
+</body>
+</html>
