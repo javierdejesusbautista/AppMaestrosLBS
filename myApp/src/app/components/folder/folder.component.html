@@ -10,7 +10,7 @@
 
         <ion-accordion class="fade-in" *ngFor="let grado of librosAll; index as i;" [value]="i">
             <ion-item slot="header" color="light">
-                <ion-label>{{ grado.Grados }} Grado</ion-label>
+                <ion-label style="font-weight: 500;">{{ grado.Grados }} Grado</ion-label>
             </ion-item>
             <div class="fade-in-down" *ngFor="let libro of grado.Libros;" slot="content">
                 <ion-item button slot="content" (click)="abrirLibro(libro)">
