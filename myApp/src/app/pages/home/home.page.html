@@ -43,7 +43,7 @@
                         <ion-breadcrumb *ngIf="nombreLibro !== '' && appPages[0].activo">{{nombreLibro}}</ion-breadcrumb>
                         <ion-breadcrumb *ngIf="nombreLibro !== '' && appPages[0].activo">Pagina: {{ pag }}</ion-breadcrumb>
                     </ion-breadcrumbs>
-                    <ion-item style="right: 25% !important;" *ngIf="nombreLibro !== '' && appPages[0].activo">
+                    <ion-item style="right: 40% !important;" *ngIf="nombreLibro !== '' && appPages[0].activo">
                         <ion-select interface="popover" [ngModel]="selectAcciones" (ionDismiss)="cleanSelectDropDown()" (ionChange)="selectDropDown( $event )" selected-text="Acciones" placeholder="Acciones">
                             <ion-select-option value="crear-secuencia">Crear Secuencia</ion-select-option>
                             <ion-select-option value="descargar-zip">Descargar zip</ion-select-option>
