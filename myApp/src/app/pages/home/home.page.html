@@ -21,7 +21,7 @@
                 <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages; let i = index">
                     <ion-item (click)="chosePage(page.tipo)" lines="none" detail="false" [class.isActive]="page.activo" style="margin-top: 10px; margin-left: 8px; font-family: 'Solitreo';">
                         <ion-label>{{ page.title }}</ion-label>
-                        <ion-icon name="{{ page.icon }}" slot="start"></ion-icon>
+                        <ion-icon style="margin-right: 17px;" name="{{ page.icon }}" slot="start"></ion-icon>
                     </ion-item>
                 </ion-menu-toggle>
             </ion-list>

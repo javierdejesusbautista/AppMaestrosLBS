@@ -7,19 +7,19 @@
     <!-- Libro sections-->
     <ion-title style="margin-top: 30px;font-size: 30px;font-weight: 500;" *ngIf="!iframeEstado">Libros</ion-title>
     <ion-accordion-group style="margin-right: 40px;" expand="inset" *ngIf="acordeonEstado">
-		<div *ngFor="let grado of librosAll; index as i;">
-			<ion-accordion [value]="i" *ngIf="grado.Libros.length > 0">
-				<ion-item slot="header" color="light">
-				<ion-label>{{ grado.Grados }} Grado</ion-label>
-				</ion-item>
-				<div *ngFor="let libro of grado.Libros;" slot="content">
-					<ion-item  button slot="content" (click)="abrirLibro(libro)">
-					<ion-label style="padding-left: 20px;">{{ libro.Nombre }}</ion-label>
-					</ion-item>
-				</div>
-			</ion-accordion>
-		</div>
-        </ion-accordion-group>
+
+        <ion-accordion *ngFor="let grado of librosAll; index as i;" [value]="i">
+            <ion-item slot="header" color="light">
+                <ion-label>{{ grado.Grados }} Grado</ion-label>
+            </ion-item>
+            <div *ngFor="let libro of grado.Libros;" slot="content">
+                <ion-item button slot="content" (click)="abrirLibro(libro)">
+                    <ion-label style="padding-left: 20px;">{{ libro.Nombre }}</ion-label>
+                </ion-item>
+            </div>
+        </ion-accordion>
+
+    </ion-accordion-group>
 
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
         <div class="contenedorIframe">
