@@ -4,6 +4,13 @@ import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../environments/environment';
+
+
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+
 
 // import { QuillModule } from 'ngx-quill';
 
@@ -25,6 +32,8 @@ import { AppComponent } from './app.component';
 	AppRoutingModule,
 	FormsModule,
 	HttpClientModule,
+	AngularFireModule.initializeApp(environment.firebase),
+	AngularFirestoreModule
 	//QuillModule.forRoot(),
 ],
   providers: [

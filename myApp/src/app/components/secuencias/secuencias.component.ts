@@ -5,6 +5,9 @@ import { FormBuilder, FormControl } from '@angular/forms';
 
 import { db } from '../../db/db';
 import { LibroService } from '../../services/libro.service';
+import { DataService } from 'src/app/services/data.service';
+import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -20,6 +23,8 @@ export class SecuenciasComponent implements OnInit {
 
 	modalVerSecuencia = false;
 	isEditarActivo = false;
+
+	librosData$: Observable<any>;
 
 	frmContenido: FormControl;
 		
@@ -46,29 +51,33 @@ export class SecuenciasComponent implements OnInit {
 	constructor(private domSanitizer: DomSanitizer, 
 	private alertController: AlertController, 
 	private formBuilder: FormBuilder,
-	private libroService: LibroService) {
+	private libroService: LibroService,
+	private dataService: DataService,
+	private secuenciasService: SecuenciasFsService) {
 		this.frmContenido = this.frmContenido ?? new FormControl();
 	 }
 
 	
 	 ngOnInit() {
 		this.secuenciasIsLoading = true;
-	 this.getDataSecuencia();
-   }
+	 	this.getDataSecuencia();
+
+		
+   	}
 
 	clickDownloadJSON(){
-	db.table("secuenciaLists").toArray().then(secuenciaLists => {
-	var data1 = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(secuenciaLists));
-	var a = document.createElement('a');
-	a.href = 'data:' + data1;
-	//a.download = nombrePDF.slice(0, -4) +'.json';
-	a.innerHTML = 'download JSON';
-	a.id='descargarJsonBd'
+		db.table("secuenciaLists").toArray().then(secuenciaLists => {
+			var data1 = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(secuenciaLists));
+			var a = document.createElement('a');
+			a.href = 'data:' + data1;
+			//a.download = nombrePDF.slice(0, -4) +'.json';
+			a.innerHTML = 'download JSON';
+			a.id='descargarJsonBd'
 
-	var container = document.getElementById('linkDescargarBaseDatos');
-	//container.appendChild(a);
-	//document.getElementById('descargarJsonBd').click();
-	});
+			var container = document.getElementById('linkDescargarBaseDatos');
+			//container.appendChild(a);
+			//document.getElementById('descargarJsonBd').click();
+		});
 	}
 
 
@@ -76,52 +85,56 @@ export class SecuenciasComponent implements OnInit {
 	* Get data de las secuencias guardadas en decieDB (stogare)
 	*/
 	async getDataSecuencia() {
-	this.libroService.getLibrosSecuencias().subscribe(res => {
-		this.libros = res;
-		this.secuenciasIsLoading = false;
-		console.log(this.libros);
-	});
+		
+		this.secuenciasService.getTodasSecuencias();
+		
+		
+		// this.libroService.getLibrosSecuencias().subscribe(res => {
+		// 	this.libros = res;
+		// 	this.secuenciasIsLoading = false;
+		// 	console.log(this.libros);
+		// });
 	}
 
 	/**
 	* Delete la secuencia seleccionada, crea un alert, para despues recargar los datos.
 	*/
 	async borrarSecuencia(idSecuencia: string, idLibro: string) {
-	console.log(idSecuencia, idLibro);
-	const alert = await this.alertController.create({
-		subHeader: '¿Desea borrar la secuencia?',
-		buttons: [
-		{
-			text: 'Cancelar',
-			role: 'cancel',
-			handler: () => {
+		console.log(idSecuencia, idLibro);
+		const alert = await this.alertController.create({
+			subHeader: '¿Desea borrar la secuencia?',
+			buttons: [
+			{
+				text: 'Cancelar',
+				role: 'cancel',
+				handler: () => {
+				},
 			},
-		},
-		{
-			text: 'Aceptar',
-			role: 'confirm',
-			handler: async () => {
-				this.secuenciasIsLoading = true;
-				this.libroService.deleteSecuenciaLibro(idLibro, idSecuencia).subscribe( (res) => {
-					this.secuenciasIsLoading = false;
-					this.getDataSecuencia();
-				});
+			{
+				text: 'Aceptar',
+				role: 'confirm',
+				handler: async () => {
+					this.secuenciasIsLoading = true;
+					this.libroService.deleteSecuenciaLibro(idLibro, idSecuencia).subscribe( (res) => {
+						this.secuenciasIsLoading = false;
+						this.getDataSecuencia();
+					});
+				},
 			},
-		},
-		],
-	});
+			],
+		});
 
-	await alert.present();
+		await alert.present();
 	}
 
 	/**
 	* Boton ver secuencia, abre el moddal
 	*/	
 	verSecuencia(secuencia: any, idLibro?: string) {
-	this.secuencia = secuencia;
-	this.secuencia.idLibro = idLibro;
-	console.log(this.secuencia);
-	this.modalState();
+		this.secuencia = secuencia;
+		this.secuencia.idLibro = idLibro;
+		console.log(this.secuencia);
+		this.modalState();
 	}
 
 	/**
@@ -129,8 +142,8 @@ export class SecuenciasComponent implements OnInit {
 	* cambia el modal a el formulario quill editor para editar.
 	*/
 	editarSecuencia() {
-	this.secuenciaEditarState();
-	this.frmContenido.setValue(this.secuencia.contenido);
+		this.secuenciaEditarState();
+		this.frmContenido.setValue(this.secuencia.contenido);
 	}
 
 
@@ -210,5 +223,7 @@ export class SecuenciasComponent implements OnInit {
 		
 		console.log('groupedArray', groupedArray);
 	}
+
+	
 
 }

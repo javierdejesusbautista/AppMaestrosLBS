@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+
 import { IonicModule } from '@ionic/angular';
 
 import { QuillModule } from 'ngx-quill';
@@ -24,7 +27,11 @@ import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.co
     HomePageRoutingModule,
 	FormsModule,
 	ReactiveFormsModule,
-	QuillModule.forRoot()
+	QuillModule.forRoot(),
+	AngularFirestoreModule
+  ],
+  providers: [
+	FolderComponent
   ],
   declarations: [HomePage, FolderComponent, SecuenciasComponent],
 })

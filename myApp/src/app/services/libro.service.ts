@@ -58,6 +58,7 @@ export class LibroService {
 		return new Observable();
 	}
 
+
 	/**
 	 * 
 	 * @param data datos de firebase

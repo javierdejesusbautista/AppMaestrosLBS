@@ -29,7 +29,7 @@ class componentBase extends HTMLElement {
             libroid : idLibro,
             pagina : this._pagina
         }
-
+		console.log(widgetData);
         this.Visor.saveDataFireStore({...widgetData});
         
         /*this.Visor.dbFirestore.doc(`${usuario}/libros`)

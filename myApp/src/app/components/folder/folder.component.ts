@@ -20,6 +20,8 @@ export class FolderComponent implements OnInit {
 	librosTemp: any[] = [];
 	librosAll: any[] = [];
 
+	iframeRef: any;
+
 	urlLibro: any;
 
 	@ViewChild('iframe') iframe: ElementRef;
@@ -74,6 +76,16 @@ export class FolderComponent implements OnInit {
 			};
 			this.iframe.nativeElement.contentWindow.postMessage( this.message , '*');
 		});
+
+
+		this.dataService.addSecuencia$.subscribe(data => {
+			console.log(data);
+			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
+		});
+
+		this.dataService.getSecuencias$.subscribe(data => {
+			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
+		});
 	  }
 	
 	//   url(){
@@ -87,6 +99,8 @@ export class FolderComponent implements OnInit {
 
 		console.log('abrirLibro', libro);
 		this.dataService.libroActual = libro;
+		
+		console.log(this.iframe);
 		const { Id } = libro;
 		this.librosService.getSecuenciasLibro(Id).subscribe(secuencias => {
 			console.log(secuencias);
@@ -97,6 +111,11 @@ export class FolderComponent implements OnInit {
 		this.iframeEstado = true;
 		this.acordeonEstado = false;
 		this.botonesEstado = true;
+		setTimeout(() => {
+			this.dataService.currentIframe = this.iframe.nativeElement.contentWindow;
+		}, 100);
+
+
 	  }
 	
 	  regresar(){
@@ -115,5 +134,11 @@ export class FolderComponent implements OnInit {
 		  FileSaver.saveAs(content, "Example.zip");
 		});
 	  }	
+
+	  ngOnDestroy() {
+		// this.dataService.addSecuencia$.unsubscribe();
+		// this.dataService.paginaSubejct$.unsubscribe();
+		// this.dataService.stateIframe$.unsubscribe();
+	  }
 
 }

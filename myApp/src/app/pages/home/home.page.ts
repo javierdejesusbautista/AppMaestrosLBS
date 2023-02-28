@@ -8,6 +8,7 @@ import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { FolderComponent } from 'src/app/components/folder/folder.component';
 
 @Component({
   selector: 'app-home',
@@ -21,9 +22,9 @@ export class HomePage implements OnInit {
 	pag = 1;
 	numeroPagina$ : any;
 	totalPaginas : any[] = [];
-	presentingElement : any;
 	selectAcciones: string = '';
 	stateBotonGuardarEditarSecuencia: boolean = false;
+
 
 	nombreLibro: string = '';
 
@@ -43,7 +44,7 @@ export class HomePage implements OnInit {
 		]
 	};
   
-  
+	datosGenUsuario: any = {};
 //   public appPages = [
 //     { title: 'Libros', url: '/libros/Libro', icon: 'book' },
 //     { title: 'Secuencias', url: '/secuencias/Secuencia', icon: 'bookmarks' },
@@ -62,29 +63,36 @@ export class HomePage implements OnInit {
   @ViewChild('#modal') modalSecuencia: ElementRef;
   @ViewChild('select') select: ElementRef;
 
+
   constructor( public dataService: DataService,
 	private libroService: LibroService,
 	private authService: AuthService,
 	private alertController: AlertController,
-	private router: Router) { }
+	private router: Router,
+	private folderComponent: FolderComponent) { }
 
-	ngOnInit() {   
+	ngOnInit() {   	
+		console.log(this.getTokenData('nombre'));
 		
-		this.dataService.locations.subscribe(pagina =>{
-		  	this.numeroPagina$ = typeof pagina === 'object' ? 1 : pagina;
-		 	this.pag = parseInt(this.numeroPagina$);
-			const {Id} = this.dataService.libroActual;
-			
+		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
+		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
+		console.log(this.datosGenUsuario);
+
+		this.dataService.locations.subscribe((paginaData:any) =>{
+		  	//this.numeroPagina$ = typeof pagina === 'object' ? 1 : pagina;
+			const { pagina, secuencia } = paginaData;
+		 	this.pag = parseInt(pagina);
+			const { Id } = this.dataService.libroActual;
+			console.log(secuencia);
 			if(this.dataService.estadoModal) {
 				this.stateBotonGuardarEditarSecuencia = false;
 				this.formContenidoSecuencia.setValue('');
 
-				const secuencias = this.dataService.secuenciasLibroActual;
-				const secuenciaActual = secuencias.find((secuencia: { pagina: number; }) => secuencia.pagina === this.pag);
-				this.formContenidoSecuencia.setValue(secuenciaActual['contenido']);
-				this.stateBotonGuardarEditarSecuencia = true;
+				if(secuencia !== undefined) {
+					this.formContenidoSecuencia.setValue(secuencia['data']);
+					this.stateBotonGuardarEditarSecuencia = true;
+				}
 			}
-
 
 		});
 
@@ -93,50 +101,67 @@ export class HomePage implements OnInit {
 		for (let index = 1; index < 142; index++) {
 			this.totalPaginas.push(index);
 		}
-		this.presentingElement = document.querySelector('.ion-page');
-
+		
 	}
 
-	async addNewList() {
-		if(this.formContenidoSecuencia.getRawValue().length < 1) return;
+	async addNewSecuencia() {
+		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
+		if(contenidoSecuencia === null) return;
 		const idLibro = this.dataService.libroActual.Id;
-		//Si libro existe, solo agregar secuencia, sino agregar informacion del libro y secuencia
-		this.libroService.getLibroExiste(idLibro).subscribe(resp => {
-			if(resp) {
-				let datosLibro = {
-						pagina: this.pag,
-						contenido: this.formContenidoSecuencia.getRawValue()
-					};
-				this.libroService.addSecuenciaLibro(idLibro, datosLibro).subscribe(res => {
-					this.formContenidoSecuencia.setValue('');
-				});
-			} else {
-				let libro = {
-					idLibro: this.dataService.libroActual.Id,
-					nombreLibro: this.dataService.libroActual.Nombre,
-					Grados: this.dataService.libroActual.Grados,
-					Suffix: this.dataService.libroActual.Suffix,
-					Escolaridad: this.dataService.libroActual.Escolaridad,
-					NombreArchivo: this.dataService.libroActual.NombreArchivo,
-				}
-				this.libroService.createRegistroLibro(libro).subscribe(res => {
-					let secuencias = { 
-						pagina: this.pag,
-						contenido: this.formContenidoSecuencia.getRawValue()
-					};
-					this.libroService.addSecuenciaLibro(idLibro, secuencias).subscribe(res => {
-						this.formContenidoSecuencia.setValue('');
-					});
-				 })
+
+		 const sendDadaLibro = {
+			type: 'addSecuencia',
+			functionName: 'addSecuencia',
+			arguments: {
+				data: this.formContenidoSecuencia.getRawValue(),
+				ejercicio: 0,
+				elemento: `sd_${this.pag}`,
+				libroid: idLibro,
+				pagina: this.pag
 			}
-		});
+		 }
+
+		this.dataService.addSecuencia(sendDadaLibro);
+		//Si libro existe, solo agregar secuencia, sino agregar informacion del libro y secuencia
+		// this.libroService.getLibroExiste(idLibro).subscribe(resp => {
+		// 	if(resp) {
+		// 		let datosLibro = {
+		// 				pagina: this.pag,
+		// 				contenido: this.formContenidoSecuencia.getRawValue()
+		// 			};
+		// 		this.libroService.addSecuenciaLibro(idLibro, datosLibro).subscribe(res => {
+		// 			this.formContenidoSecuencia.setValue('');
+		// 		});
+		// 	} else {
+		// 		// let libro = {
+		// 		// 	idLibro: this.dataService.libroActual.Id,
+		// 		// 	nombreLibro: this.dataService.libroActual.Nombre,
+		// 		// 	Grados: this.dataService.libroActual.Grados,
+		// 		// 	Suffix: this.dataService.libroActual.Suffix,
+		// 		// 	Escolaridad: this.dataService.libroActual.Escolaridad,
+		// 		// 	NombreArchivo: this.dataService.libroActual.NombreArchivo,
+		// 		// }
+				
+		// 		// this.libroService.createRegistroLibro(libro).subscribe(res => {
+		// 		// 	let secuencias = { 
+		// 		// 		pagina: this.pag,
+		// 		// 		contenido: this.formContenidoSecuencia.getRawValue()
+		// 		// 	};
+		// 		// 	this.libroService.addSecuenciaLibro(idLibro, secuencias).subscribe(res => {
+		// 		// 		this.formContenidoSecuencia.setValue('');
+		// 		// 	});
+		// 		//  })
+		// 	}
+		// });
 	
 		this.dataService.abrirModal();
 	  }
 
-	  async guardarEdited() {
+	  async guardarSecuencia() {
+		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
+		if(contenidoSecuencia === null) return;
 		const alert = await this.alertController.create({
-			subHeader: '¿Desea modificar la secuencia?',
+			subHeader: '¿Guardar cambios?',
 			buttons: [
 			{
 				text: 'Cancelar',
@@ -148,12 +173,20 @@ export class HomePage implements OnInit {
 				text: 'Aceptar',
 				role: 'confirm',
 				handler: async () => {
-					const { id } = this.dataService.secuenciasLibroActual.find((secuencia: { pagina: number; }) => 
-						secuencia.pagina === this.pag);
-					
-					this.libroService.editSecuenciaLibro(id, this.dataService.libroActual.Id, this.formContenidoSecuencia.getRawValue()).subscribe(data => { 
-						console.log(data);		
-					});
+
+					const sendDadaLibro = {
+						type: 'addSecuencia',
+						functionName: 'addSecuencia',
+						arguments: {
+							data: contenidoSecuencia,
+							ejercicio: 0,
+							elemento: `sd_${this.pag}`,
+							libroid: 0,
+							pagina: this.pag
+						}
+					 };
+
+					 this.dataService.addSecuencia(sendDadaLibro);
 				
 				},
 			},
@@ -202,6 +235,32 @@ export class HomePage implements OnInit {
 
 	onLogout() {
 		this.authService.logout();
+	}
+
+
+	testSendDataToLibro() {
+		console.log(this.dataService.libroActual);
+
+		const secuenciaData = {
+			
+		};
+		
+		this.dataService.addSecuencia(secuenciaData);
+
+	}
+
+
+	getTokenData(key: string) {
+		const jwt = localStorage.getItem('USER_INFO');
+	
+		const jwtData = jwt!.split('.')[1];
+		// let decodedJwtJsonData = window.atob(jwtData);
+		const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+		const decodedJwtData = JSON.parse(decodedJwtJsonData);
+	
+		const value = decodedJwtData[key];
+	
+		return value;
 	}
 
 }

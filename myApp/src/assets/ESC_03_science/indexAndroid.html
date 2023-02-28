@@ -3331,6 +3331,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         window.addEventListener('message', function(event) {
 
             if (event.data.type === 'callFunction') {
+				console.log(event);
                 const [paginaAppMaestros] = event.data.arguments;
                IDRViewer.goToPage(paginaAppMaestros)
             }

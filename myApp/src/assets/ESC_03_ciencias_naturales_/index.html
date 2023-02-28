@@ -37,6 +37,8 @@
 <script src="assets/firebase-app.js"></script>
 <script src="assets/firebase-firestore.js"></script>
 
+<script src="assets/touch-emulator.js"></script>
+
 <script type="text/javascript">
 
 var Visor=(function() {
@@ -4037,6 +4039,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
                     //Visor.createObserverData();
                     console.log(data);
                     //Visor.store.dispatch({ type: "INIT_BOOKS", payload: data });
+					TouchEmulator();
                     IDRViewer.setup();
                 });
             }; 

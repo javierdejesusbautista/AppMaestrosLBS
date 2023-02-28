@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from "rxjs";
+import { ElementRef, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -9,30 +9,35 @@ export class DataService {
 	estadoModal = false;
 	displayModal = 'none';
 	libroActual: any = {};
+
 	secuenciasLibroActual: any = {};
 	pagina: any;
   	public paginaSubejct$: Subject<any> = new Subject<any>();
 	public nombreLibroActual$: Subject<string> = new Subject<string>();
 	public stateIframe$: Subject<boolean> = new Subject<boolean>();
+	public addSecuencia$: Subject<any> = new Subject<any>();
+	public getSecuencias$: Subject<any> = new Subject<any>();
   
 	nombreLibro: string;
 	stateIframe = false;
 
-  locations = new Observable((pagina) => {
-   
+	currentIframe: any;
+
+  locations = new Observable((pagina: any) => {
     window.addEventListener('message', (event)=>{
+		console.log(event);
       pagina.next(event.data);
-    }, false)
+    }, false);
     
   });
 
+  
 
   abrirModal(){
     this.estadoModal = this.estadoModal ? false : true;
     this.displayModal = 'none' ? 'inherit' : 'none'
   }
   cambiarPaginaSubejct(pagina: any) {
-    console.log(pagina);
     this.paginaSubejct$.next(pagina);
   }
 
@@ -41,8 +46,15 @@ export class DataService {
   }	
 
   setStateIframe(state: boolean) {
-	console.log("state: ", state);
 	this.stateIframe$.next(state);
+  }
+
+  addSecuencia(data: any) {
+	this.addSecuencia$.next(data);
+  }
+
+  getSecuencias(data: any) {
+	this.getSecuencias$.next(data);
   }
 
 
