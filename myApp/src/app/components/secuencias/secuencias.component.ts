@@ -52,12 +52,12 @@ export class SecuenciasComponent implements OnInit {
 
 
 	constructor(private domSanitizer: DomSanitizer, 
-	private alertController: AlertController, 
-	private formBuilder: FormBuilder,
-	private libroService: LibroService,
-	private dataService: DataService,
-	private secuenciasService: SecuenciasFsService) {
-		this.frmContenido = this.frmContenido ?? new FormControl();
+		private alertController: AlertController, 
+		private formBuilder: FormBuilder,
+		private libroService: LibroService,
+		private dataService: DataService,
+		private secuenciasService: SecuenciasFsService) {
+			this.frmContenido = this.frmContenido ?? new FormControl();
 	 }
 
 	
@@ -88,7 +88,6 @@ export class SecuenciasComponent implements OnInit {
 	* Get data de las secuencias guardadas en decieDB (stogare)
 	*/
 	async getDataSecuencia() {
-		
 		this.secuenciasService.getLibrosSecuencias().subscribe(data => {
 			
 			data.forEach((doc, index) => {
@@ -98,13 +97,6 @@ export class SecuenciasComponent implements OnInit {
 			console.log(this.librosData);
 			this.secuenciasIsLoading = false;
 		});
-		
-		
-		// this.libroService.getLibrosSecuencias().subscribe(res => {
-		// 	this.libros = res;
-		// 	this.secuenciasIsLoading = false;
-		// 	console.log(this.libros);
-		// });
 	}
 
 	/**
@@ -212,28 +204,11 @@ export class SecuenciasComponent implements OnInit {
 	* false - off
 	*/
 	modalState() {
-	this.modalVerSecuencia = !this.modalVerSecuencia;
+		this.modalVerSecuencia = !this.modalVerSecuencia;
 	}
 
 	secuenciaEditarState() {
-	this.isEditarActivo = !this.isEditarActivo;
-	}
-
-
-	testFunction() {
-		console.log('test', this.libros);
-
-		const groupedArray = this.libros.reduce((acc: { [x: string]: any[]; }, curr: { idLibro: any; }) => {
-			const idLibro = curr.idLibro;
-			if (!acc[idLibro]) {
-			acc[idLibro] = [];
-			}
-			acc[idLibro].push(curr);
-			return acc;
-		}, {});
-		
-		
-		console.log('groupedArray', groupedArray);
+		this.isEditarActivo = !this.isEditarActivo;
 	}
 
 	onClickGetSecuencias(libro: any) {

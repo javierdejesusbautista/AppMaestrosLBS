@@ -88,10 +88,6 @@ export class FolderComponent implements OnInit {
 		});
 	  }
 	
-	//   url(){
-	// 	console.log('iframe',this.iframe.nativeElement.contentWindow.location.href);
-	//   }
-	
 	  abrirLibro(libro: any){
 		// const mainUrl: string = 'https://desktop.alfalbs.app/books/';
 		// let urlTemp = `${mainUrl}${libro.NombreArchivo}/indexAndroid.html`;

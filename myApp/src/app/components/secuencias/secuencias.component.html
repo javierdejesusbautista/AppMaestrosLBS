@@ -18,14 +18,6 @@
 								<ion-card-header>
 									<ion-card-title>Pagina: {{ secuencia.pagina }}</ion-card-title>
 									<ion-card-subtitle >{{ libro.nombreLibro }}</ion-card-subtitle>
-									<!-- <ion-item color="dark" lines="none">
-										  <ion-card-subtitle slot="start">
-												<ion-chip color="warning">{{ libro.Escolaridad }}</ion-chip>
-											</ion-card-subtitle>
-										   <ion-card-subtitle slot="end" >
-											  <ion-chip color="primary">{{ libro.Grados }}{{ libro.Suffix }}</ion-chip>
-										  </ion-card-subtitle>
-									  </ion-item> -->
 								</ion-card-header>
 								<ion-card-content>
 									<ion-button (click)="borrarSecuencia(secuencia.id, libro.id)" color="danger" size="small" shape="round" fill="solid">Borrar</ion-button>
@@ -37,47 +29,6 @@
 				  </ion-grid>
 		  </ion-accordion>
 	  </ion-accordion-group>
-  
-  
-  
-  
-  
-  
-<!--   
-	  <ion-modal id="modal-ver-secuencia" [isOpen]="modalVerSecuencia">
-		  <ng-template>
-			  <ion-content>
-				  <ion-fab horizontal="end" vertical="top" (click)="modalState()">
-					  <ion-fab-button color="danger">
-						<ion-icon name="close-outline"></ion-icon>
-					  </ion-fab-button>
-					</ion-fab>
-				  <ion-card mode="ios" color="dark">
-					  <ion-card-header color="">
-						  <ion-card-title>Libro: {{ secuencia.nombreLibro }}</ion-card-title>
-						  <ion-card-subtitle style="font-size: 1.5em">Pagina: {{ secuencia.pagina }}</ion-card-subtitle>
-					  </ion-card-header>
-					  <ion-card-content>
-						  <quill-view-html *ngIf="!isEditarActivo" [innerHTML]="contenidoSanitized(secuencia.data)"></quill-view-html>
-  
-					  </ion-card-content>
-					  <ion-card-content *ngIf="isEditarActivo">
-							  <quill-editor [formControl]="frmContenido" [modules]="quillModules" id="quillText" 
-									format="html" placeholder="Insertar texto aqui..." style="height: 500px" ></quill-editor>
-					  </ion-card-content>
-				  </ion-card>
-			  </ion-content>
-			  <div class="div-ctn-btns">
-				  <ion-button *ngIf="isEditarActivo" (click)="secuenciaEditarState()" color="medium" size="small" shape="round" fill="solid">Cancelar</ion-button>
-				  <ion-button *ngIf="isEditarActivo" (click)="guardarEdited(secuencia.id, secuencia.idLibro)" color="success" size="small" shape="round" fill="solid">Guardar</ion-button>
-				  <ion-button *ngIf="!isEditarActivo" (click)="editarSecuencia()" color="primary" size="small" shape="round" fill="solid">Editar</ion-button>
-				  <ion-button (click)="borrarSecuencia(secuencia.id, secuencia.idLibro)" color="danger" size="small" shape="round" fill="solid">Borrar</ion-button>
-				  <ion-button (click)="modalState()" color="secondary" size="small" shape="round" fill="solid">Cerrar</ion-button>
-			  </div>
-		  </ng-template>
-	  </ion-modal> -->
-
-
 
 
 	  <ion-modal id="ver-secuencia" style="--border-radius: 8px;" trigger="open-modal" [isOpen]="modalVerSecuencia" 

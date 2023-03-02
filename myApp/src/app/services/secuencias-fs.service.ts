@@ -21,20 +21,7 @@ export class SecuenciasFsService {
   }
 
 	getLibrosSecuencias() {
-		 
 		return this.firestore.collection(this.usuario).snapshotChanges();
-
-	// 	return this.firestore.collection(`${this.usuario}`).doc('libros').get().subscribe(doc => {
-	// 		if (doc.exists) {
-	// 			console.log("Document data:", doc.data());
-	// 		} else {
-	// 			console.log("No such document!");
-	// 		}
-
-	// 		console.log(doc.data());
-	// });
-			
-		//return this.firestore.collection(`${this.usuario}/libros}`).valueChanges();
 	}
 
 	getSecuecias(claveLibro: string) {

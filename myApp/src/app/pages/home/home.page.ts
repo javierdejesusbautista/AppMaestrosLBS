@@ -1,14 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { fromEvent, Observable, map } from 'rxjs';
-
-import { LibroService } from '../../services/libro.service';
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { FolderComponent } from 'src/app/components/folder/folder.component';
 
 @Component({
   selector: 'app-home',
@@ -64,12 +59,9 @@ export class HomePage implements OnInit {
   @ViewChild('select') select: ElementRef;
 
 
-  constructor( public dataService: DataService,
-	private libroService: LibroService,
+  constructor(public dataService: DataService,
 	private authService: AuthService,
-	private alertController: AlertController,
-	private router: Router,
-	private folderComponent: FolderComponent) { }
+	private alertController: AlertController) { }
 
 	ngOnInit() {   	
 		console.log(this.getTokenData('nombre'));
@@ -123,39 +115,7 @@ export class HomePage implements OnInit {
 			}
 		 }
 		 console.log(sendDadaLibro);
-		//this.dataService.addSecuencia(sendDadaLibro);
-		//Si libro existe, solo agregar secuencia, sino agregar informacion del libro y secuencia
-		// this.libroService.getLibroExiste(idLibro).subscribe(resp => {
-		// 	if(resp) {
-		// 		let datosLibro = {
-		// 				pagina: this.pag,
-		// 				contenido: this.formContenidoSecuencia.getRawValue()
-		// 			};
-		// 		this.libroService.addSecuenciaLibro(idLibro, datosLibro).subscribe(res => {
-		// 			this.formContenidoSecuencia.setValue('');
-		// 		});
-		// 	} else {
-		// 		// let libro = {
-		// 		// 	idLibro: this.dataService.libroActual.Id,
-		// 		// 	nombreLibro: this.dataService.libroActual.Nombre,
-		// 		// 	Grados: this.dataService.libroActual.Grados,
-		// 		// 	Suffix: this.dataService.libroActual.Suffix,
-		// 		// 	Escolaridad: this.dataService.libroActual.Escolaridad,
-		// 		// 	NombreArchivo: this.dataService.libroActual.NombreArchivo,
-		// 		// }
-				
-		// 		// this.libroService.createRegistroLibro(libro).subscribe(res => {
-		// 		// 	let secuencias = { 
-		// 		// 		pagina: this.pag,
-		// 		// 		contenido: this.formContenidoSecuencia.getRawValue()
-		// 		// 	};
-		// 		// 	this.libroService.addSecuenciaLibro(idLibro, secuencias).subscribe(res => {
-		// 		// 		this.formContenidoSecuencia.setValue('');
-		// 		// 	});
-		// 		//  })
-		// 	}
-		// });
-	
+
 		this.dataService.abrirModal();
 	  }
 
@@ -200,10 +160,7 @@ export class HomePage implements OnInit {
 	  }
 
 	onChangePag(event:any) {
-		console.log(event);
-		//window.content.postMessage(datos, 'https://url-del-iframe.com');
 		this.dataService.cambiarPaginaSubejct(event);
-
 	}
 
 	
@@ -239,19 +196,6 @@ export class HomePage implements OnInit {
 	onLogout() {
 		this.authService.logout();
 	}
-
-
-	testSendDataToLibro() {
-		console.log(this.dataService.libroActual);
-
-		const secuenciaData = {
-			
-		};
-		
-		this.dataService.addSecuencia(secuenciaData);
-
-	}
-
 
 	getTokenData(key: string) {
 		const jwt = localStorage.getItem('USER_INFO');
