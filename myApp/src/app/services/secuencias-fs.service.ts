@@ -36,6 +36,14 @@ export class SecuenciasFsService {
 			.set(libroData);
 	}
 
+	deleteSecuenciaLibro(claveLibro: string, libroData: any) {
+		return this.firestore.collection(this.usuario)
+			.doc(claveLibro)
+			.collection('secuencias')
+			.doc(libroData.elemento)
+			.delete();
+	}
+
 	getKeyToken(key: string): string {
 
 		const jwt = localStorage.getItem('USER_INFO');

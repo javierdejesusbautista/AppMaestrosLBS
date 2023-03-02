@@ -20,7 +20,7 @@
 									<ion-card-subtitle >{{ libro.nombreLibro }}</ion-card-subtitle>
 								</ion-card-header>
 								<ion-card-content>
-									<ion-button (click)="borrarSecuencia(secuencia.id, libro.id)" color="danger" size="small" shape="round" fill="solid">Borrar</ion-button>
+									<ion-button (click)="borrarSecuencia(secuencia, libro.claveLibro)" color="danger" size="small" shape="round" fill="solid">Borrar</ion-button>
 									<ion-button (click)="verSecuencia(secuencia, libro.claveLibro)" color="primary" size="small" shape="round" fill="solid">Ver contenido</ion-button>
 								</ion-card-content>
 							</ion-card>

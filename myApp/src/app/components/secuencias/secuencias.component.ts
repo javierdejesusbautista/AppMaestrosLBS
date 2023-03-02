@@ -102,8 +102,8 @@ export class SecuenciasComponent implements OnInit {
 	/**
 	* Delete la secuencia seleccionada, crea un alert, para despues recargar los datos.
 	*/
-	async borrarSecuencia(idSecuencia: string, idLibro: string) {
-		console.log(idSecuencia, idLibro);
+	async borrarSecuencia(secuencia: any, claveLibro: string) {
+		console.log(secuencia, claveLibro);
 		const alert = await this.alertController.create({
 			subHeader: '¿Desea borrar la secuencia?',
 			buttons: [
@@ -118,7 +118,8 @@ export class SecuenciasComponent implements OnInit {
 				role: 'confirm',
 				handler: async () => {
 					this.secuenciasIsLoading = true;
-					this.libroService.deleteSecuenciaLibro(idLibro, idSecuencia).subscribe( (res) => {
+					this.secuenciasService.deleteSecuenciaLibro(claveLibro, secuencia).then( (res) => {
+						console.log(res);
 						this.secuenciasIsLoading = false;
 						this.getDataSecuencia();
 					});
