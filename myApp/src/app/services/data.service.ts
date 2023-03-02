@@ -9,6 +9,7 @@ export class DataService {
 	estadoModal = false;
 	displayModal = 'none';
 	libroActual: any = {};
+	totalPaginas: number = 0;
 
 	secuenciasLibroActual: any = {};
 	pagina: any;
@@ -25,11 +26,15 @@ export class DataService {
 
   locations = new Observable((pagina: any) => {
     window.addEventListener('message', (event)=>{
-		console.log(event);
-      pagina.next(event.data);
+		if(event.data.totalPaginas) {
+			this.totalPaginas = event.data.totalPaginas;
+		}else {
+			pagina.next(event.data);
+		}
     }, false);
+	
+});
     
-  });
 
   
 

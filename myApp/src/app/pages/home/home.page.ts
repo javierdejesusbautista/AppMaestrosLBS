@@ -91,7 +91,7 @@ export class HomePage implements OnInit {
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
 
-		for (let index = 1; index < 142; index++) {
+		for (let index = 1; index < this.dataService.totalPaginas; index++) {
 			this.totalPaginas.push(index);
 		}
 		
