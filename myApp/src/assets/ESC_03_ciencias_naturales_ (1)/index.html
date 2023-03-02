@@ -520,19 +520,25 @@ var Visor=(function() {
     };
 
 	var saveDataFireStoreSecuencia = function(data) {
+
+		console.log(data);
 		console.log("SavedDataFireStoreSecuencia");
 		const { usuario } = Visor.tokenUser;
         const idLibro     = Visor.idLibro;
         const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
 
 		const widgetData = {
-                            ...data,
+                            ...data.secuencia,
                             userUpdate :  usuario,
                             userCreate :  Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento).length==0 ? usuario : data.usuario
         };
 
 		Visor.dbFirestore.collection(`${usuario}`)
-						 .doc(claveLibro).set({'nombreLibro': widgetData.nombreLibro})
+						 .doc(claveLibro).set({
+							'nombreLibro': data.nombreLibro,
+							'grado': data.libroGeneral.grado,
+							'suffix': data.libroGeneral.suffix
+						})
 		.then(()=> {
 			console.log("doc creado secuencia")
 			Visor.dbFirestore.collection(`${usuario}`)
@@ -2989,9 +2995,18 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 			}
 
 			if(event.data.type === 'addSecuencia') {
-				
-				let secuencia = {...event.data.arguments, libroid: Visor.idLibro};
-				Visor.saveDataFireStoreSecuencia(secuencia);
+				 
+				const secuenciaData = {
+					secuencia: {
+						...event.data.arguments,
+						libroid: Visor.idLibro
+					},
+					libroGeneral: {
+						...event.data.libroGeneral
+					},
+					nombreLibro: event.data.nombreLibro
+				};
+				Visor.saveDataFireStoreSecuencia(secuenciaData);
 			}
 
 			if(event.data.type === 'getSecuencias') {

@@ -6,7 +6,7 @@
 	  <ion-accordion-group expand="inset" *ngIf="!secuenciasIsLoading	">
 		  <ion-accordion [value]="i" *ngFor="let libro of librosData; index as i;" >
 			  <ion-item (click)="onClickGetSecuencias(libro)" slot="header" color="light">
-				  <ion-label>{{ libro.nombreLibro}}</ion-label>
+				  <ion-label>{{ libro.grado }}{{ libro.suffix }} - {{ libro.nombreLibro}}</ion-label>
 			  </ion-item>
 			  <ion-grid class="fade-in" slot="content">	
 				<div class="conatiner-loading-secuencias" *ngIf="secuenciasLibroLoading">

@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -60,7 +60,7 @@ export class HomePage implements OnInit {
 
   constructor(public dataService: DataService,
 	private authService: AuthService,
-	private alertController: AlertController) { }
+	public toastController: ToastController) { }
 
 	ngOnInit() {   	
 		
@@ -125,42 +125,35 @@ export class HomePage implements OnInit {
 
 	  async guardarSecuencia() {
 		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
+		
 		if(contenidoSecuencia === null) return;
-		const alert = await this.alertController.create({
-			subHeader: '¿Guardar cambios?',
-			buttons: [
-			{
-				text: 'Cancelar',
-				role: 'cancel',
-				handler: () => {
-				},
-			},
-			{
-				text: 'Aceptar',
-				role: 'confirm',
-				handler: async () => {
 
-					const sendDadaLibro = {
-						type: 'addSecuencia',
-						functionName: 'addSecuencia',
-						arguments: {
-							data: contenidoSecuencia,
-							ejercicio: 0,
-							elemento: `sd_${this.pag}`,
-							libroid: 0,
-							nombreLibro: this.dataService.libroActual.Nombre,
-							pagina: this.pag
-						}
-					 };
-					 console.log(sendDadaLibro);
-					 this.dataService.addSecuencia(sendDadaLibro);
-				
-				},
+		const sendDadaLibro = {
+			type: 'addSecuencia',
+			functionName: 'addSecuencia',
+			arguments: {
+				data: contenidoSecuencia,
+				ejercicio: 0,
+				elemento: `sd_${this.pag}`,
+				libroid: 0,
+				pagina: this.pag
 			},
-			],
-		});
+			nombreLibro: this.dataService.libroActual.Nombre,
+			libroGeneral: {
+				grado: this.dataService.libroActual.Grados,
+				suffix: this.dataService.libroActual.Suffix
+			}
+		 };
+		 
+		 this.dataService.addSecuencia(sendDadaLibro);
 
-		await alert.present();
+		 const toast = await this.toastController.create({
+			message: '<ion-icon name="cloud-done-outline"></ion-icon> Secuencia Guardada.',
+			duration: 3500,
+		  });
+		  toast.present();
+
+
 	  }
 
 	onChangePag(event:any) {
