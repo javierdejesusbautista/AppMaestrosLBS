@@ -178,7 +178,7 @@ export class SecuenciasComponent implements OnInit {
 				role: 'confirm',
 				handler: async () => {
 					this.secuenciasIsLoading = true;
-					this.secuenciasService.editSecuencia(this.secuenciaClaveLibro, libro).then(data => { 
+					this.secuenciasService.editSecuencia(this.secuenciaClaveLibro, libroData).then(data => { 
 						if(this.modalVerSecuencia === true) {
 							this.modalVerSecuencia = false;
 						}
