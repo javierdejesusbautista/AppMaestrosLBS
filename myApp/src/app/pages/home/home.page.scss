@@ -277,3 +277,26 @@ ion-breadcrumb {
 	animation: fadeInLeft;
 	animation-duration: 800ms;
 }
+
+
+
+/*Modal */
+#slcModal {
+	font-weight: 500;
+	padding: 0px;
+	border: none;
+	border-color: #f2f6fc;
+	font-size: 15px;
+	font-family: Solitreo;
+	background-color: #f2f6fc;
+	color: #000000;
+}
+
+#label-select-modal {
+	padding-left: 18px;
+	padding-right: 4px;
+	padding-top: 9px;
+	font-size: 15px;
+	font-weight: 500;
+	color: #000000;
+}

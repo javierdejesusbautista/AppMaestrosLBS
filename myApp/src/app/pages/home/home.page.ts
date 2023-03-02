@@ -20,7 +20,6 @@ export class HomePage implements OnInit {
 	selectAcciones: string = '';
 	stateBotonGuardarEditarSecuencia: boolean = false;
 
-
 	nombreLibro: string = '';
 
 	quillModules = {
@@ -64,36 +63,41 @@ export class HomePage implements OnInit {
 	private alertController: AlertController) { }
 
 	ngOnInit() {   	
-		console.log(this.getTokenData('nombre'));
 		
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
 		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
-		console.log(this.datosGenUsuario);
+		
+		this.dataService.locations.subscribe((paginaData: any) =>{
+			console.log(paginaData); 
+			//const { data, secuencia } = paginaData;
+			const { type, data } = paginaData;
 
-		this.dataService.locations.subscribe((paginaData:any) =>{
-		  	//this.numeroPagina$ = typeof pagina === 'object' ? 1 : pagina;
-			const { pagina, secuencia } = paginaData;
-		 	this.pag = parseInt(pagina);
-			const { Id } = this.dataService.libroActual;
-			console.log(secuencia);
-
-			if(this.dataService.estadoModal) {
-				this.stateBotonGuardarEditarSecuencia = false;
-				this.formContenidoSecuencia.setValue('');
-
-				if(secuencia !== undefined) {
-					this.formContenidoSecuencia.setValue(secuencia['data']);
-					this.stateBotonGuardarEditarSecuencia = true;
+			if(type === 'pagina') {
+				this.pag = parseInt(data.pagina.pagina);
+				if(this.dataService.estadoModal) {
+					this.stateBotonGuardarEditarSecuencia = false;
+					this.formContenidoSecuencia.setValue('');
+	
+					if(data.pagina.secuencia !== undefined) {
+						this.formContenidoSecuencia.setValue(data.pagina.secuencia['data']);
+						this.stateBotonGuardarEditarSecuencia = true;
+					}
 				}
 			}
+			if (type === 'totalPaginas') {
+				const totalPaginasLibro = data.totalPaginas.totalPaginas;
+				
+				for (let index = 1; index < totalPaginasLibro; index++) {
+					this.totalPaginas.push(index);
+				}
+			}
+
 
 		});
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
 
-		for (let index = 1; index < this.dataService.totalPaginas; index++) {
-			this.totalPaginas.push(index);
-		}
+		
 		
 	}
 

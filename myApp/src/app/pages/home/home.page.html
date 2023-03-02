@@ -86,14 +86,14 @@
         <ng-template>
             <div style="height: 40px;width: 100%;">
                 <div style="background: #f2f6fc;height: 40px;width: 100%;    display: flex;">
-                    <ion-label style="padding-left: 18px;padding-right: 4px;padding-top: 9px;font-size: 15px;font-weight: 500;">Pagina:</ion-label>
+                    <ion-label id="label-select-modal">Pagina:</ion-label>
                     <ion-buttons style="color:#000000; right: 0;position: absolute;width: 40px;height: 40px;">
                         <ion-button shape="round" fill="clear" (click)="dataService.abrirModal()">
                             <ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
                         </ion-button>
                     </ion-buttons>
-                    <select style="font-weight: 500;padding: 0px;border: none;border-color: #f2f6fc;font-size: 15px;font-family: Solitreo;background-color: #f2f6fc;" id="slcModal" #select name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
-			            <option *ngFor="let pag of totalPaginas">{{pag}}</option>
+                    <select id="slcModal" #select name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
+			            <option *ngFor="let pag of totalPaginas">{{ pag }}</option>
 			        </select>
 					<div lines="none">
 						<p style="margin: auto; margin-top: 8px; margin-left: 25px;color: #000000;">{{dataService.libroActual.Nombre}}</p>

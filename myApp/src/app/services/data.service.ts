@@ -26,11 +26,15 @@ export class DataService {
 
   locations = new Observable((pagina: any) => {
     window.addEventListener('message', (event)=>{
-		if(event.data.totalPaginas) {
-			this.totalPaginas = event.data.totalPaginas;
-		}else {
-			pagina.next(event.data);
-		}
+
+		const dataGeneral = {
+			type: event.data.totalPaginas ? 'totalPaginas' : 'pagina',
+			data: {
+			  [event.data.totalPaginas ? 'totalPaginas' : 'pagina']: event.data
+			}
+		  };
+		  pagina.next(dataGeneral);
+		
     }, false);
 	
 });
