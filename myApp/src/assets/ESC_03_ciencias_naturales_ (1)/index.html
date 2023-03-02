@@ -3258,6 +3258,8 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 
         /*~*/
          /*****CODIGO AGREGADO****/
+         console.log('IDRViewer TotalHojas',IDRViewer.config.pagecount)
+        window.top.postMessage({totalPaginas : IDRViewer.config.pagecount} , '*');
         var message = ["INVALID","ModusEcho","TotalHojas",[IDRViewer.config.pagecount]];
         window.webkit?.messageHandlers.cordova.postMessage(message);
         IDRViewer.goToPage(data.page);
