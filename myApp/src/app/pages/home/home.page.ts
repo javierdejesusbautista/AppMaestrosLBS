@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
 	formContenidoSecuencia: FormControl = new FormControl();
 	pag = 1;
 	numeroPagina$ : any;
-	totalPaginas : any[] = [];
+	totalPaginas : number[] = [];
 	selectAcciones: string = '';
 	stateBotonGuardarEditarSecuencia: boolean = false;
 
@@ -85,9 +85,7 @@ export class HomePage implements OnInit {
 				}
 			}
 			if (type === 'totalPaginas') {
-				const totalPaginasLibro = data.totalPaginas.totalPaginas;
-				
-				for (let index = 1; index < totalPaginasLibro; index++) {
+				for (let index = 1; index <= data.totalPaginas.totalPaginas; index++) {
 					this.totalPaginas.push(index);
 				}
 			}
