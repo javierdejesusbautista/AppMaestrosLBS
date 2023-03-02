@@ -19,12 +19,15 @@ export class SecuenciasComponent implements OnInit {
 
 	libros:any ;
 	secuenciasIsLoading: boolean = false;
+	secuenciasLibroLoading: boolean = false;
 	secuencia: any = [];
+	secuenciaClaveLibro: string;
 
 	modalVerSecuencia = false;
 	isEditarActivo = false;
 
-	librosData$: Observable<any>;
+	librosData: any = [];
+	secuenciasLibro: any = [];
 
 	frmContenido: FormControl;
 		
@@ -86,7 +89,15 @@ export class SecuenciasComponent implements OnInit {
 	*/
 	async getDataSecuencia() {
 		
-		this.secuenciasService.getTodasSecuencias();
+		this.secuenciasService.getLibrosSecuencias().subscribe(data => {
+			
+			data.forEach((doc, index) => {
+				this.librosData[index] = doc.payload.doc.data();
+				this.librosData[index]['claveLibro'] = doc.payload.doc.id;
+			});
+			console.log(this.librosData);
+			this.secuenciasIsLoading = false;
+		});
 		
 		
 		// this.libroService.getLibrosSecuencias().subscribe(res => {
@@ -130,20 +141,12 @@ export class SecuenciasComponent implements OnInit {
 	/**
 	* Boton ver secuencia, abre el moddal
 	*/	
-	verSecuencia(secuencia: any, idLibro?: string) {
-		this.secuencia = secuencia;
-		this.secuencia.idLibro = idLibro;
+	verSecuencia(libro: any, claveLibro: string) {
+		this.secuencia = libro
+		this.secuenciaClaveLibro = claveLibro;
+		this.frmContenido.setValue(this.secuencia.data);
 		console.log(this.secuencia);
 		this.modalState();
-	}
-
-	/**
-	* 
-	* cambia el modal a el formulario quill editor para editar.
-	*/
-	editarSecuencia() {
-		this.secuenciaEditarState();
-		this.frmContenido.setValue(this.secuencia.contenido);
 	}
 
 
@@ -151,7 +154,16 @@ export class SecuenciasComponent implements OnInit {
 	* @param secuenciaId number - Id de la secuencia a editar 
 	* Boton guardar, editar secuencia, crea un alert para despues recargar los datos si se edito.
 	*/
-	async guardarEdited(secuenciaId: string, idLibro: string) {
+	async guardarEdited(libro: any) {
+
+		console.log(libro);
+		console.log(this.frmContenido.getRawValue());
+		console.log(this.secuenciaClaveLibro);
+		
+		const libroData = { ...libro, 
+			data: this.frmContenido.getRawValue() 
+		};
+
 		const alert = await this.alertController.create({
 			subHeader: '¿Desea modificar la secuencia?',
 			buttons: [
@@ -166,7 +178,7 @@ export class SecuenciasComponent implements OnInit {
 				role: 'confirm',
 				handler: async () => {
 					this.secuenciasIsLoading = true;
-					this.libroService.editSecuenciaLibro(secuenciaId, idLibro, this.frmContenido.getRawValue()).subscribe(data => { 
+					this.secuenciasService.editSecuencia(this.secuenciaClaveLibro, libro).then(data => { 
 						if(this.modalVerSecuencia === true) {
 							this.modalVerSecuencia = false;
 						}
@@ -190,7 +202,7 @@ export class SecuenciasComponent implements OnInit {
 	* @returns cotenido html de la secuencia para poder ver correctamente las etiquetas. 
 	*/
 	contenidoSanitized(contenido: any) {
-	return this.domSanitizer.bypassSecurityTrustHtml(contenido);
+		return this.domSanitizer.bypassSecurityTrustHtml(contenido);
 	}
 
 
@@ -222,6 +234,18 @@ export class SecuenciasComponent implements OnInit {
 		
 		
 		console.log('groupedArray', groupedArray);
+	}
+
+	onClickGetSecuencias(libro: any) {
+		this.secuenciasLibro = [];
+		this.secuenciasLibroLoading = true;
+		console.log(libro);
+		this.secuenciasService.getSecuecias(libro.claveLibro).subscribe((data) => {
+			data.forEach((doc, index) => {
+				this.secuenciasLibro[index] = doc.payload.doc.data();
+			});
+			setTimeout(() => this.secuenciasLibroLoading = false, 400);
+		});
 	}
 
 	

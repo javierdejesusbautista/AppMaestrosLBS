@@ -84,6 +84,7 @@ export class HomePage implements OnInit {
 		 	this.pag = parseInt(pagina);
 			const { Id } = this.dataService.libroActual;
 			console.log(secuencia);
+
 			if(this.dataService.estadoModal) {
 				this.stateBotonGuardarEditarSecuencia = false;
 				this.formContenidoSecuencia.setValue('');
@@ -107,7 +108,7 @@ export class HomePage implements OnInit {
 	async addNewSecuencia() {
 		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
 		if(contenidoSecuencia === null) return;
-		const idLibro = this.dataService.libroActual.Id;
+		const { Id, Nombre } = this.dataService.libroActual;
 
 		 const sendDadaLibro = {
 			type: 'addSecuencia',
@@ -116,12 +117,13 @@ export class HomePage implements OnInit {
 				data: this.formContenidoSecuencia.getRawValue(),
 				ejercicio: 0,
 				elemento: `sd_${this.pag}`,
-				libroid: idLibro,
+				libroid: Id,
+				nombreLibro: Nombre,
 				pagina: this.pag
 			}
 		 }
-
-		this.dataService.addSecuencia(sendDadaLibro);
+		 console.log(sendDadaLibro);
+		//this.dataService.addSecuencia(sendDadaLibro);
 		//Si libro existe, solo agregar secuencia, sino agregar informacion del libro y secuencia
 		// this.libroService.getLibroExiste(idLibro).subscribe(resp => {
 		// 	if(resp) {
@@ -182,10 +184,11 @@ export class HomePage implements OnInit {
 							ejercicio: 0,
 							elemento: `sd_${this.pag}`,
 							libroid: 0,
+							nombreLibro: this.dataService.libroActual.Nombre,
 							pagina: this.pag
 						}
 					 };
-
+					 console.log(sendDadaLibro);
 					 this.dataService.addSecuencia(sendDadaLibro);
 				
 				},

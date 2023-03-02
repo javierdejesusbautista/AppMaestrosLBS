@@ -28,3 +28,36 @@ ion-card-header.ios {
 	animation-duration: 800ms;
 }
 
+
+.conatiner-loading-secuencias {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.element-loading-secuencias {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#slcModal {
+	color: #000000; 
+	font-weight: 500;
+	padding: 0px;
+	border: none;
+	border-color: #f2f6fc;
+	font-size: 15px;
+	font-family: Solitreo;
+	background-color: #f2f6fc;
+}
+
+#slc-label {
+	padding-left: 18px;
+	padding-right: 4px;
+	padding-top: 9px;
+	font-size: 15px;
+	font-weight: 500;
+	color: #000000;
+}

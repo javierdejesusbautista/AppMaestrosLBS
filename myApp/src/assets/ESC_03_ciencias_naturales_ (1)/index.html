@@ -503,7 +503,7 @@ var Visor=(function() {
         const idLibro     = Visor.idLibro;
         const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
 
-
+		
         const widgetData = {
                             ...data,
                             userUpdate :  usuario,
@@ -518,6 +518,35 @@ var Visor=(function() {
         .then(()=> console.log)
         .catch(error => console.error("Error adding document: ", error));
     };
+
+	var saveDataFireStoreSecuencia = function(data) {
+		console.log("SavedDataFireStoreSecuencia");
+		const { usuario } = Visor.tokenUser;
+        const idLibro     = Visor.idLibro;
+        const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
+
+		const widgetData = {
+                            ...data,
+                            userUpdate :  usuario,
+                            userCreate :  Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento).length==0 ? usuario : data.usuario
+        };
+
+		Visor.dbFirestore.collection(`${usuario}`)
+						 .doc(claveLibro).set({'nombreLibro': widgetData.nombreLibro})
+		.then(()=> {
+			console.log("doc creado secuencia")
+			Visor.dbFirestore.collection(`${usuario}`)
+							.doc(claveLibro)
+							.collection('secuencias')
+							.doc(widgetData.elemento)
+							.set(widgetData)
+			.then(()=> console.log("doc data creada secuencia"))
+			.catch(error => console.error("Error adding document: ", error));
+		})
+		.catch(error => console.error("Error adding document: ", error));
+
+		
+	};
 
 
     var createObserverData = async function() {
@@ -2962,7 +2991,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 			if(event.data.type === 'addSecuencia') {
 				
 				let secuencia = {...event.data.arguments, libroid: Visor.idLibro};
-				Visor.saveDataFireStore(secuencia);
+				Visor.saveDataFireStoreSecuencia(secuencia);
 			}
 
 			if(event.data.type === 'getSecuencias') {
@@ -3307,6 +3336,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         CargarSopaLetras    : CargarSopaLetras,
         dbFirestore : dbFirestore,
         saveDataFireStore : saveDataFireStore,
+		saveDataFireStoreSecuencia: saveDataFireStoreSecuencia,
         observerData : observerData,
         createObserverData : createObserverData,
         tokenUser : tokenUser,

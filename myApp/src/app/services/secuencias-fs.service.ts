@@ -20,28 +20,33 @@ export class SecuenciasFsService {
 	this.usuario = this.getKeyToken('usuario');
   }
 
-	getTodasSecuencias() {
+	getLibrosSecuencias() {
 		 
-		return this.firestore.collection('prof1a').doc('EC_libro').collection('secuencia').get().subscribe(data => {
-			//console.log(data.id , ' => ', data.data());
+		return this.firestore.collection(this.usuario).snapshotChanges();
 
-			const coll:any = {};
-			data.forEach((doc) => {
-				console.log(doc.id , ' => ', doc.data());
-				coll[doc.id] = doc.data();
-				console.log(coll);
-			});
-		});
+	// 	return this.firestore.collection(`${this.usuario}`).doc('libros').get().subscribe(doc => {
+	// 		if (doc.exists) {
+	// 			console.log("Document data:", doc.data());
+	// 		} else {
+	// 			console.log("No such document!");
+	// 		}
 
-		// return this.firestore.collection(`${this.usuario}`).doc('libros').get().subscribe(doc => {
-		// 	if (doc.exists) {
-		// 		console.log("Document data:", doc.data());
-		// 	} else {
-				
-		// 		console.log("No such document!");
-		// }});
+	// 		console.log(doc.data());
+	// });
 			
 		//return this.firestore.collection(`${this.usuario}/libros}`).valueChanges();
+	}
+
+	getSecuecias(claveLibro: string) {
+		return this.firestore.collection(`${this.usuario}/${claveLibro}/secuencias`).snapshotChanges();
+	}
+
+	editSecuencia(claveLibro: string, libroData: any) {
+		return this.firestore.collection(this.usuario)
+			.doc(claveLibro)
+			.collection('secuencias')
+			.doc(libroData.elemento)
+			.set(libroData);
 	}
 
 	getKeyToken(key: string): string {

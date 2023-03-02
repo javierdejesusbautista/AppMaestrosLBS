@@ -123,6 +123,7 @@ export class FolderComponent implements OnInit {
 		this.dataService.stateIframe = false;
 		this.iframeEstado = false;
 		this.botonesEstado = false;
+		this.dataService.estadoModal = false;
 		this.dataService.setNombreLibroActual('');
 	  }
 
