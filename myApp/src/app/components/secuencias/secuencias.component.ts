@@ -62,11 +62,11 @@ export class SecuenciasComponent implements OnInit {
 
 	
 	 ngOnInit() {
+		console.log("secuencias ominit");
 		this.secuenciasIsLoading = true;
-	 	this.getDataSecuencia();
-
-		
+		this.getDataSecuencia();	
    	}
+
 
 	clickDownloadJSON(){
 		db.table("secuenciaLists").toArray().then(secuenciaLists => {
@@ -88,15 +88,27 @@ export class SecuenciasComponent implements OnInit {
 	* Get data de las secuencias guardadas en decieDB (stogare)
 	*/
 	async getDataSecuencia() {
-		this.secuenciasService.getLibrosSecuencias().subscribe(data => {
-			
-			data.forEach((doc, index) => {
-				this.librosData[index] = doc.payload.doc.data();
-				this.librosData[index]['claveLibro'] = doc.payload.doc.id;
-			});
-			console.log(this.librosData);
+
+		this.secuenciasService.getLibrosCollectionCloudFunction().subscribe( (data: any) => {
+			console.log(data)
+			this.librosData = data.librosColelction;
 			this.secuenciasIsLoading = false;
+			console.log(this.librosData);
 		});
+
+
+		// this.secuenciasService.getLibrosSecuencias().subscribe(data => {
+		// 	data.forEach((doc, index) => {
+		// 		this.librosData[index] = doc.payload.doc.data();
+		// 		this.librosData[index]['claveLibro'] = doc.payload.doc.id;
+		// 	});
+		// 	console.log(this.librosData);
+			
+		// 	setTimeout(() => {
+		// 		this.secuenciasIsLoading = false;
+		// 	}, 400);
+			
+		// });
 	}
 
 	/**
@@ -138,7 +150,6 @@ export class SecuenciasComponent implements OnInit {
 		this.secuencia = libro
 		this.secuenciaClaveLibro = claveLibro;
 		this.frmContenido.setValue(this.secuencia.data);
-		console.log(this.secuencia);
 		this.modalState();
 	}
 
@@ -212,18 +223,23 @@ export class SecuenciasComponent implements OnInit {
 		this.isEditarActivo = !this.isEditarActivo;
 	}
 
-	onClickGetSecuencias(libro: any) {
+	onClickGetSecuencias(claveLibro: any) {
 		this.secuenciasLibro = [];
 		this.secuenciasLibroLoading = true;
-		console.log(libro);
-		this.secuenciasService.getSecuecias(libro.claveLibro).subscribe((data) => {
-			data.forEach((doc, index) => {
-				this.secuenciasLibro[index] = doc.payload.doc.data();
-			});
+
+		this.secuenciasService.getSecuecias(claveLibro).subscribe(data => {
+			this.secuenciasLibro = data.map(doc => doc.payload.doc.data()).filter((secuencia: any) => secuencia.elemento.includes('sd_'));
+			
 			setTimeout(() => this.secuenciasLibroLoading = false, 400);
 		});
+		
 	}
 
+
+	ngOnDestroy() {
+		this.secuenciasIsLoading = true;
+		this.librosData = [];
+	}
 	
 
 }

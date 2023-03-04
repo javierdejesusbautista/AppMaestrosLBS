@@ -15,10 +15,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class FolderComponent implements OnInit {
 
 	botonesEstado = false;
-	acordeonEstado = true;
+	acordeonEstado = false;
 	iframeEstado = false;
 	librosTemp: any[] = [];
 	librosAll: any[] = [];
+	librosLoading: boolean;
 
 	iframeRef: any;
 
@@ -38,16 +39,18 @@ export class FolderComponent implements OnInit {
 	) {}
 
 	ngOnInit() {    
+		console.log("logged ngonint");
 		//this.librosTemp = this.librosService.peticionLibros();
-
+		this.acordeonEstado = false;
+		this.librosLoading = false;
 		this.librosService.getTodosLosLibros().subscribe(libros => {
 			console.log(libros);
 			this.librosTemp = libros;
 			//Agrupo los libros por grado
 			const grades = ['1', '2', '3', '4', '5', '6'];
 			const gradeNames = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
-		
-			this.librosAll = grades.reduce((acc: any[], grade, index) => {
+			
+			 this.librosAll = grades.reduce((acc: any[], grade, index) => {
 				const libros = this.librosTemp.filter(libro => libro.Grados === grade);
 				if(libros.length > 0) {
 					acc.push({'Grados': gradeNames[index], 'Libros': libros});
@@ -56,10 +59,11 @@ export class FolderComponent implements OnInit {
 			}, []);
 
 			// this.librosAll = this.librosAll.map(libro =>  if( libro.Libros.length >= 0) return l );
-
+			this.acordeonEstado = true;
+			this.librosLoading = true;
 			console.log(this.librosAll);
 		});
-
+	
 		this.dataService.stateIframe$.subscribe((data: boolean) => {
 			this.iframeEstado = data;
 			this.acordeonEstado = true;
@@ -88,12 +92,15 @@ export class FolderComponent implements OnInit {
 		});
 	  }
 	
+	 
+
 	  abrirLibro(libro: any){
 		// const mainUrl: string = 'https://desktop.alfalbs.app/books/';
 		// let urlTemp = `${mainUrl}${libro.NombreArchivo}/indexAndroid.html`;
 		//  this.urlLibro = this.domSanitizer.bypassSecurityTrustResourceUrl(urlTemp);
 
 		console.log('abrirLibro', libro);
+		this.librosLoading = true;
 		this.dataService.libroActual = libro;
 		
 		console.log(this.iframe);

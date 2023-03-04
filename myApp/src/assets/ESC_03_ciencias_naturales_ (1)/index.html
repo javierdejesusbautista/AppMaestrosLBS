@@ -506,10 +506,11 @@ var Visor=(function() {
 		
         const widgetData = {
                             ...data,
-                            userUpdate :  usuario,
-                            userCreate :  Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento).length==0 ? usuario : data.usuario
+                            userUpdate : usuario,
+                            userCreate : Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento).length==0 ? usuario : data.userCreate
         };
-
+		console.log(data);
+		console.log(widgetData); 
         Visor.dbFirestore.collection(`${usuario}`)
 						 .doc('libros')
                          .collection(claveLibro)
@@ -2995,18 +2996,9 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 			}
 
 			if(event.data.type === 'addSecuencia') {
-				 
-				const secuenciaData = {
-					secuencia: {
-						...event.data.arguments,
-						libroid: Visor.idLibro
-					},
-					libroGeneral: {
-						...event.data.libroGeneral
-					},
-					nombreLibro: event.data.nombreLibro
-				};
-				Visor.saveDataFireStoreSecuencia(secuenciaData);
+				 console.log(event.data);
+				let secuencia = {...event.data.arguments, libroid: Visor.idLibro};
+				Visor.saveDataFireStore(secuencia);
 			}
 
 			if(event.data.type === 'getSecuencias') {
@@ -3514,6 +3506,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
     body {
         margin: 0;
         padding: 0;
+		cursor: pointer;
     }
 
     .btn {

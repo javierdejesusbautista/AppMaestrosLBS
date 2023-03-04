@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
+import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 
 
 // import { QuillModule } from 'ngx-quill';
@@ -18,6 +18,8 @@ import { SelectScrollDirective } from './directives/select-scroll.directive';;
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -33,7 +35,10 @@ import { AppComponent } from './app.component';
 	FormsModule,
 	HttpClientModule,
 	AngularFireModule.initializeApp(environment.firebase),
-	AngularFirestoreModule
+	AngularFirestoreModule,
+	AngularFireFunctionsModule,
+	NgbToastModule
+
 	//QuillModule.forRoot(),
 ],
   providers: [

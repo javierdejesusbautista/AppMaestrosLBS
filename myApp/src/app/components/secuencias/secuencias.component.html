@@ -3,10 +3,12 @@
 	  <div class="container-loading" *ngIf="secuenciasIsLoading">
 		  <ion-progress-bar type="indeterminate" color="danger"></ion-progress-bar>
 	  </div>
-	  <ion-accordion-group expand="inset" *ngIf="!secuenciasIsLoading	">
+	  <ion-title style="margin-top: 30px;font-size: 30px;font-weight: 500;">Secuencias</ion-title>
+	  <ion-accordion-group expand="inset" *ngIf="!secuenciasIsLoading">
 		  <ion-accordion [value]="i" *ngFor="let libro of librosData; index as i;" >
 			  <ion-item (click)="onClickGetSecuencias(libro)" slot="header" color="light">
-				  <ion-label>{{ libro.grado }}{{ libro.suffix }} - {{ libro.nombreLibro}}</ion-label>
+				  <!-- <ion-label>{{ libro.grado }}{{ libro.suffix }} - {{ libro.nombreLibro}}</ion-label> -->
+				  <ion-label>{{ libro }}</ion-label>
 			  </ion-item>
 			  <ion-grid class="fade-in" slot="content">	
 				<div class="conatiner-loading-secuencias" *ngIf="secuenciasLibroLoading">
@@ -20,8 +22,8 @@
 									<ion-card-subtitle >{{ libro.nombreLibro }}</ion-card-subtitle>
 								</ion-card-header>
 								<ion-card-content>
-									<ion-button (click)="borrarSecuencia(secuencia, libro.claveLibro)" color="danger" size="small" shape="round" fill="solid">Borrar</ion-button>
-									<ion-button (click)="verSecuencia(secuencia, libro.claveLibro)" color="primary" size="small" shape="round" fill="solid">Ver contenido</ion-button>
+									<ion-button (click)="borrarSecuencia(secuencia, libro)" color="danger" size="small" shape="round" fill="solid">Borrar</ion-button>
+									<ion-button (click)="verSecuencia(secuencia, libro)" color="primary" size="small" shape="round" fill="solid">Ver contenido</ion-button>
 								</ion-card-content>
 							</ion-card>
 						</ion-col>      

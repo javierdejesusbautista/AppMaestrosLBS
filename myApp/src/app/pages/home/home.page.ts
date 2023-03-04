@@ -60,14 +60,15 @@ export class HomePage implements OnInit {
 
   constructor(public dataService: DataService,
 	private authService: AuthService,
-	public toastController: ToastController) { }
+	public toastController: ToastController) { 
+
+	}
 
 	ngOnInit() {   	
 		
-		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
-		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
+		console.log("ngoninit", this.getTokenData('nombre'));
 		
-		this.dataService.locations.subscribe((paginaData: any) =>{
+		this.dataService.locations.subscribe((paginaData: any) => {
 			console.log(paginaData); 
 			//const { data, secuencia } = paginaData;
 			const { type, data } = paginaData;
@@ -90,40 +91,47 @@ export class HomePage implements OnInit {
 				}
 			}
 
-
 		});
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
-
 		
 		
 	}
 
-	async addNewSecuencia() {
-		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
-		if(contenidoSecuencia === null) return;
-		const { Id, Nombre } = this.dataService.libroActual;
+	ionViewWillEnter() { 
+		this.appPages[0].activo = true;
+		console.log(this.getTokenData('nombre'));
+		console.log(this.getTokenData('nombre').substring(0,2));
+		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
+		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
 
-		 const sendDadaLibro = {
-			type: 'addSecuencia',
-			functionName: 'addSecuencia',
-			arguments: {
-				data: this.formContenidoSecuencia.getRawValue(),
-				ejercicio: 0,
-				elemento: `sd_${this.pag}`,
-				libroid: Id,
-				nombreLibro: Nombre,
-				pagina: this.pag
-			}
-		 }
-		 console.log(sendDadaLibro);
+	}
 
-		this.dataService.abrirModal();
-	  }
+	// async addNewSecuencia() {
+	// 	const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
+	// 	if(contenidoSecuencia === null) return;
+	// 	const { Id, Nombre } = this.dataService.libroActual;
+
+	// 	 const sendDadaLibro = {
+	// 		type: 'addSecuencia',
+	// 		functionName: 'addSecuencia',
+	// 		arguments: {
+	// 			data: this.formContenidoSecuencia.getRawValue(),
+	// 			ejercicio: 0,
+	// 			elemento: `sd_${this.pag}`,
+	// 			libroid: Id,
+	// 			nombreLibro: Nombre,
+	// 			pagina: this.pag
+	// 		}
+	// 	 }
+	// 	 console.log(sendDadaLibro);
+
+	// 	this.dataService.abrirModal();
+	//   }
 
 	  async guardarSecuencia() {
 		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
-		
+
 		if(contenidoSecuencia === null) return;
 
 		const sendDadaLibro = {
@@ -134,12 +142,8 @@ export class HomePage implements OnInit {
 				ejercicio: 0,
 				elemento: `sd_${this.pag}`,
 				libroid: 0,
-				pagina: this.pag
-			},
-			nombreLibro: this.dataService.libroActual.Nombre,
-			libroGeneral: {
-				grado: this.dataService.libroActual.Grados,
-				suffix: this.dataService.libroActual.Suffix
+				pagina: this.pag,
+				userCreate: this.getTokenData('usuario')
 			}
 		 };
 		 
@@ -160,6 +164,10 @@ export class HomePage implements OnInit {
 
 	
 	chosePage(pageTipo: string) {
+		this.nombreLibro = '';
+		this.dataService.estadoModal = false;
+		this.dataService.setNombreLibroActual('');
+		this.dataService.setStateIframe(false);
 		this.appPages[0].activo = pageTipo === 'libros';
 		this.appPages[1].activo = pageTipo === 'secuencias';
 	}
@@ -167,6 +175,7 @@ export class HomePage implements OnInit {
 	regresarInicio() {
 		console.log("regresar inicio");
 		const cerrarIframe  = false;
+		this.dataService.estadoModal = false;
 		this.chosePage('libros');
 		this.dataService.setNombreLibroActual('');
 		this.dataService.setStateIframe( cerrarIframe );
@@ -189,6 +198,8 @@ export class HomePage implements OnInit {
 	}
 
 	onLogout() {
+		this.appPages[0].activo = false;
+		this.appPages[1].activo = false;
 		this.authService.logout();
 	}
 
@@ -203,6 +214,10 @@ export class HomePage implements OnInit {
 		const value = decodedJwtData[key];
 	
 		return value;
+	}
+
+	ngOnDestroy() {
+
 	}
 
 }

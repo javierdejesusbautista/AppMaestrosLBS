@@ -24,6 +24,9 @@
       "dom"
     ],
     "useDefineForClassFields": false,
+    "types": [
+      "@angular/localize"
+    ],
     "skipLibCheck": true,
   },
   "angularCompilerOptions": {

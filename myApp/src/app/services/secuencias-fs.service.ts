@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 //import 'firebase/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { collection, getDocs } from "firebase/firestore";
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
+//import { collection, getDocs, Firestore } from "firebase/firestore";
 
 import { Observable } from 'rxjs';
 
@@ -16,7 +17,8 @@ export class SecuenciasFsService {
 
 	doc: any;
 
-  constructor(private firestore: AngularFirestore) { 
+  constructor(private firestore: AngularFirestore,
+	private firebaseFunctions: AngularFireFunctions) { 
 	this.usuario = this.getKeyToken('usuario');
   }
 
@@ -25,23 +27,29 @@ export class SecuenciasFsService {
 	}
 
 	getSecuecias(claveLibro: string) {
-		return this.firestore.collection(`${this.usuario}/${claveLibro}/secuencias`).snapshotChanges();
+		return this.firestore.collection(`${this.usuario}/libros/${claveLibro}/`).snapshotChanges();
 	}
 
 	editSecuencia(claveLibro: string, libroData: any) {
 		return this.firestore.collection(this.usuario)
-			.doc(claveLibro)
-			.collection('secuencias')
+			.doc('libros')
+			.collection(claveLibro)
 			.doc(libroData.elemento)
 			.set(libroData);
 	}
 
 	deleteSecuenciaLibro(claveLibro: string, libroData: any) {
 		return this.firestore.collection(this.usuario)
-			.doc(claveLibro)
-			.collection('secuencias')
+			.doc('libros')
+			.collection(claveLibro)
 			.doc(libroData.elemento)
 			.delete();
+	}
+
+
+	getLibrosCollectionCloudFunction() {
+		const librosCollection: any =  this.firebaseFunctions.httpsCallable('getLibrosCollections');
+			return librosCollection({docPath: `${this.usuario}/libros`});
 	}
 
 	getKeyToken(key: string): string {
