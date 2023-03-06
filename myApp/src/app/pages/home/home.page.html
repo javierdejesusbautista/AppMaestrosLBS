@@ -35,8 +35,8 @@
 
 
     <div id="main-content">
+	
         <ion-header>
-
             <ion-toolbar style="font-family: Solitreo !important">
                 <div style="display: flex;justify-content: space-between; width: 100%; overflow-x: auto; overflow-y: hidden;">
                     <ion-item lines="none" style="order: 1;padding-top: 7px;" *ngIf="nombreLibro !== '' && appPages[0].activo" class="slide-in-animation">
@@ -79,8 +79,11 @@
         </ion-header>
         <app-folder *ngIf="appPages[0].activo"></app-folder>
         <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
-
+		
+		
     </div>
+
+	
     <ion-modal id="modal-secuencia" style="--border-radius: 8px;" #modal [style.display]="dataService.displayModal" trigger="open-modal" [isOpen]="dataService.estadoModal" [initialBreakpoint]="0.8" [breakpoints]="[0.8, 0.15]" [backdropDismiss]="false" [backdropBreakpoint]="1"
         handle="false" class="modalService">
         <ng-template>
@@ -119,4 +122,8 @@
             </ion-content>
         </ng-template>
     </ion-modal>
+	
+
 </ion-split-pane>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

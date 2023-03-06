@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController } from '@ionic/angular';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 import { db } from '../../db/db';
 import { LibroService } from '../../services/libro.service';
 import { DataService } from 'src/app/services/data.service';
 import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
-import { Observable } from 'rxjs';
+import { ToastService } from 'src/app/services/toast.service';
 
 
 @Component({
@@ -52,11 +53,9 @@ export class SecuenciasComponent implements OnInit {
 
 
 	constructor(private domSanitizer: DomSanitizer, 
-		private alertController: AlertController, 
-		private formBuilder: FormBuilder,
-		private libroService: LibroService,
-		private dataService: DataService,
-		private secuenciasService: SecuenciasFsService) {
+		private alertController: AlertController,
+		private secuenciasService: SecuenciasFsService,
+		public toastService: ToastService) {
 			this.frmContenido = this.frmContenido ?? new FormControl();
 	 }
 
@@ -132,6 +131,7 @@ export class SecuenciasComponent implements OnInit {
 					this.secuenciasIsLoading = true;
 					this.secuenciasService.deleteSecuenciaLibro(claveLibro, secuencia).then( (res) => {
 						console.log(res);
+						this.toastService.show('Se elimino la secuencia didactica.', { classname: 'bg-danger text-light', delay: 2500 });
 						this.secuenciasIsLoading = false;
 						this.getDataSecuencia();
 					});
@@ -183,6 +183,7 @@ export class SecuenciasComponent implements OnInit {
 				handler: async () => {
 					this.secuenciasIsLoading = true;
 					this.secuenciasService.editSecuencia(this.secuenciaClaveLibro, libroData).then(data => { 
+						this.toastService.show('Cambios realizados.', { classname: 'bg-info text-light', delay: 2500 });
 						if(this.modalVerSecuencia === true) {
 							this.modalVerSecuencia = false;
 						}

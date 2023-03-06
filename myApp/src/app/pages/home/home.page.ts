@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastController } from '@ionic/angular';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -60,7 +60,7 @@ export class HomePage implements OnInit {
 
   constructor(public dataService: DataService,
 	private authService: AuthService,
-	public toastController: ToastController) { 
+	public toastService: ToastService) { 
 
 	}
 
@@ -132,7 +132,11 @@ export class HomePage implements OnInit {
 	  async guardarSecuencia() {
 		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
 
-		if(contenidoSecuencia === null) return;
+		if(contenidoSecuencia === null) {
+			this.toastService.show('Las secuencias didacticas no pueden ir sin texto.', { classname: 'bg-warning text-dark', delay: 3000 });
+			return;
+		} 
+			
 
 		const sendDadaLibro = {
 			type: 'addSecuencia',
@@ -149,11 +153,7 @@ export class HomePage implements OnInit {
 		 
 		 this.dataService.addSecuencia(sendDadaLibro);
 
-		 const toast = await this.toastController.create({
-			message: '<ion-icon name="cloud-done-outline"></ion-icon> Secuencia Guardada.',
-			duration: 3500,
-		  });
-		  toast.present();
+		 this.toastService.show('Secuencia didactica guardada.', { classname: 'bg-success text-light', delay: 3000 });
 
 
 	  }
@@ -219,5 +219,6 @@ export class HomePage implements OnInit {
 	ngOnDestroy() {
 
 	}
+
 
 }

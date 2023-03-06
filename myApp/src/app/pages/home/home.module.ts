@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 
+
 import { IonicModule } from '@ionic/angular';
 
 import { QuillModule } from 'ngx-quill';
@@ -16,6 +17,7 @@ import { HomePage } from './home.page';
 
 import { SelectScrollDirective } from '../../directives/select-scroll.directive';
 
+import { ToastsComponent } from 'src/app/components/toasts/toasts.component';
 import { FolderComponent } from 'src/app/components/folder/folder.component';
 import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.component';
 
@@ -28,7 +30,8 @@ import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.co
 	FormsModule,
 	ReactiveFormsModule,
 	QuillModule.forRoot(),
-	AngularFirestoreModule
+	AngularFirestoreModule,
+	ToastsComponent
   ],
   providers: [
 	FolderComponent

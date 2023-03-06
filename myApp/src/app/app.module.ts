@@ -19,7 +19,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -37,7 +37,7 @@ import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 	AngularFireModule.initializeApp(environment.firebase),
 	AngularFirestoreModule,
 	AngularFireFunctionsModule,
-	NgbToastModule
+	//NgbToastModule
 
 	//QuillModule.forRoot(),
 ],
