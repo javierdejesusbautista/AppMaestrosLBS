@@ -15,7 +15,7 @@ export class AuthInterceptorService {
 		const token: string = localStorage.getItem('USER_INFO')!;
 		let request = req;
 
-		if(!request.url.includes('https://pruebasnek-default-rtdb.firebaseio.com/')) {
+		
 			if (token) {
 				request = req.clone({
 				setHeaders: {
@@ -38,7 +38,7 @@ export class AuthInterceptorService {
 				})
 			);
 
-		}
+		
 		return next.handle(request);
 	}
 

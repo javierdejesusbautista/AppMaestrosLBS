@@ -15,6 +15,7 @@ class txtAreaLbs extends componentBase {
             this._itemLbs = this.shadowRoot.querySelector("textarea");
 
             this.shadowRoot.querySelector("textarea").addEventListener('blur', this._saveData.bind(this));
+            this.shadowRoot.querySelector("textarea").addEventListener('click', this._onClickToFocus.bind(this));
             this.updateStyle(this);
           }
         };
@@ -68,6 +69,10 @@ class txtAreaLbs extends componentBase {
 
         });
     }
+
+	_onClickToFocus() {
+		this.shadowRoot.querySelector("textarea").focus();
+	}
 
     connectedCallback() {
         this.getData();

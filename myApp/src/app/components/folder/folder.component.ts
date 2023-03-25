@@ -20,10 +20,13 @@ export class FolderComponent implements OnInit {
 	librosTemp: any[] = [];
 	librosAll: any[] = [];
 	librosLoading: boolean;
-
+	paginaActual: number = 1;
 	iframeRef: any;
 
 	urlLibro: any;
+
+	fabBtnOpen: boolean = false;
+	fabPageNumberClass: string;
 
 	@ViewChild('iframe') iframe: ElementRef;
      message = {
@@ -63,6 +66,15 @@ export class FolderComponent implements OnInit {
 			this.librosLoading = true;
 			console.log(this.librosAll);
 		});
+
+
+		this.dataService.locations.subscribe((paginaData: any) => { 
+			const { type, data } = paginaData;
+			if(type === 'pagina') {
+				this.paginaActual = parseInt(data.pagina.pagina);
+			}
+		});
+
 	
 		this.dataService.stateIframe$.subscribe((data: boolean) => {
 			this.iframeEstado = data;
@@ -105,10 +117,7 @@ export class FolderComponent implements OnInit {
 		
 		console.log(this.iframe);
 		const { Id } = libro;
-		this.librosService.getSecuenciasLibro(Id).subscribe(secuencias => {
-			console.log(secuencias);
-			//this.dataService.secuenciasLibroActual = secuencias !== undefined ? secuencias : [];
-		});
+		
 		// accion abrir ifrime con link real libro
 		this.dataService.setNombreLibroActual(libro.Nombre);
 		this.iframeEstado = true;
@@ -138,6 +147,25 @@ export class FolderComponent implements OnInit {
 		  FileSaver.saveAs(content, "Example.zip");
 		});
 	  }	
+
+
+	  openFabsMenuLibro() {
+		this.fabBtnOpen = !this.fabBtnOpen;
+		this.fabPageNumberClass = this.fabBtnOpen ? 'traslateY-fab-pagina' : '';
+	  }
+
+	  onBlurFabMenu(event: any) {
+		console.log("onBlurFabMenu", event);
+		// this.fabBtnOpen = true;
+		this.fabPageNumberClass = '';
+	  }
+
+	  /**ACCIONES HACIA EL LIBRO DE FAB BUTTONS */
+
+	  openListaFavoritosYNotas() {
+		console.log("openListaFavoritosYNotasY");	
+	  }
+
 
 	  ngOnDestroy() {
 		// this.dataService.addSecuencia$.unsubscribe();

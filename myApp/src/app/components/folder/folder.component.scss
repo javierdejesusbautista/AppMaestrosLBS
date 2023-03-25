@@ -134,3 +134,18 @@ h6 {
 .contenedorIframe :hover{
 	cursor: pointer;
 }
+
+
+
+/* Fab buttos */
+
+.traslateY-fab-pagina {
+	transform: translateY(-37vh);
+	transition: transform 0.4s ease;
+}
+
+ion-fab-button {
+	--background: #FF5722;
+	--color: #ffffff;
+	--transition: all 1s ease;
+}

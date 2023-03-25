@@ -456,7 +456,7 @@ var Visor=(function() {
                     resolve(Visor.dbFirestoreLocal);*/
 
 
-            Visor.dbFirestore.collection(`${Visor.tokenUser.usuario}/libros/${claveLibro}/data/data`).onSnapshot((querySnapshot) => {
+            Visor.dbFirestore.collection(`${Visor.tokenUser.usuario}/libros/${claveLibro}`).onSnapshot((querySnapshot) => {
                   // Respond to data
                   // ...
                  querySnapshot.docChanges().forEach((change) => {
@@ -489,12 +489,14 @@ var Visor=(function() {
         const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
 
 
-        const widgetData = {...data};
-        
+        const widgetData = {
+                            ...data,
+                            userUpdate :  usuario,
+                            userCreate :  Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento).length==0 ?usuario : data.usuario
+        };
+
         Visor.dbFirestore.doc(`${usuario}/libros`)
                          .collection(claveLibro)
-                         .doc("data")
-                         .collection("data")
                          .doc(widgetData.elemento)
                          .set(widgetData)
         .then(()=> console.log)

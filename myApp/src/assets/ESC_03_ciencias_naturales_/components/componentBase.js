@@ -17,26 +17,49 @@ class componentBase extends HTMLElement {
 
 	_saveData() {
 		console.log("_saveData");
-        const { usuario } = this.Visor.tokenUser;
-        const idLibro     = this.Visor.idLibro;
-        const claveLibro  = this._isAndroid ? parent.IDRViewer.config.fileName.replace(".pdf",'') : IDRViewer.config.fileName.replace(".pdf",'');
+		const promise = new Promise((resolve, reject) => {
+            const { usuario } = this.Visor.tokenUser;
+            const idLibro     = this.Visor.idLibro;
+            const claveLibro  = this._isAndroid ? parent.IDRViewer.config.fileName.replace(".pdf",'') : IDRViewer.config.fileName.replace(".pdf",'');
 
-        const widgetData = {
-            data: this._itemLbs.value, 
-            ejercicio : "0",
-            elemento: this._id,
-            estado : 2,
-            libroid : idLibro,
-            pagina : this._pagina
-        }
-		console.log(widgetData);
-        this.Visor.saveDataFireStore({...widgetData});
-        
-        /*this.Visor.dbFirestore.doc(`${usuario}/libros`)
+            const widgetData = {
+                data: this._itemLbs.value, 
+                ejercicio : "0",
+                elemento: this._id,
+                estado : 2,
+                libroid : idLibro,
+                pagina : this._pagina,
+                ...this._extraFields
+            }
+
+            this.Visor.saveDataFireStore({...widgetData}).then(()=>{
+                resolve("data");
+            }).catch(err => reject(err));
+
+            /*this.Visor.dbFirestore.doc(`${usuario}/libros`)
+                             .collection(claveLibro)
+                             .doc(this._id)
+                             .set(widgetData)
+            .then(()=> console.log)
+            .catch(error => console.error("Error adding document: ", error));*/
+        });
+
+        return promise;
+	}
+
+    _deleteData(){
+        console.log("_deleteData");
+        const { usuario } = Visor.tokenUser;
+        const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
+
+        Visor.dbFirestore.doc(`${usuario}/libros`)
                          .collection(claveLibro)
                          .doc(this._id)
-                         .set(widgetData)
-		.then(()=> console.log)
-        .catch(error => console.error("Error adding document: ", error));*/
+                         .delete()
+        .then(() => {
+            console.log("Document successfully deleted!");
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+        });
     }
 }

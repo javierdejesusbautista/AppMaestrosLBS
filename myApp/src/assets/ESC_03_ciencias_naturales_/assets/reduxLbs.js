@@ -28,8 +28,22 @@ const bookReducer = (state = [],action) => {
   return state;
 };
 
- Visor.store = Redux.createStore(combineReducers({
+const isActiveDynamicNoteReducer = (state = false,action) => {
+	//console.log("bookReducer : ",state,action);
+  console.log(action);
+  if (action.type === "ENABLED_DYNAMICNOTE") {
+  		return action.payload = true;
+  }
+  if (action.type === "DISABLED_DYNAMICNOTE") {
+  		return action.payload = false;
+  }
+
+  return state;
+};
+
+Visor.store = Redux.createStore(combineReducers({
 									bookReducer,
+									isActiveDynamicNoteReducer
 									//reducerCounter
 								}),
 								//{name: "name field"},

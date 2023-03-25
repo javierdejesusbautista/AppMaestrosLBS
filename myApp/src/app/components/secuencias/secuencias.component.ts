@@ -229,8 +229,7 @@ export class SecuenciasComponent implements OnInit {
 		this.secuenciasLibroLoading = true;
 
 		this.secuenciasService.getSecuecias(claveLibro).subscribe(data => {
-			this.secuenciasLibro = data.map(doc => doc.payload.doc.data()).filter((secuencia: any) => secuencia.elemento.includes('sd_'));
-			
+			this.secuenciasLibro = data.map(doc => doc.payload.doc.data()).filter((secuencia: any) => secuencia.elemento.includes('sd_')).sort( (a: any, b:any) => {return a.pagina - b.pagina });
 			setTimeout(() => this.secuenciasLibroLoading = false, 400);
 		});
 		

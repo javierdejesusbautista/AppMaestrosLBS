@@ -19,8 +19,9 @@
 <script src="assets/jquery-3.3.1.slim.min.js"></script>
 <script src="assets/popper.min.js"></script>
 <script src="assets/bootstrap.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.min.js"></script>
+<script src="assets/touch-emulator.js"></script>
+<script src="assets/hammer.min.js"></script>
+<script src="assets/redux.min.js"></script>
 
 
 <!--Componentes LBS-->
@@ -29,15 +30,26 @@
 <script src="components/txtAreaLbs/txtAreaLbs.js"></script>
 <script src="components/encerrarLbs/encerrarLbs.js"></script>
 <script src="components/radioLbs/radioLbs.js"></script>
+<script src="components/notaLbs/notaLbs.js"></script>
+<script src="components/txtNotaLbs/txtNotaLbs.js"></script>
+<script src="components/verNotaLbs/verNotaLbs.js"></script>
+<script src="components/list_notasyfavoritosLbs/list_notasyfavoritosLbs.js"></script>
+<script src="components/relacionarLbs/relacionarLbs.js"></script>
+<script src="components/fotoLbs/fotoLbs.js"></script>
+<script src="components/sopaLetrasLbs/sopaLetrasLbs.js"></script>
+<script src="components/separadorLbs/separadorLbs.js"></script>
+<script src="components/indiceLbs/indiceLbs.js"></script>
+
 
 <script src="assets/dexie.js"></script>
 
 <script type="text/javascript" src="assets/rxjs.umd.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/Draggable.min.js" type="text/javascript"></script>
+
 <script src="assets/firebase-app.js"></script>
 <script src="assets/firebase-firestore.js"></script>
-
-<script src="assets/touch-emulator.js"></script>
 
 <script type="text/javascript">
 
@@ -102,6 +114,8 @@ var Visor=(function() {
          appId: "1:721661318975:web:4094c0e3f064dbdc97258a",
          measurementId: "G-MN7S9M9RLS"
     };
+
+	 localStorage.setItem('USER_INFO', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21icmUiOiJEQU5JRUwiLCJ1c3VhcmlvIjoicHJvZmVzb3IxQSIsImlkIjoiMzQ3MTAiLCJncnVwbyI6IjAiLCJncmFkbyI6IjAiLCJjYW1wdXNpZCI6IjEzIiwiZXNjb2xhcmlkYWQiOiJFbGVtZW50YXJ5IFNjaG9vbCIsInRpcG8iOiJQcm9mZXNvciIsImhvbWUiOiJob21lIiwiYmQiOiJvbW1lZ2EiLCJleHAiOjE3MDk0OTgwMzgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6MjAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MjAwMCJ9.q6nZETJK2KOfX5-qZZ13jDHzqcDruyVCauBlsz7VlJk');
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -473,7 +487,7 @@ var Visor=(function() {
 
             
             console.log("loadDataFirestore");
-            Visor.dbFirestore.collection(`${Visor.tokenUser.usuario}/libros/${claveLibro}/data/data`).onSnapshot((querySnapshot) => {
+            Visor.dbFirestore.collection(`${Visor.tokenUser.usuario}/libros/${claveLibro}`).onSnapshot((querySnapshot) => {
                   // Respond to data
                   // ...
                  querySnapshot.docChanges().forEach((change) => {
@@ -499,22 +513,29 @@ var Visor=(function() {
 
     var saveDataFireStore = function(data) {
 
-        console.log("saveDataFireStore");
-        const { usuario } = Visor.tokenUser;
-        const idLibro     = Visor.idLibro;
-        const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
+        const promise = new Promise((resolve, reject) => {
+            console.log("saveDataFireStore");
+            const { usuario } = Visor.tokenUser;
+            const idLibro     = Visor.idLibro;
+            const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
 
 
-        const widgetData = {...data};
+            const widgetData = {
+                                ...data,
+                                userUpdate :  usuario,
+                                userCreate :  Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento).length==0 ? usuario : data.usuario
+            };
 
-        Visor.dbFirestore.doc(`${usuario}/libros`)
-                         .collection(claveLibro)
-                         .doc("data")
-                         .collection("data")
-                         .doc(widgetData.elemento)
-                         .set(widgetData)
-        .then(()=> console.log)
-        .catch(error => console.error("Error adding document: ", error));
+            Visor.dbFirestore.doc(`${usuario}/libros`)
+                             .collection(claveLibro)
+                             .doc(widgetData.elemento)
+                             .set(widgetData)
+            .then(()=> resolve("save"))
+            .catch(error => reject("Error adding document: ", error));
+            //.catch(error => console.error("Error adding document: ", error));
+        });
+
+        return promise;
     };
 
 
@@ -527,8 +548,8 @@ var Visor=(function() {
 
 
         Visor.observerData =  new Observable((subscriber) => {
-                console.log("subscription observerData")
-                subscriber.next("Listo");
+            console.log("subscription observerData")
+            subscriber.next("Listo");
         });
 
         console.log("subjectData index");
@@ -543,6 +564,8 @@ var Visor=(function() {
             entries.forEach((entry) => {
                if (entry.isIntersecting) {
                   //console.log("se Ve")
+                  entry.target.setAttribute("isShowing","true");
+
                   var videosInPage = entry.target.querySelectorAll(".videoUnidad");
                   videosInPage.forEach(function(item) {
                       item.muted = false;
@@ -552,6 +575,8 @@ var Visor=(function() {
                   });
                } else {
                   //console.log("no se Ve")
+                  entry.target.setAttribute("isShowing","false");
+
                   var videosInPage = entry.target.querySelectorAll(".videoUnidad");
                   videosInPage.forEach(function(item) {
                       item.muted = true;
@@ -561,10 +586,88 @@ var Visor=(function() {
                }
              });
         }, { root: document.getElementById("idrviewer"),
-             rootMargin : "-170px",
+             //rootMargin : "-170px",
+             rootMargin : "-50px",
              threshold: 0 });
     };
 
+    var loadDynamicNote = function(pagina) {
+        // console.log(pagina);
+        const search = Visor.store.getState().bookReducer.filter(a => a.elemento.includes('nota') && a.pagina==pagina);
+
+        search.forEach((note)=>{
+            dibujarNota(note.pagina,note.elemento,note.x,note.y);
+        });
+    }
+
+    var ActivarNotaDinamica = function() { 
+
+        if(Visor.store.getState().isActiveDynamicNoteReducer==false)
+            Visor.store.dispatch({ type: "ENABLED_DYNAMICNOTE", payload: true });
+        else
+            Visor.store.dispatch({ type: "DISABLED_DYNAMICNOTE", payload: false });
+
+        var pages = document.querySelectorAll('[isShowing=true]');
+
+        pages.forEach(function(page) {
+            if(Visor.store.getState().isActiveDynamicNoteReducer) {
+                //page.firstChild.addEventListener("touchstart",handletouchStartNota,false);
+                if(page.hammer === undefined)
+                {
+                    var hammertime = new Hammer(page.firstChild);
+                    hammertime.on('tap', handletouchStartNota);
+                    page.hammer = hammertime;
+                }
+            }
+            else {
+                //page.firstChild.removeEventListener("touchstart", handletouchStartNota, false);
+                page.hammer.off('tap', handletouchStartNota);
+                page.hammer.stop();
+                page.hammer.destroy();
+                page.hammer = undefined;
+            }
+        });
+    };
+
+    var handletouchStartNota = function(evt) { 
+
+        console.log("handletouchStartCanvasNota");
+        var touchobj = evt.srcEvent;
+
+        var rect = evt.target.getBoundingClientRect();
+        var scale = rect.width / evt.target.parentElement.offsetWidth; // scale del elemento actual element p12,p11 etc
+        const currentScale = 1 / parseFloat(scale); //Redimensionamiento
+
+        var x = (touchobj.clientX - rect.left) * currentScale;
+        var y = (touchobj.clientY - rect.top) * currentScale;
+
+        var div = evt.target;
+        var page =evt.target.parentElement.getAttribute("id").replace("p","");
+
+        const noteId = `nota_a_${ new Date().valueOf() }`;
+        dibujarNota(page,noteId,x,y).then(()=>{
+			
+            var newNote = document.getElementById(noteId);
+            var subjectNota  = document.getElementById("notaLbs").showNote(newNote);
+
+            subjectNota.subscribe((data)=>{
+                console.log("subjectNota");
+				if(!data && newNote !== undefined) {
+					console.log(newNote);
+					newNote.remove();
+				} else {
+					newNote = undefined;
+				}
+            });
+
+
+            ActivarNotaDinamica(); //Desactiva la nota dinamica
+        });
+    };
+
+	var mostrarNotasYFavoritosList = function() {
+		document.getElementById("list-notas-favoritos").style.display = 'unset';
+	}
 
     var handleGoBtn = function () {
         IDRViewer.goToPage(parseInt(Button.go.options[Button.go.selectedIndex].value));
@@ -586,7 +689,17 @@ var Visor=(function() {
 
     var handlePageChange = function (data) {
         d('pgCount').innerHTML = getPageString(data.page, data.pagecount);
-        Sidebar.handlePageChange(data.page);
+        
+		const pagSecuencia = `sd_${data.page.toString()}`;
+		const secuenciaActual = Visor.store.getState().bookReducer.find(data => data.elemento === pagSecuencia);
+		const paginaData = {
+			pagina: data.page.toString(),
+			secuencia: secuenciaActual
+		};
+		window.top.postMessage(paginaData , '*');
+
+
+		Sidebar.handlePageChange(data.page);
         Button.go.selectedIndex = data.page - 1;
         var numerodepagina=0;
             Paginascroll=data.page;
@@ -749,15 +862,44 @@ var Visor=(function() {
 
     };
 
-    var dibujarSeparador=function(Pagina){
+	var dibujarSeparador=function(Pagina,ignoreGoToPage){
         var div = document.getElementById('page'+Pagina);
-        div.insertAdjacentHTML("afterbegin",'<div id="separador_'+Pagina+'" class="separador-tablet separador-cel"></div>');
+        if(ignoreGoToPage != true ) {IDRViewer.goToPage(Pagina);}
+
+        if(div.querySelector('separador-lbs') !== null){
+            // SI EXISTE SE LE PASA UN ATRIBUTO PARA QUE SE ELIMINE 
+            
+            var separador = div.querySelector('separador-lbs');
+            separador.setAttribute('borrar', 'y')
+            var divChild = div.children[0];
+            divChild.removeChild(separador);
+        }
+        else {
+            // SI NO EXISTE SE CREA EL COMOPONENTE
+
+            const newDiv = document.createElement("separador-lbs");
+            var divChild = div.children[0];
+            divChild.appendChild(newDiv);
+        }
     };
-    var borrarSeparador=function(Pagina){
-        var pagina = document.getElementById("page"+Pagina);
-        var separador = document.getElementById('separador_'+Pagina);
-        pagina.removeChild(separador);
-    };
+	var cargarSeparador=function(page){
+
+		const search = Visor.store.getState().bookReducer.filter(a => a.elemento.includes('lista'));
+		if(search.length > 0) {
+			// console.log("ENTRO 0 SEARCH")
+			var lista = search[0].data;
+			// console.log(lista);
+		} 
+
+		if(lista.includes(page)){
+			var pagina = lista[lista.indexOf(page)];
+			// console.log("pagina",pagina);
+			
+			Visor.dibujarSeparador(pagina,true);
+
+        }
+
+	}
     var LstSeparadores=function(Lstjson){
         //if (Rayado==true || Subrayar==true)return;
 
@@ -810,6 +952,18 @@ var Visor=(function() {
          document.getElementById('goBtn').value=pagina;
          document.getElementById('goBtn').onchange();
     };
+
+	var mostrarIndicePaginas=function(){
+
+		var modalPaginas = document.getElementById("indicePaginas");
+		modalPaginas.shadowRoot.querySelector(".modal").style.display="inline-block";
+		}
+
+		var mostrarIndiceTitulos=function(){
+
+		var modalTitulos = document.getElementById("indiceTitulos");
+		modalTitulos.shadowRoot.querySelector(".modal").style.display="inline-block";
+	}
      /***************************************************/
      /******************Notas***************************/
     var handleEliminarNota=function(){
@@ -819,9 +973,16 @@ var Visor=(function() {
         var nota = document.getElementById('nota_'+PaginaActual);
         pagina.removeChild(nota);
     };
-    var dibujarNota=function(Pagina){
-        var div = document.getElementById('page'+Pagina);
-        div.insertAdjacentHTML("afterbegin",'<div id="nota_'+Pagina+'" class="nota-cel nota-tablet"><p class="verticaltext">Nota</p></div>');
+    var dibujarNota=function(page,noteId,x,y){
+        /*var div = document.getElementById('page'+Pagina);
+        div.insertAdjacentHTML("afterbegin",'<div id="nota_'+Pagina+'" class="nota-cel nota-tablet"><p class="verticaltext">Nota</p></div>');*/
+        const promise = new Promise((resolve, reject) => {
+            document.getElementById("pg" + page + "Overlay").insertAdjacentHTML("afterend",'<nota-lbs x="' + x + '" y="' + y +'" id="' + noteId + '" pagina="' + page + '" class="t" /></nota-lbs>');
+
+            resolve();
+        });
+
+        return promise;
     };
      /**************************************************/
      /******************Rayado**************************/
@@ -1748,7 +1909,7 @@ var myFunctionDentroLibro= function (div,pagina){
    Estado++;
     var divsplit=div.id.split('_', 3);
    // var point =document.getElementById("iframe"+pagina).contentWindow.document.getElementById("point_"+div.id);
-   var point =document.querySelectorAll('[id2=point_'+div.id+']')
+    var point =document.querySelectorAll('[id2=point_'+div.id+']')
     var recttop = point[0].offsetTop;
     var rectleft=   point[0].offsetLeft;
    if(Estado==1){
@@ -2936,7 +3097,30 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         //Observable para detectar cuando este un video cerca y ponerle play
         createObserver();
         //Visor.createObserverData();
+		window.addEventListener('message', function(event) {
+			// console.log(event);
+			if (event.data.type === 'callFunction') {
+				console.log(event);
+				const [paginaAppMaestros] = event.data.arguments;
+				IDRViewer.goToPage(paginaAppMaestros)
+			}
 
+			if(event.data.type === 'addSecuencia') {
+				 console.log(event.data);
+				let secuencia = {...event.data.arguments, libroid: Visor.idLibro};
+				Visor.saveDataFireStore(secuencia);
+			}
+
+			if(event.data.type === 'getSecuencias') {
+				const eleFiltro = `sd_`;
+				const secuencias = Visor.store.getState().bookReducer.filter(data => data.elemento.includes('sd_'));
+				const sendData = {
+					type: 'getSecuencias',
+					arguments: secuencias
+				}
+				window.top.postMessage(sendData , '*');
+			}
+		});
         /*Genera base de datos*/
 
         db = new Dexie("Libro"+Visor.idLibro);
@@ -3004,6 +3188,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         populateGoBtn(data.page, data.pagecount);
 
         Sidebar.setup(data.page, data.pagecount, data.bounds, data.thumbnailType, data.bookmarks);
+		console.log(data);
         d('pgCount').innerHTML = getPageString(data.page, data.pagecount);
 
         if (IDRViewer.isFullscreenEnabled()) {
@@ -3023,8 +3208,12 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         IDRViewer.on('pagechange', handlePageChange);
         IDRViewer.on('zoomchange', handleZoomUpdate);
         IDRViewer.on('pageload', function(data){
-        //console.log(data)
-        //console.log(Paginascroll);
+              //console.log(data)
+             //console.log(Paginascroll);
+            //dibujarNota();
+			Visor.cargarSeparador(data.page);
+            loadDynamicNote(data.page);
+	
             var inputText=null;
                 try{
                 //Busca todas los input dentro de la caja
@@ -3041,7 +3230,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
                 catch(err){
                     console.log(err);
                 }
-                loadData().then(function (dataDB) {
+                /*loadData().then(function (dataDB) {
                     for (var i = 0; i < inputText.length; i++) {
                         if(inputText[i].nodeName=="IMG"){
                             var DateTime= new Date().getTime();
@@ -3128,7 +3317,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
                             }); //Cierra ciclo foreach cajas de texto
                         }
                     } // Cierre de ciclo for
-                }); //Cierra loadData              
+                }); //Cierra loadData    */
         });
         
         IDRViewer.on('pageunload', function(data){
@@ -3190,6 +3379,8 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 
         /*~*/
          /*****CODIGO AGREGADO****/
+		console.log('IDRViewer TotalHojas',IDRViewer.config.pagecount);
+        window.top.postMessage({totalPaginas : IDRViewer.config.pagecount} , '*');
         var message = ["INVALID","ModusEcho","TotalHojas",[IDRViewer.config.pagecount]];
         window.webkit?.messageHandlers.cordova.postMessage(message);
         IDRViewer.goToPage(data.page);
@@ -3202,14 +3393,19 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         ///////////Separador///////////////////
         cerrarSideBar        : cerrarSideBar,
         dibujarSeparador     : dibujarSeparador,
-        borrarSeparador      : borrarSeparador,
         LstSeparadores       : LstSeparadores,
+        cargarSeparador      : cargarSeparador,
         ////////////Indice/////////////////////
         handleIndice         : handleIndice,
         handleIndiceNative   : handleIndiceNative,
+        mostrarIndicePaginas : mostrarIndicePaginas,
+        mostrarIndiceTitulos : mostrarIndiceTitulos,
         ////////////Notas///////////////////////
         dibujarNota          : dibujarNota,
         handleEliminarNota   : handleEliminarNota,
+        ActivarNotaDinamica  : ActivarNotaDinamica,
+		/////////////Notas y favoritos list//////
+		mostrarNotasYFavoritosList : mostrarNotasYFavoritosList,
         /////////////Rayado//////////////////////
         ActivarRayado        : ActivarRayado,
         dibujarRayado        : dibujarRayado,
@@ -4003,6 +4199,9 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         </div>
       </div>
     </div>
+    <txt-nota-lbs id="notaLbs" class="container animacion"></txt-nota-lbs>
+	<ver-nota-lbs id="verNotaLbs" class="container animacion" style="max-height: 40vh; height: 40vh; box-shadow: 0px 2px 10px 0px rgb(0 0 0 / 69%);"></ver-nota-lbs>
+	<list-notas-y-favoritos class="animacion" id="list-notas-favoritos" tabindex="-1" role="dialog" aria-hidden="true"></list-notas-y-favoritos>
     <div id="snackbar">Esta hoja no esta disponible para rayar</div>
      <script type="text/javascript">
        var DateTime= new Date().getTime();
@@ -4029,17 +4228,22 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
             reduxLbs.setAttribute('src','assets/reduxLbs.js?t='+ DateTime);
             document.head.appendChild(reduxLbs);
 
-            /*var txtLbs = document.createElement('script');
-            txtLbs.setAttribute('src','components/txtLbs/txtLbs.js?t='+ DateTime);
-            document.head.appendChild(txtLbs);*/
+            // var txtLbs = document.createElement('script');
+            // txtLbs.setAttribute('src','components/txtLbs/txtLbs.js?t='+ DateTime);
+            // document.head.appendChild(txtLbs);
 
             preguntas.onload = function(){
                 console.log(Visor.idLibro);
                 Visor.loadDataFirestore().then(data =>{
                     //Visor.createObserverData();
-                    console.log(data);
+                    const deviceType = navigator.userAgent;
+					const isMobile = /android|iphone|kindle|ipad/i.test(deviceType);
+
+					if (!isMobile) {
+						console.log("NO ES MOBILE, carga touch emulator");
+						TouchEmulator();
+					}
                     //Visor.store.dispatch({ type: "INIT_BOOKS", payload: data });
-					TouchEmulator();
                     IDRViewer.setup();
                 });
             }; 

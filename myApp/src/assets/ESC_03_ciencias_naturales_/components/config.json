@@ -2,5 +2,14 @@
 	"encerrarLbs",
 	"radioLbs",
 	"txtAreaLbs",
-	"txtLbs"
+	"txtLbs",
+    "notaLbs",
+    "txtNotaLbs",
+	"relacionarLbs",
+	"fotoLbs",
+	"sopaLetrasLbs",
+	"separadorLbs",
+	"indiceLbs",
+	"verNotaLbs",
+	"list_notasyfavoritosLbs"
 ]

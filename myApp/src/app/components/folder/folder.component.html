@@ -21,12 +21,46 @@
 
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
         <div class="contenedorIframe">
-			<ion-fab slot="fixed" vertical="bottom" horizontal="start" style="padding-bottom: 40px;" *ngIf="botonesEstado">
+			
+			<ion-fab vertical="bottom" horizontal="start" style="margin-bottom: 3rem;" (click)="openFabsMenuLibro()">
+				<ion-fab-button  close-icon="chevron-down"><ion-icon name="chevron-up-outline"></ion-icon></ion-fab-button>
+				<ion-fab-list side="top" [activated]="fabBtnOpen">
+				  <ion-fab-button>
+					<ion-icon name="bookmark"></ion-icon>
+				  </ion-fab-button>
+				  <ion-fab-button (click)="openListaFavoritosYNotas()">
+					<ion-icon name="star"></ion-icon>
+				  </ion-fab-button>
+				  <ion-fab-button>
+					<ion-icon name="list"></ion-icon>
+				  </ion-fab-button>
+				  <ion-fab-button>
+					<ion-icon name="document"></ion-icon>
+				  </ion-fab-button>
+				  <ion-fab-button>
+					<ion-icon name="create"></ion-icon>
+				  </ion-fab-button>
+				  <ion-fab-button>
+					<ion-icon name="sparkles"></ion-icon>
+				  </ion-fab-button>
+				</ion-fab-list>
+			  
+			  </ion-fab>
+
+			  <ion-fab [class]="fabPageNumberClass" vertical="bottom" horizontal="start" style="margin-bottom: 7rem;">
+				<ion-fab-button color="medium">{{ paginaActual}}</ion-fab-button>
+			  </ion-fab>
+			  
+			  <ion-fab [class]="fabPageNumberClass" vertical="bottom" horizontal="start" style="margin-bottom: 11rem;">
+				<ion-fab-button (click)="regresar()" color="medium"><ion-icon name="arrow-undo"></ion-icon></ion-fab-button>
+			  </ion-fab>
+			  <!-- <ion-fab vertical="bottom" horizontal="start" style="padding-bottom: 11rem;" >
 				<ion-fab-button (click)="regresar()" color="medium">
 					<ion-icon name="arrow-undo"></ion-icon>
 				</ion-fab-button>
-			</ion-fab>
-            <iframe id="iframe10" #iframe src="http://localhost:8100/assets/ESC_03_ciencias_naturales_ (1)/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe>
+			</ion-fab> -->
+            <iframe id="iframe10" #iframe src="/assets/ESC_03_ciencias_naturales_/" frameborder="0" style="height: 100%; width: 100%;"></iframe>
+            <!-- <iframe id="iframe10" #iframe [src]="urlLibro" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
         </div>
     </div>
 </ion-content>

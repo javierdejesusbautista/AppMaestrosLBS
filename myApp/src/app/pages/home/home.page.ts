@@ -198,9 +198,14 @@ export class HomePage implements OnInit {
 	}
 
 	onLogout() {
-		this.appPages[0].activo = false;
-		this.appPages[1].activo = false;
-		this.authService.logout();
+		this.dataService.abrirModal();
+		this.dataService.setNombreLibroActual('');
+		this.dataService.setStateIframe( false );
+		setTimeout(() => {
+			this.appPages[0].activo = false;
+			this.appPages[1].activo = false;
+			this.authService.logout();
+		}, 50);
 	}
 
 	getTokenData(key: string) {
