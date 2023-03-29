@@ -48,7 +48,6 @@ class notaLbs extends componentBase {
 						y : this.getAttribute("y"),
 					  };
 
-					  console.log(this.notaData);
 					  this._saveData().then(() => {
 						console.log('nota posicion actualizada');
 					}).catch(err => console.error(err));

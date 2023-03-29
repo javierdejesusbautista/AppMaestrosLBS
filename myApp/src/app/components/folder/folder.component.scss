@@ -144,6 +144,16 @@ h6 {
 	transition: transform 0.4s ease;
 }
 
+.traslateY-fab-crear-nota-activated {
+	transform: translateY(-9vh);
+	transition: 0.4s ease;
+}
+
+.traslateY-fab-crear-nota-desactivated {
+	transform: translateY(0);
+	transition: 0.4s ease;
+}
+
 ion-fab-button {
 	--background: #FF5722;
 	--color: #ffffff;

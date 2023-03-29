@@ -1,3 +1,4 @@
+//import htmlDOC from './player.html'
 class txtLbs extends componentBase {
 
     constructor() {
@@ -12,10 +13,9 @@ class txtLbs extends componentBase {
             txt = xmlhttp.responseText;
             this.shadowRoot.innerHTML = txt;
             this._itemLbs = this.shadowRoot.querySelector("input");
-            this.shadowRoot.querySelector("input").addEventListener('blur', this._saveData.bind(this));
-			this.shadowRoot.querySelector("input").addEventListener("click", this._focusInput.bind(this));
 
-			
+            this.shadowRoot.querySelector("input").addEventListener('blur', this._saveData.bind(this));
+            this.shadowRoot.querySelector("input").addEventListener("click", this._onClickToFocus.bind(this));
             this.updateStyle(this);
           }
         };
@@ -52,6 +52,7 @@ class txtLbs extends componentBase {
 
     loadData(){
         const search = this.Visor.store.getState().bookReducer.filter(a => a.elemento == this._id);
+
         if(search != 0) {
             this._itemLbs.value = search[0].data;
         } 
@@ -70,8 +71,7 @@ class txtLbs extends componentBase {
         });
     }
 
-	_focusInput() {
-		console.log("focus");
+	_onClickToFocus(event) {
 		this.shadowRoot.querySelector("input").focus();
 	}
 

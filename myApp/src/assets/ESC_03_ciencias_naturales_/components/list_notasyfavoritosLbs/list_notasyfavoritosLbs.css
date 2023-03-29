@@ -2,6 +2,7 @@
 	top: 3rem;
 	left: 5%;
 	
+	height: auto;
 	width: 90%;
 	display: none;
 	animation: fadeInUp;
@@ -20,6 +21,10 @@
 	height: calc(80vh - 3rem);
 }
 
+
+.modal-body {
+	padding: 0 !important;
+}
 
 .avatar {
 	height: 1rem;
@@ -57,6 +62,8 @@
 .currentPageThumbnail img, .thumbnail:hover img {
 	border: 1px solid #999;
 }
+
+
 
 #thumbnailPanel.visible, #outlinePanel.visible, #searchPanel.visible {
 	display: inline;
@@ -131,4 +138,20 @@
 		opacity: 0;
 		transform: translate3d(0, 100%, 0);
 	}
+}
+
+.entrance-down {
+	animation: entrance-down !important;
+	animation-duration: 400ms !important;
+	transform-origin: center !important;
+	animation-timing-function: ease-in;
+}
+
+@keyframes entrance-down {
+    0% {
+        transform: scaleY(0.1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
 }

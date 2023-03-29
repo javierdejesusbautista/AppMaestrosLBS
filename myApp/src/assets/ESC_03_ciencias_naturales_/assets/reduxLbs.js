@@ -30,7 +30,7 @@ const bookReducer = (state = [],action) => {
 
 const isActiveDynamicNoteReducer = (state = false,action) => {
 	//console.log("bookReducer : ",state,action);
-  console.log(action);
+//   console.log(action);
   if (action.type === "ENABLED_DYNAMICNOTE") {
   		return action.payload = true;
   }

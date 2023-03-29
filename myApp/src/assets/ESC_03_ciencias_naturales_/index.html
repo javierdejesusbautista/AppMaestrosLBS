@@ -519,13 +519,16 @@ var Visor=(function() {
             const idLibro     = Visor.idLibro;
             const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
 
+			const existData = Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento);
+			const userCreate = existData.length > 0 ? existData[0].userCreate : usuario;
 
             const widgetData = {
                                 ...data,
                                 userUpdate :  usuario,
-                                userCreate :  Visor.store.getState().bookReducer.filter(a => a.elemento == data.elemento).length==0 ? usuario : data.usuario
+                                userCreate :  userCreate
             };
 
+			console.log(widgetData);
             Visor.dbFirestore.doc(`${usuario}/libros`)
                              .collection(claveLibro)
                              .doc(widgetData.elemento)
@@ -650,10 +653,14 @@ var Visor=(function() {
             var newNote = document.getElementById(noteId);
             var subjectNota  = document.getElementById("notaLbs").showNote(newNote);
 
+			
+			window.top.postMessage({type: 'crearNotaActivated'}, '*');
+
             subjectNota.subscribe((data)=>{
                 console.log("subjectNota");
 				if(!data && newNote !== undefined) {
 					console.log(newNote);
+					window.top.postMessage({type: 'crearNotaDesactivated'}, '*');
 					newNote.remove();
 				} else {
 					newNote = undefined;
@@ -693,11 +700,13 @@ var Visor=(function() {
 		const pagSecuencia = `sd_${data.page.toString()}`;
 		const secuenciaActual = Visor.store.getState().bookReducer.find(data => data.elemento === pagSecuencia);
 		const paginaData = {
-			pagina: data.page.toString(),
-			secuencia: secuenciaActual
+			type: 'pagina',
+			arguments: {
+				pagina: data.page.toString(),
+				secuencia: secuenciaActual
+			}
 		};
 		window.top.postMessage(paginaData , '*');
-
 
 		Sidebar.handlePageChange(data.page);
         Button.go.selectedIndex = data.page - 1;
@@ -3120,6 +3129,17 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 				}
 				window.top.postMessage(sendData , '*');
 			}
+
+			/* calls desde fab buttons */
+			if(event.data.type === 'abrirListaNotasYFavoritos') {
+				Visor.mostrarNotasYFavoritosList();
+			}
+
+			if(event.data.type === 'ActivarNotaDinamica') {
+				console.log("ActivarNotaDinamica");
+				Visor.ActivarNotaDinamica();
+			}
+
 		});
         /*Genera base de datos*/
 
@@ -3380,7 +3400,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         /*~*/
          /*****CODIGO AGREGADO****/
 		console.log('IDRViewer TotalHojas',IDRViewer.config.pagecount);
-        window.top.postMessage({totalPaginas : IDRViewer.config.pagecount} , '*');
+        window.top.postMessage({type: 'totalPaginas', arguments: IDRViewer.config.pagecount} , '*');
         var message = ["INVALID","ModusEcho","TotalHojas",[IDRViewer.config.pagecount]];
         window.webkit?.messageHandlers.cordova.postMessage(message);
         IDRViewer.goToPage(data.page);

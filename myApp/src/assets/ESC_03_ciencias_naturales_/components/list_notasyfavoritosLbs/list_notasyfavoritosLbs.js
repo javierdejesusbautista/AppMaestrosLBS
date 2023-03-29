@@ -75,6 +75,9 @@ class List_notasyfavoritosLbs extends componentBase {
 		this._containerFavoritosYListaHandler('notas', 'cerrar');
 		const favoritosListaTemp = Visor.store.getState().bookReducer.filter(a => a.elemento.includes('lista'));
        
+		this.shadowRoot.querySelector('.modal-body').classList.add('entrance-down');
+		// this.classList.add('entrance-down');
+
 		var favoritos;
 		if(favoritosListaTemp.length > 0) {
 			favoritos = favoritosListaTemp[0].data.sort((a, b) => a - b);
@@ -112,6 +115,11 @@ class List_notasyfavoritosLbs extends componentBase {
             bookmarkPanel.appendChild(ele);
         });
 
+
+		setTimeout(() => {
+			this.shadowRoot.querySelector('.modal-body').classList.remove('entrance-down');
+			// this.classList.remove('entrance-down');
+		}, 1000);
 	}
 
 	_btnListaNotasHandler() {
@@ -120,6 +128,7 @@ class List_notasyfavoritosLbs extends componentBase {
 		this._containerFavoritosYListaHandler('favoritos', 'cerrar');
 		const notas = this.Visor.store.getState().bookReducer.filter(elemento => elemento.elemento.includes('nota')).sort((a, b) => a.pagina - b.pagina);; 
 		console.log(notas);
+		this.shadowRoot.querySelector('.modal-body').classList.add('entrance-down');
 
 		const notasLista = notas.reduce((result, item) => {
 			const key = item.pagina;
@@ -140,6 +149,11 @@ class List_notasyfavoritosLbs extends componentBase {
 				element.addEventListener('click', this._irANotaHandler.bind(this));
 			}); 
 		}, 100);
+
+		setTimeout(() => {
+			this.shadowRoot.querySelector('.modal-body').classList.remove('entrance-down');
+			// this.classList.remove('entrance-down');
+		}, 1000);
 	}
 
 
@@ -150,7 +164,7 @@ class List_notasyfavoritosLbs extends componentBase {
 		IDRViewer.goToPage(pagina);
 
 		setTimeout(() => {
-			document.getElementById(idNota).scrollIntoView();
+			document.getElementById(idNota).scrollIntoView({ block: 'center',  behavior: 'smooth' });
 
 			setTimeout(() => {
 
@@ -202,7 +216,7 @@ class List_notasyfavoritosLbs extends componentBase {
 				const listaContent = shadowRoot.querySelector('#data-lista-content');
 				switch (accion) {
 				case 'abrir': {
-					listaContent.style.display = 'unset';
+					listaContent.style.display = '';
 					break;
 				}
 				case 'cerrar': {
@@ -217,7 +231,7 @@ class List_notasyfavoritosLbs extends componentBase {
 				const outlinePanel = shadowRoot.querySelector('#outlinePanel');
 				switch (accion) {
 				case 'abrir': {
-					outlinePanel.style.display = 'unset';
+					outlinePanel.style.display = '';
 					break;
 				}
 				case 'cerrar': {

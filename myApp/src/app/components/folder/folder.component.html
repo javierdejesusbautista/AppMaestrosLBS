@@ -20,40 +20,39 @@
     </ion-accordion-group>
 
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
-        <div class="contenedorIframe">
-			
-			<ion-fab vertical="bottom" horizontal="start" style="margin-bottom: 3rem;" (click)="openFabsMenuLibro()">
-				<ion-fab-button  close-icon="chevron-down"><ion-icon name="chevron-up-outline"></ion-icon></ion-fab-button>
-				<ion-fab-list side="top" [activated]="fabBtnOpen">
-				  <ion-fab-button>
-					<ion-icon name="bookmark"></ion-icon>
-				  </ion-fab-button>
-				  <ion-fab-button (click)="openListaFavoritosYNotas()">
-					<ion-icon name="star"></ion-icon>
-				  </ion-fab-button>
-				  <ion-fab-button>
-					<ion-icon name="list"></ion-icon>
-				  </ion-fab-button>
-				  <ion-fab-button>
-					<ion-icon name="document"></ion-icon>
-				  </ion-fab-button>
-				  <ion-fab-button>
-					<ion-icon name="create"></ion-icon>
-				  </ion-fab-button>
-				  <ion-fab-button>
-					<ion-icon name="sparkles"></ion-icon>
-				  </ion-fab-button>
-				</ion-fab-list>
-			  
-			  </ion-fab>
-
-			  <ion-fab [class]="fabPageNumberClass" vertical="bottom" horizontal="start" style="margin-bottom: 7rem;">
-				<ion-fab-button color="medium">{{ paginaActual}}</ion-fab-button>
-			  </ion-fab>
-			  
-			  <ion-fab [class]="fabPageNumberClass" vertical="bottom" horizontal="start" style="margin-bottom: 11rem;">
-				<ion-fab-button (click)="regresar()" color="medium"><ion-icon name="arrow-undo"></ion-icon></ion-fab-button>
-			  </ion-fab>
+        <div class="contenedorIframe" style="height: 91vh;">
+				<ion-fab [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" (click)="openFabsMenuLibro()" >
+					<ion-fab-button  close-icon="chevron-down"><ion-icon name="chevron-up-outline"></ion-icon></ion-fab-button>
+					<ion-fab-list side="top" [activated]="fabBtnOpen">
+					  <ion-fab-button>
+						<ion-icon name="bookmark"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button (click)="openListaFavoritosYNotas()">
+						<ion-icon name="star"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button>
+						<ion-icon name="list"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button (click)="openActivarNotaDinamica()">
+						<ion-icon name="document"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button>
+						<ion-icon name="create"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button>
+						<ion-icon name="sparkles"></ion-icon>
+					  </ion-fab-button>
+					</ion-fab-list>
+				  
+				  </ion-fab>
+	
+				  <ion-fab [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" style="margin-bottom: 4rem;">
+					<ion-fab-button color="medium">{{ paginaActual}}</ion-fab-button>
+				  </ion-fab>
+				  
+				  <ion-fab [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado  }" vertical="bottom" horizontal="start" style="margin-bottom: 8rem;">
+					<ion-fab-button (click)="regresar()" color="medium"><ion-icon name="arrow-undo"></ion-icon></ion-fab-button>
+				  </ion-fab>
 			  <!-- <ion-fab vertical="bottom" horizontal="start" style="padding-bottom: 11rem;" >
 				<ion-fab-button (click)="regresar()" color="medium">
 					<ion-icon name="arrow-undo"></ion-icon>

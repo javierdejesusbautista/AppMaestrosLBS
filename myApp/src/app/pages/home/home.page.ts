@@ -39,10 +39,6 @@ export class HomePage implements OnInit {
 	};
   
 	datosGenUsuario: any = {};
-//   public appPages = [
-//     { title: 'Libros', url: '/libros/Libro', icon: 'book' },
-//     { title: 'Secuencias', url: '/secuencias/Secuencia', icon: 'bookmarks' },
-//   ];
   
    appPages = [
     { title: 'Libros', icon: 'book-outline', tipo: 'libros', activo: true },
@@ -60,74 +56,41 @@ export class HomePage implements OnInit {
 
   constructor(public dataService: DataService,
 	private authService: AuthService,
-	public toastService: ToastService) { 
+	public toastService: ToastService) { }
 
-	}
-
-	ngOnInit() {   	
-		
-		console.log("ngoninit", this.getTokenData('nombre'));
-		
-		this.dataService.locations.subscribe((paginaData: any) => {
-			console.log(paginaData); 
-			//const { data, secuencia } = paginaData;
-			const { type, data } = paginaData;
-
+	ngOnInit() {
+		this.dataService.locations.subscribe((dataReceived: any) => {
+			const { type, args } = dataReceived;
+			
 			if(type === 'pagina') {
-				this.pag = parseInt(data.pagina.pagina);
+				this.pag = parseInt(args.pagina);
 				if(this.dataService.estadoModal) {
 					this.stateBotonGuardarEditarSecuencia = false;
 					this.formContenidoSecuencia.setValue('');
 	
-					if(data.pagina.secuencia !== undefined) {
-						this.formContenidoSecuencia.setValue(data.pagina.secuencia['data']);
+					if(args.secuencia !== undefined) {
+						this.formContenidoSecuencia.setValue(args.secuencia['data']);
 						this.stateBotonGuardarEditarSecuencia = true;
 					}
 				}
 			}
 			if (type === 'totalPaginas') {
-				for (let index = 1; index <= data.totalPaginas.totalPaginas; index++) {
+				for (let index = 1; index <= args; index++) {
 					this.totalPaginas.push(index);
 				}
 			}
-
 		});
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
-		
-		
 	}
 
 	ionViewWillEnter() { 
 		this.appPages[0].activo = true;
-		console.log(this.getTokenData('nombre'));
-		console.log(this.getTokenData('nombre').substring(0,2));
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
 		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
 
 	}
 
-	// async addNewSecuencia() {
-	// 	const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
-	// 	if(contenidoSecuencia === null) return;
-	// 	const { Id, Nombre } = this.dataService.libroActual;
-
-	// 	 const sendDadaLibro = {
-	// 		type: 'addSecuencia',
-	// 		functionName: 'addSecuencia',
-	// 		arguments: {
-	// 			data: this.formContenidoSecuencia.getRawValue(),
-	// 			ejercicio: 0,
-	// 			elemento: `sd_${this.pag}`,
-	// 			libroid: Id,
-	// 			nombreLibro: Nombre,
-	// 			pagina: this.pag
-	// 		}
-	// 	 }
-	// 	 console.log(sendDadaLibro);
-
-	// 	this.dataService.abrirModal();
-	//   }
 
 	  async guardarSecuencia() {
 		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
@@ -138,7 +101,7 @@ export class HomePage implements OnInit {
 		} 
 			
 
-		const sendDadaLibro = {
+		const sendDataLibro = {
 			type: 'addSecuencia',
 			functionName: 'addSecuencia',
 			arguments: {
@@ -151,7 +114,7 @@ export class HomePage implements OnInit {
 			}
 		 };
 		 
-		 this.dataService.addSecuencia(sendDadaLibro);
+		 this.dataService.addSecuencia(sendDataLibro);
 
 		 this.toastService.show('Secuencia didactica guardada.', { classname: 'bg-success text-light', delay: 3000 });
 

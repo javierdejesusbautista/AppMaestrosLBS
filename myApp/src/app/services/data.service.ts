@@ -1,5 +1,5 @@
-import { ElementRef, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -24,20 +24,15 @@ export class DataService {
 
 	currentIframe: any;
 
-  locations = new Observable((pagina: any) => {
-    window.addEventListener('message', (event)=>{
-
-		const dataGeneral = {
-			type: event.data.totalPaginas ? 'totalPaginas' : 'pagina',
-			data: {
-			  [event.data.totalPaginas ? 'totalPaginas' : 'pagina']: event.data
-			}
-		  };
-		  pagina.next(dataGeneral);
-		
-    }, false);
-	
-});
+	locations = new Observable((pagina: any) => {
+		window.addEventListener('message', (event)=>{
+			const dataFromIndex = {
+				type: event.data.type,
+				args: event.data.arguments
+			}; 
+			pagina.next(dataFromIndex);
+		}, false);
+	});
     
 
   

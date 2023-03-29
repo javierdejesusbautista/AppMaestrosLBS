@@ -27,13 +27,10 @@ export class FolderComponent implements OnInit {
 
 	fabBtnOpen: boolean = false;
 	fabPageNumberClass: string;
+	crearNotasActivated: boolean = false;
+	crearNotasDesativado: boolean = false;
 
 	@ViewChild('iframe') iframe: ElementRef;
-     message = {
-		type: '',
-		functionName : '',
-		arguments: [0]
-	};
   
 	constructor( 
 	  public dataService: DataService,
@@ -41,19 +38,17 @@ export class FolderComponent implements OnInit {
 	  private domSanitizer: DomSanitizer
 	) {}
 
-	ngOnInit() {    
-		console.log("logged ngonint");
-		//this.librosTemp = this.librosService.peticionLibros();
+	ngOnInit() {
 		this.acordeonEstado = false;
 		this.librosLoading = false;
+
 		this.librosService.getTodosLosLibros().subscribe(libros => {
-			console.log(libros);
 			this.librosTemp = libros;
 			//Agrupo los libros por grado
 			const grades = ['1', '2', '3', '4', '5', '6'];
 			const gradeNames = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
 			
-			 this.librosAll = grades.reduce((acc: any[], grade, index) => {
+			this.librosAll = grades.reduce((acc: any[], grade, index) => {
 				const libros = this.librosTemp.filter(libro => libro.Grados === grade);
 				if(libros.length > 0) {
 					acc.push({'Grados': gradeNames[index], 'Libros': libros});
@@ -61,17 +56,23 @@ export class FolderComponent implements OnInit {
 				return acc;
 			}, []);
 
-			// this.librosAll = this.librosAll.map(libro =>  if( libro.Libros.length >= 0) return l );
 			this.acordeonEstado = true;
 			this.librosLoading = true;
-			console.log(this.librosAll);
 		});
 
 
-		this.dataService.locations.subscribe((paginaData: any) => { 
-			const { type, data } = paginaData;
+		this.dataService.locations.subscribe((dataReceived: any) => { 
+			const { type, args } = dataReceived;
 			if(type === 'pagina') {
-				this.paginaActual = parseInt(data.pagina.pagina);
+				this.paginaActual = parseInt(args.pagina);
+			}
+			if(type === 'crearNotaActivated') {
+				this.crearNotasActivated = true;
+			}
+			if(type === 'crearNotaDesactivated') {
+				this.crearNotasDesativado = true;
+				this.crearNotasActivated = false;
+				setTimeout(() => {this.crearNotasDesativado = false}, 400);
 			}
 		});
 
@@ -85,12 +86,12 @@ export class FolderComponent implements OnInit {
 
 		this.dataService.paginaSubejct$.subscribe(value => {
 			console.log(value)
-			this.message = {
+			const message = {
 				type: 'callFunction',
 				functionName: 'nombreDeTuFuncion',
 				arguments: [value]
 			};
-			this.iframe.nativeElement.contentWindow.postMessage( this.message , '*');
+			this.iframe.nativeElement.contentWindow.postMessage( message , '*');
 		});
 
 
@@ -114,9 +115,7 @@ export class FolderComponent implements OnInit {
 		console.log('abrirLibro', libro);
 		this.librosLoading = true;
 		this.dataService.libroActual = libro;
-		
-		console.log(this.iframe);
-		const { Id } = libro;
+		// const { Id } = libro;
 		
 		// accion abrir ifrime con link real libro
 		this.dataService.setNombreLibroActual(libro.Nombre);
@@ -155,7 +154,6 @@ export class FolderComponent implements OnInit {
 	  }
 
 	  onBlurFabMenu(event: any) {
-		console.log("onBlurFabMenu", event);
 		// this.fabBtnOpen = true;
 		this.fabPageNumberClass = '';
 	  }
@@ -163,7 +161,21 @@ export class FolderComponent implements OnInit {
 	  /**ACCIONES HACIA EL LIBRO DE FAB BUTTONS */
 
 	  openListaFavoritosYNotas() {
-		console.log("openListaFavoritosYNotasY");	
+		const message = {
+			type: 'abrirListaNotasYFavoritos',
+			functionName: 'abrirListaNotasYFavoritos',
+			arguments: []
+		};
+		this.iframe.nativeElement.contentWindow.postMessage( message , '*');
+	  }
+
+	  openActivarNotaDinamica() {
+		const message = {
+			type: 'ActivarNotaDinamica',
+			functionName: 'ActivarNotaDinamica',
+			arguments: []
+		}
+		this.iframe.nativeElement.contentWindow.postMessage( message , '*');
 	  }
 
 

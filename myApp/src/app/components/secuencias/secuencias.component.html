@@ -15,7 +15,7 @@
 					<ion-spinner class="element-loading-secuencias" name="dots" color="danger"></ion-spinner>
 				</div>
 				  <ion-row *ngIf="!secuenciasLibroLoading" class="row-cards">
-						<ion-col *ngFor="let secuencia of secuenciasLibro" size-lg="3" size-md="4" size-sm="6" size="12">
+						<!-- <ion-col *ngFor="let secuencia of secuenciasLibro" size-lg="3" size-md="4" size-sm="6" size="12">
 							<ion-card mode="ios">
 								<ion-card-header>
 									<ion-card-title>Pagina: {{ secuencia.pagina }}</ion-card-title>
@@ -26,7 +26,20 @@
 									<ion-button (click)="verSecuencia(secuencia, libro)" color="dark" size="small" shape="round" fill="solid">Ver</ion-button>
 								</ion-card-content>
 							</ion-card>
-						</ion-col>      
+						</ion-col>   -->
+						
+						
+						<ion-list lines="none" style="width: 100%;">
+							<ion-item lines="full" class="item-secuencia" *ngFor="let secuencia of secuenciasLibro">
+								<ion-label>Pagina {{ secuencia.pagina }}</ion-label>
+								<ion-button slot="end" (click)="borrarSecuencia(secuencia, libro)" color="danger" size="small" shape="round" fill="solid">
+									<ion-icon name="trash" class="margin-x-2"></ion-icon>Borrar
+								</ion-button>
+								<ion-button slot="end" (click)="verSecuencia(secuencia, libro)" color="dark" size="small" shape="round" fill="solid">
+									<ion-icon name="eye" class="margin-x-2"></ion-icon>Ver
+								</ion-button>
+							</ion-item>
+						</ion-list>
 					  </ion-row>
 				  </ion-grid>
 		  </ion-accordion>
