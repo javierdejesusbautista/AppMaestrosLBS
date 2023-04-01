@@ -205,3 +205,34 @@ body {
 	animation: fadeIn;
 	animation-duration: 400ms;
 }
+
+
+
+
+/* SCROLL STYLE */
+
+/* Hide Windows scrollbar */
+body::-webkit-scrollbar {
+	width: 0;
+  }
+  
+  /* Add iOS-style scrollbar */
+  body {
+	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
+  }
+  
+  /* Customize iOS-style scrollbar */
+  body::-webkit-scrollbar-track {
+	background-color: transparent;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+  }
+  
+  body::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(0, 0, 0, 0.4);
+  }
+  

@@ -1,7 +1,7 @@
 <ion-content>
-    <form [formGroup]="frmLogin" (ngSubmit)="onLogin()">
-        <ion-grid class="ion-justify-content-center" style="height: 100%;">
-            <ion-row color="primary" class="ion-justify-content-center">
+	<ion-grid class="ion-justify-content-center" style="top: 0; height: 100%; position: fixed;">
+    <form [formGroup]="frmLogin" (ngSubmit)="onLogin()" style="height: 100%;">
+            <ion-row color="primary" class="ion-justify-content-center" style="height: 100%;">
                 <ion-col class="align-self-center" size-md="6" size-lg="5" size-xs="12">
                     <ion-item lines="none">
                         <h1>Perseus.</h1>
@@ -50,6 +50,6 @@
                     </ion-card>
                 </ion-col>
             </ion-row>
-        </ion-grid>
-    </form>
+		</form>
+	</ion-grid>
 </ion-content>

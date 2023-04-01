@@ -40,12 +40,14 @@ class relacionarLbs extends componentBase {
 
     updateStyle(elem) {
         const shadow = elem.shadowRoot;
-
+		const leftCss = this.style.left;
+		const bottomCss = this.style.bottom;
+		
         shadow.querySelector("style").textContent = `
             div {
-                left: ${elem.getAttribute("left")}; 
-                position: absolute; 
-                bottom: ${elem.getAttribute("bottom")}; 
+                left: ${leftCss}; 
+                position: fixed; 
+                bottom: ${bottomCss}; 
                 height: 60px; 
                 width: 60px;
                 z-index:4;

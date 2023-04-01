@@ -157,17 +157,17 @@ class List_notasyfavoritosLbs extends componentBase {
 	}
 
 
-	_irANotaHandler(evt) {
-		const pagina = evt.target.getAttribute('pagina');
-		const idNota = evt.target.getAttribute('nota-id');
+	async _irANotaHandler(evt) {
+		const pagina = evt.target.closest('[pagina]').getAttribute('pagina');
+		const idNota = evt.target.closest('[nota-id]').getAttribute('nota-id');
 		
-		IDRViewer.goToPage(pagina);
-
+		await IDRViewer.goToPage(pagina);
+	
 		setTimeout(() => {
 			document.getElementById(idNota).scrollIntoView({ block: 'center',  behavior: 'smooth' });
 
 			setTimeout(() => {
-
+				
 				document.getElementById(idNota).classList.add('focused');	
 				var eventTouchStart = new Event('touchstart');
 				
