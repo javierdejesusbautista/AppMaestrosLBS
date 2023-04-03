@@ -155,3 +155,20 @@
         transform: scaleY(1);
     }
 }
+
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: 0 0 6px rgba(0,0,0,0.3)  !important;
+	background-color: transparent !important;
+	width: 0  !important;
+}
+
+::-webkit-scrollbar {
+	width: 4px;
+	background-color: transparent  !important;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #000000 !important;
+	border: 2px solid #555555  !important;
+	border-radius: 50px  !important;
+}
