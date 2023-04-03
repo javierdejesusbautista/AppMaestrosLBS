@@ -4,10 +4,10 @@
             <ion-row color="primary" class="ion-justify-content-center" style="height: 100%;">
                 <ion-col class="align-self-center" size-md="6" size-lg="5" size-xs="12">
                     <ion-item lines="none">
-                        <h1>Perseus.</h1>
+                        <h1>App Maestros LBS</h1>
                     </ion-item>
                     <ion-item lines="none">
-                        <p>Donde comienza el cosmos.</p>
+                        <p>...</p>
                     </ion-item>
                 </ion-col>
                 <ion-col size-md="6" size-lg="5" size-xs="12" class="align-self-center">
@@ -31,7 +31,7 @@
                                     <ion-label>Constraseña</ion-label>
                                 </ion-item>
                                 <ion-item  lines="">
-                                    <ion-input class="cajaTexto" formControlName="password" type="password" placeholder="Ingresa tu contraseña">
+                                    <ion-input (keyup.enter)="onLogin()" clear-on-edit="false" class="cajaTexto" formControlName="password" type="password" placeholder="Ingresa tu contraseña">
                                         <ion-icon name="lock-closed-outline" style="padding-right: 16px;"></ion-icon>
                                     </ion-input>
                                 </ion-item>

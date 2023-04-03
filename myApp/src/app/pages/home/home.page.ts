@@ -161,7 +161,7 @@ export class HomePage implements OnInit {
 	}
 
 	onLogout() {
-		this.dataService.abrirModal();
+		this.dataService.estadoModal = false;
 		this.dataService.setNombreLibroActual('');
 		this.dataService.setStateIframe( false );
 		setTimeout(() => {
