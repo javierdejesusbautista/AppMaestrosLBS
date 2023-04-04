@@ -72,6 +72,9 @@ class sopaLetrasLbs extends componentBase {
         }
         `;
 
+        elem.style.cssText += 'touch-action: none';
+        elem.style.cssText += 'display: flex';
+
         this._id = elem.getAttribute("id");
         
         this.observers();
@@ -202,7 +205,7 @@ class sopaLetrasLbs extends componentBase {
             for (var x=0; x<sopas[i].children.length; x++){
 
                 if(sopas[i].children[x].getAttribute('style') != null){
-                    lista.push(sopas[i].getAttribute('id') + '-' + sopas[i].children[x].getAttribute('id') + '-' +sopas[i].children[x].getAttribute('style'));
+                    lista.push(sopas[i].getAttribute('id') + '-' + sopas[i].children[x].getAttribute('index') + '-' +sopas[i].children[x].getAttribute('style'));
                     
                     if(borrando == true){
                         if(uniqueArr1.includes(colores.indexOf(getComputedStyle(sopas[i].children[x]).color)) || usedColors.includes(getComputedStyle(sopas[i].children[x]).color)){
@@ -258,7 +261,7 @@ class sopaLetrasLbs extends componentBase {
 
                 for(var x = 0; x < this.children.length; x++)
 
-                    if(this.children[x].getAttribute("id") == valores[1]){
+                    if(this.children[x].getAttribute("index") == valores[1]){
 
                         this.children[x].setAttribute("style", valores[2]);
                     }
