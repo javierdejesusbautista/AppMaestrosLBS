@@ -43,7 +43,6 @@ class encerrarLbs extends componentBase {
     }
 
     _logicData(){
-        
         const  tipo=this._id.split("_",5);
 
         if(tipo[4]=="u"){
