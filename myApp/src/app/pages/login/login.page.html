@@ -1,70 +1,65 @@
 <ion-content>
-        <ion-grid class="ion-justify-content-center" style="height: 100%;">
-        
-                <ion-row color="primary" class="ion-justify-content-center" style="height: 100%;">
-                    <ion-col class="align-self-center" size-md="6" size-lg="5" size-xs="12">
-                        <ion-item lines="none">
-                            <h1>PerseusApp</h1>
-                        </ion-item>
-                        <ion-item lines="none">
-                            <p>Donde inicia el cosmos</p>
-                        </ion-item>
-                    </ion-col>
-                    <ion-col size-md="6" size-lg="5" size-xl="4" size-xs="12" class="align-self-center">
-                        <form [formGroup]="frmLogin" (ngSubmit)="onLogin()" >
-                        <ion-card>
-                            <div class="ion-padding">
-                                <ion-list style="padding: 50px 70px 50px 70px;">
-                                    <ion-item lines="none" style="text-align: center;">
-                                        <ion-label>
-                                            <h1 style="font-weight: bold;">Bienvenido(a)!</h1>
-                                        </ion-label>
-                                    </ion-item>
-                                    <ion-item lines="none">
-                                        <ion-label>Usuario</ion-label>
-                                    </ion-item>
-                                    <ion-item style="padding-bottom: 16px;">
-                                        <ion-input class="cajaTexto" formControlName="usuario" type="email" placeholder="Ingresa tu usuario">
-                                            <ion-icon name="person-outline" style="padding-right: 16px;"></ion-icon>
-                                        </ion-input>
-                                    </ion-item>
-                                    <ion-item lines="none">
-                                        <ion-label>Constraseña</ion-label>
-                                    </ion-item>
-                                    <ion-item  lines="">
-                                        <ion-input (keyup.enter)="onLogin()" clear-on-edit="false" class="cajaTexto" formControlName="password" type="password" placeholder="Ingresa tu contraseña">
-                                            <ion-icon name="lock-closed-outline" style="padding-right: 16px;"></ion-icon>
-                                        </ion-input>
-                                    </ion-item>
-                                    <ion-item lines="none" style="padding-top: 16px">
-                                        <div class="ion-padding" style="width: 100%;">
-                                            <ion-button shape="round" style="                                            height: 48px;
-                                            --background: #F4315D;
-                                            --background-activated: #f76e8d;
-                                            --background-focused: #f76e8d;
-                                            --background-hover: #f76e8d;" size="large" type="submit" expand="block">Entrar</ion-button>
-                                        </div>
-                                    </ion-item>
-                                </ion-list>
-                            </div>
-                        </ion-card>
-                    </form>
-                    </ion-col>
-                </ion-row>
-                
-            </ion-grid>
-            <!-- <ion-row style="position: fixed; bottom: 0; width: 100%;">
-                <ion-col>
-                    <div >
+    <ion-grid class="ion-justify-content-center" style="height: 100%;">
+        <ion-row color="primary" class="ion-justify-content-center" style="height: 100%;">
+            <ion-col class="align-self-center" size-md="6" size-lg="5" size-xs="12">
+                <ion-item lines="none" class="no-padding">
+                    <div class="center-custom" >
+                        <span style="font-size: 60px; font-weight: 500;">Perseus</span><span style="font-size: 60px; font-weight: 900; color: #F4315D;">App</span>
+                    </div><br>
+                </ion-item>
+                <ion-item lines="none" class="no-padding">
+                    <div class="center-custom">
+                        <p>Donde comienza un nuevo cosmos</p>
                     </div>
-                    
-                </ion-col>
-            </ion-row> -->
-        
-    </ion-content>
-    <ion-footer class="ion-no-border">
-        <ion-toolbar style="--color: #ffffff;--background: #F4315D !important; bottom: 0px; width: 100%; text-align: center; align-items: center;">
-            <p style="font-weight: bold; margin: 0px auto; padding: 10px;">Derechos de autor de LBS+</p>
-            
+                </ion-item>
+            </ion-col>
+            <ion-col size-md="6" size-lg="5" size-xl="4" size-xs="12" class="align-self-center">
+                <form [formGroup]="frmLogin" (ngSubmit)="onLogin()" >
+                    <ion-card>
+                        <div class="ion-padding">
+                            <ion-list style="padding: 50px 50px 50px 50px;">
+                                <ion-item lines="none" style="text-align: center;">
+                                    <ion-label>
+                                        <h1 style="font-weight: bold;">Bienvenido(a)!</h1>
+                                    </ion-label>
+                                </ion-item>
+                                <ion-item lines="none">
+                                    <ion-label>Usuario</ion-label>
+                                </ion-item>
+                                <ion-item style="padding-bottom: 16px;">
+                                    <ion-input fill="outline" class="cajaTexto" formControlName="usuario" type="email" placeholder="Ingresa tu usuario">
+                                        <ion-icon name="person-outline" style="padding-right: 16px;"></ion-icon>
+                                    </ion-input>
+                                </ion-item>
+                                <ion-item lines="none">
+                                    <ion-label>Constraseña</ion-label>
+                                </ion-item>
+                                <ion-item  lines="">
+                                    <ion-input (keyup.enter)="onLogin()" clear-on-edit="false" class="cajaTexto" formControlName="password" type="password" placeholder="Ingresa tu contraseña">
+                                        <ion-icon name="lock-closed-outline" style="padding-right: 16px;"></ion-icon>
+                                    </ion-input>
+                                </ion-item>
+                                <ion-item lines="none" style="padding-top: 16px">
+                                    <div class="ion-padding" style="width: 100%;">
+                                        <ion-button shape="round" style="
+                                        height: 48px;
+                                        --background: #F4315D;
+                                        --background-activated: #f76e8d;
+                                        --background-focused: #f76e8d;
+                                        --background-hover: #f76e8d;" size="large" type="submit" expand="block">Entrar</ion-button>
+                                    </div>
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                    </ion-card>
+                </form>
+            </ion-col>
+        </ion-row>   
+    </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+    <ion-toolbar style="--color: #ffffff;--background: #F4315D !important; bottom: 0px; width: 100%; text-align: center; align-items: center;">
+        <p style="font-weight: bold; margin: 0px auto; padding: 10px; position: relative; left: -26%;">Derechos de autor de LBS+</p>
     </ion-toolbar>
-  </ion-footer>
+</ion-footer>

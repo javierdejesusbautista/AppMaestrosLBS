@@ -8,3 +8,13 @@ ion-grid ion-row {
 	margin: 0 auto;
 	width: 96%;
 }
+
+.no-padding { 
+	--padding-end: 0; 
+	--padding-start: 0;
+}
+
+.center-custom {
+	margin-left: 7%;
+	margin-right: auto;
+}
