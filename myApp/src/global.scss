@@ -155,6 +155,21 @@ ion-header {
     src: url('./assets/fonts/canva2.woff2')
 }
 
+.color-primary-bg {
+	--background-color: #6228cf;
+}
+
+.color-primary-shade {
+	--ion-color-primary-shade: #5623b6;
+}
+
+.color-primary-tint {
+	--ion-color-primary-tint: #723ed4;
+}
+
+.color-primary-contrast {
+	--ion-color-primary-contrast: #ffffff;
+}
 
 /* Ancho del scroll */
 

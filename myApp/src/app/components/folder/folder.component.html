@@ -7,11 +7,11 @@
     <ion-accordion-group style="margin-right: 40px;" expand="inset" *ngIf="acordeonEstado">
 
         <ion-accordion class="fade-in" *ngFor="let grado of librosAll; index as i;" [value]="i">
-            <ion-item slot="header" color="light">
+            <ion-item slot="header" color="light" style="--background-hover: #6228cf;">
                 <ion-label style="font-weight: 500;">{{ grado.Grados }} Grado</ion-label>
             </ion-item>
-            <div class="fade-in-down" *ngFor="let libro of grado.Libros;" slot="content">
-                <ion-item button slot="content" (click)="abrirLibro(libro)">
+            <div class="fade-in-down" *ngFor="let libro of grado.Libros;;" slot="content">
+                <ion-item button slot="content" (click)="abrirLibro(libro)" style="--background-hover: #6228cf;">
                     <ion-label style="padding-left: 20px;">{{ libro.Nombre }}</ion-label>
                 </ion-item>
             </div>
@@ -22,7 +22,7 @@
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
         <div class="contenedorIframe" style="height: 91vh;">
 				<ion-fab [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" (click)="openFabsMenuLibro()" >
-					<ion-fab-button  close-icon="chevron-down"><ion-icon name="chevron-up-outline"></ion-icon></ion-fab-button>
+					<ion-fab-button size="small" close-icon="chevron-down"><ion-icon name="chevron-up-outline"></ion-icon></ion-fab-button>
 					<ion-fab-list side="top" [activated]="fabBtnOpen">
 					  <ion-fab-button>
 						<ion-icon name="bookmark"></ion-icon>
@@ -46,20 +46,21 @@
 				  
 				  </ion-fab>
 	
-				  <ion-fab [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" style="margin-bottom: 4rem;">
-					<ion-fab-button color="medium">{{ paginaActual}}</ion-fab-button>
+				  <ion-fab size="small" (click)="abrirIndice()" [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" style="margin-bottom: 3rem;">
+					<ion-fab-button size="small" color="medium">{{ paginaActual}}</ion-fab-button>
 				  </ion-fab>
 				  
-				  <ion-fab [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado  }" vertical="bottom" horizontal="start" style="margin-bottom: 8rem;">
-					<ion-fab-button (click)="regresar()" color="medium"><ion-icon name="arrow-undo"></ion-icon></ion-fab-button>
+				  <ion-fab [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado  }" vertical="bottom" horizontal="start" style="margin-bottom: 6rem;">
+					<ion-fab-button size="small" (click)="regresar()" color="medium"><ion-icon name="arrow-undo"></ion-icon></ion-fab-button>
 				  </ion-fab>
-			  <!-- <ion-fab vertical="bottom" horizontal="start" style="padding-bottom: 11rem;" >
+			  <!-- <ion-fab vertical="bottom" horizontal="s|tart" style="padding-bottom: 11rem;" >
 				<ion-fab-button (click)="regresar()" color="medium">
 					<ion-icon name="arrow-undo"></ion-icon>
 				</ion-fab-button>
 			</ion-fab> -->
-            <iframe id="iframe10" #iframe src="/assets/ESC_03_ciencias_naturales_/" frameborder="0" style="height: 100%; width: 100%;"></iframe>
-            <!-- <iframe id="iframe10" #iframe [src]="urlLibro" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
+            <!-- <iframe id="iframe10" #iframe src="/assets/ESC_01_science_v2/" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
+            
+            <iframe id="iframe10" #iframe [src]="urlLibrodev" frameborder="0" style="height: 100%; width: 100%;"></iframe>
         </div>
     </div>
 </ion-content>

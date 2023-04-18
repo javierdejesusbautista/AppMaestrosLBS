@@ -1,13 +1,13 @@
 <ion-split-pane when="xs" contentId="main-content">
-    <ion-menu style="border-color: white;    margin-right: 0px;z-index: 10;" contentId="main-content" type="overlay">
-        <ion-header>
+    <ion-menu style="border-color: white; margin-right: 0px;z-index: 10;" contentId="main-content" type="overlay">
+        <ion-header style="border-bottom: 1px solid var(--ion-color-step-150, #6228cf);">
             <span>
 				<img style="padding: 17px 0px 0px 26px;" src="https://static.canva.com/web/images/12487a1e0770d29351bd4ce4f87ec8fe.svg" alt="" role="presentation">
 			</span>
 
         </ion-header>
         <ion-content style="font-family: Solitreo !important;">
-            <ion-list id="inbox-list">
+            <ion-list id="inbox-list" style="border-bottom: 1px solid var(--ion-color-step-150, #6228cf)">
                 <ion-list-header style="padding-bottom: 20px;">
                     <div class="parent">
                         <div class="div1">
@@ -35,15 +35,15 @@
 
 
     <div id="main-content">
-	
-        <ion-header>
+		
+        <ion-header style="border-bottom: 1px solid var(--ion-color-step-150, #6228cf);">
             <ion-toolbar style="font-family: Solitreo !important">
                 <div style="display: flex;justify-content: space-between; width: 100%; overflow-x: auto; overflow-y: hidden;">
-                    <ion-item lines="none" style="order: 1;padding-top: 7px;" *ngIf="nombreLibro !== '' && appPages[0].activo" class="slide-in-animation">
-                        <ion-select interface="popover" [ngModel]="selectAcciones" (ionDismiss)="cleanSelectDropDown()" (ionChange)="selectDropDown( $event )" selected-text="Acciones" placeholder="Acciones">
-                            <ion-select-option value="crear-secuencia">Crear Secuencia</ion-select-option>
-                            <ion-select-option value="descargar-zip">Descargar zip</ion-select-option>
-                            <ion-select-option value="otros">Otros</ion-select-option>
+                    <ion-item lines="none" style="--background-hover: #6228cf; order: 1;padding-top: 7px;" *ngIf="nombreLibro !== '' && appPages[0].activo" class="slide-in-animation">
+                        <ion-select interface="popover" style="--background-hover: #6228cf;" [ngModel]="selectAcciones" (ionDismiss)="cleanSelectDropDown()" (ionChange)="selectDropDown( $event )" selected-text="Acciones" placeholder="Acciones">
+                            <ion-select-option style="--background-hover: #6228cf;" value="crear-secuencia">Crear Secuencia</ion-select-option>
+                            <ion-select-option style="--background-hover: #6228cf;" value="descargar-zip">Descargar zip</ion-select-option>
+                            <ion-select-option style="--background-hover: #6228cf;" value="otros">Otros</ion-select-option>
                         </ion-select>
                     </ion-item>
                     <ion-breadcrumbs style="order: 2;margin-top: 10px; flex: 1; white-space: nowrap;flex-wrap: nowrap;">
@@ -62,8 +62,8 @@
                             <ng-template>
                                 <ion-content>
                                     <ion-list lines="none">
-                                        <ion-item [button]="true" [detail]="false">Otros</ion-item>
-                                        <ion-item [button]="true" [detail]="false" (click)="onLogout()">Cerrar sesión</ion-item>
+                                        <ion-item style="--background-hover: #6228cf;" [button]="true" [detail]="false">Otros</ion-item>
+                                        <ion-item style="--background-hover: #6228cf;" [button]="true" [detail]="false" (click)="onLogout()">Cerrar sesión</ion-item>
                                     </ion-list>
                                 </ion-content>
                             </ng-template>

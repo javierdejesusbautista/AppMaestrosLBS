@@ -140,7 +140,7 @@ h6 {
 /* Fab buttos */
 
 .traslateY-fab-pagina {
-	transform: translateY(-37vh);
+	transform: translateY(-34vh);
 	transition: transform 0.4s ease;
 }
 
@@ -158,4 +158,13 @@ ion-fab-button {
 	--background: #FF5722;
 	--color: #ffffff;
 	--transition: all 1s ease;
+}
+
+
+.btn-fab-regresar {
+	margin-bottom: 6rem;
+}
+
+.btn-fab-pagina-number {
+	margin-bottom: 3rem;
 }

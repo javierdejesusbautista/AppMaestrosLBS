@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import * as JSZip from 'jszip';
 import * as FileSaver from 'file-saver';
 
@@ -30,6 +30,21 @@ export class FolderComponent implements OnInit {
 	crearNotasActivated: boolean = false;
 	crearNotasDesativado: boolean = false;
 
+	urlLibroLocal: any;
+	urlLibrodev: any;
+	librosLocal: any[] = [ {
+			Nombre: 'ESC_01_science_v2',
+			ruta: 'assets/'
+		}, {
+			Nombre: 'ESC_03_matematicas_v2',
+			ruta: 'assets/',
+		}, {
+			Nombre: 'ESC_06_historia_v2',
+			ruta: 'assets/',
+		}
+
+	];
+
 	@ViewChild('iframe') iframe: ElementRef;
   
 	constructor( 
@@ -44,9 +59,10 @@ export class FolderComponent implements OnInit {
 
 		this.librosService.getTodosLosLibros().subscribe(libros => {
 			this.librosTemp = libros;
+			console.log(libros)
 			//Agrupo los libros por grado
-			const grades = ['1', '2', '3', '4', '5', '6'];
-			const gradeNames = ['1st', '2nd', '3rd', '4th', '5th', '6th'];
+			const grades = ['0', '1', '2', '3', '4', '5', '6'];
+			const gradeNames = ['0', '1st', '2nd', '3rd', '4th', '5th', '6th'];
 			
 			this.librosAll = grades.reduce((acc: any[], grade, index) => {
 				const libros = this.librosTemp.filter(libro => libro.Grados === grade);
@@ -55,6 +71,8 @@ export class FolderComponent implements OnInit {
 				}
 				return acc;
 			}, []);
+
+			console.log(this.librosAll);
 
 			this.acordeonEstado = true;
 			this.librosLoading = true;
@@ -108,10 +126,16 @@ export class FolderComponent implements OnInit {
 	 
 
 	  abrirLibro(libro: any){
-		// const mainUrl: string = 'https://desktop.alfalbs.app/books/';
-		// let urlTemp = `${mainUrl}${libro.NombreArchivo}/indexAndroid.html`;
-		//  this.urlLibro = this.domSanitizer.bypassSecurityTrustResourceUrl(urlTemp);
+		const mainUrl: string = 'https://teacher.alfalbs.app/books/';
+		let urlTemp = `${mainUrl}${libro.NombreArchivo}/index.html`;
 
+		let urlTempdev = `${mainUrl}${libro.NombreArchivo.split("_prueba")[0]}/index.html`;
+		
+		console.log("url libro", urlTempdev);
+		console.log("nombrelibro:",libro.NombreArchivo.split("_prueba")[0] );
+
+		this.urlLibrodev = this.domSanitizer.bypassSecurityTrustResourceUrl(urlTempdev);
+		
 		console.log('abrirLibro', libro);
 		this.librosLoading = true;
 		this.dataService.libroActual = libro;
@@ -136,6 +160,8 @@ export class FolderComponent implements OnInit {
 		this.botonesEstado = false;
 		this.dataService.estadoModal = false;
 		this.dataService.setNombreLibroActual('');
+		this.fabPageNumberClass = '';
+		
 	  }
 
 	
@@ -145,7 +171,16 @@ export class FolderComponent implements OnInit {
 		zip.generateAsync({ type: "blob" }).then(function (content) {
 		  FileSaver.saveAs(content, "Example.zip");
 		});
-	  }	
+	  }
+
+	  abrirIndice() {
+		const message = {
+			type: 'abrirIndice',
+			functionName: 'abrirIndice',
+			arguments: []
+		}
+		this.iframe.nativeElement.contentWindow.postMessage( message , '*');
+	  }
 
 
 	  openFabsMenuLibro() {

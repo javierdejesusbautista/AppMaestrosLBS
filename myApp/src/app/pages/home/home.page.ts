@@ -1,6 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
+
+// import * as QuillNamespace from 'quill';
+// import ImageCompress from 'quill-image-compress';
+
+// let Quill: any = QuillNamespace;
+// 	Quill.register('modules/imageCompress', ImageCompress);
+
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -20,7 +27,11 @@ export class HomePage implements OnInit {
 	selectAcciones: string = '';
 	stateBotonGuardarEditarSecuencia: boolean = false;
 
+	
+
 	nombreLibro: string = '';
+
+	// quill = new Quill();
 
 	quillModules = {
 		'toolbar': [
@@ -36,7 +47,17 @@ export class HomePage implements OnInit {
 
 			['link', 'image', 'video'],	// link and image, video
 		]
+		// ,
+		// 'ImageCompress':  {
+		// 		quality: 0.7, // default
+		// 		maxWidth: 1000, // default
+		// 		maxHeight: 1000, // default
+		// 		imageType: 'image/jpeg', // default
+		// 		debug: true, // default
+		// 	}
+		
 	};
+
   
 	datosGenUsuario: any = {};
   
@@ -56,9 +77,24 @@ export class HomePage implements OnInit {
 
   constructor(public dataService: DataService,
 	private authService: AuthService,
-	public toastService: ToastService) { }
+	public toastService: ToastService) { 
+
+		
+	}
 
 	ngOnInit() {
+		// this.quill = new Quill( '#quillText',{
+		// 	...this.quillModules,
+		// 	modules:  {
+		// 		ImageCompress:  {
+		// 			quality: 0.7, // default
+		// 			maxWidth: 1000, // default
+		// 			maxHeight: 1000, // defaultz
+		// 			imageType: 'image/jpeg', // default
+		// 			debug: true, // default
+		// 		}
+		// 	}
+		// })
 		this.dataService.locations.subscribe((dataReceived: any) => {
 			const { type, args } = dataReceived;
 			
