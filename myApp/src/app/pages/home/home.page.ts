@@ -1,16 +1,16 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-
-// import * as QuillNamespace from 'quill';
-// import ImageCompress from 'quill-image-compress';
-
-// let Quill: any = QuillNamespace;
-// 	Quill.register('modules/imageCompress', ImageCompress);
-
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
+
+
+import * as QuillNamespace from 'quill';
+import ImageCompress from 'quill-image-compress';
+let Quill: any = QuillNamespace;
+ Quill.register('modules/imageCompress', ImageCompress);
+
 
 @Component({
   selector: 'app-home',
@@ -46,15 +46,16 @@ export class HomePage implements OnInit {
 			[{ 'align': [] }],
 
 			['link', 'image', 'video'],	// link and image, video
-		]
-		// ,
-		// 'ImageCompress':  {
-		// 		quality: 0.7, // default
-		// 		maxWidth: 1000, // default
-		// 		maxHeight: 1000, // default
-		// 		imageType: 'image/jpeg', // default
-		// 		debug: true, // default
-		// 	}
+		],
+		imageCompress: {
+			quality: 0.7, // default
+			maxWidth: 1000, // default
+			maxHeight: 1000, // default
+			imageType: 'image/jpeg', // default
+			debug: true, // default
+			suppressErrorLogging: false, // default
+			insertIntoEditor: undefined, // default
+		  }
 		
 	};
 

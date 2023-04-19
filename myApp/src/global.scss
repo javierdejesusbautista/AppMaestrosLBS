@@ -221,3 +221,14 @@ body {
 	animation-duration: 400ms;
 }
 
+
+.shadow-hover:hover {
+	box-shadow: 0px 0px 10px #6228cf;
+	transition-duration: 400ms;
+}
+
+.menu-hover:hover {
+	--background: #ece1ff;
+	--transition: 400ms;
+}
+

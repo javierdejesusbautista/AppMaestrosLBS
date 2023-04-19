@@ -40,33 +40,32 @@ class fotoLbs extends componentBase {
     updateStyle(elem) {
         const shadow = elem.shadowRoot;
 
-        // shadow.querySelector("style").textContent = `
-        //     div {
-        //         position: absolute;
-        //         z-index: 3;
-        //         font-size: 87px;
-        //         width: 563px;
-        //         height: 390px;
-        //     }
+        shadow.querySelector("style").textContent = `
+            div {
+                position: absolute;
+                z-index: 3;
+                font-size: 87px;
+                width: 563px;
+                height: 390px;
+            }
 
-        //     div.span {
-        //         position: absolute;
-        //         bottom: 8px;
-        //         color: #ffffff;
-        //         font-size: 42px;
-        //     }
+            div.span {
+                position: absolute;
+                bottom: 8px;
+                color: #ffffff;
+                font-size: 42px;
+            }
 
-        //     div.img {
-        //         width:100%;
-        //         height:100%;
-        //         background:black;
-        //         object-fit:cover;
-        //         object-position:center;
-        //         text-indent: -10000px;
-        //     }
+            div.img {
+                width:100%;
+                height:100%;
+                object-fit:cover;
+                object-position:center;
+                text-indent: -10000px;
+            }
 
                 
-        // `;
+        `;
 
         this._id = elem.getAttribute("id");
         this._pagina = elem.getAttribute("pagina");

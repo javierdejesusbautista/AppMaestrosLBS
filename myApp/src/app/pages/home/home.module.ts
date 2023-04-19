@@ -10,6 +10,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { IonicModule } from '@ionic/angular';
 
 import { QuillModule } from 'ngx-quill';
+import ImageCompress from 'quill-image-compress';
+
 
 import { HomePageRoutingModule } from './home-routing.module';
 
@@ -29,7 +31,12 @@ import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.co
     HomePageRoutingModule,
 	FormsModule,
 	ReactiveFormsModule,
-	QuillModule.forRoot(),
+	QuillModule.forRoot({
+		customModules: [{
+			implementation: ImageCompress,
+			path: 'modules/imageCompressor'
+		}]
+	}),
 	AngularFirestoreModule,
 	ToastsComponent
   ],
