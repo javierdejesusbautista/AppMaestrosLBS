@@ -17,6 +17,7 @@ import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 import { SelectScrollDirective } from './directives/select-scroll.directive';;
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 
 //import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
@@ -43,7 +44,8 @@ import { AppComponent } from './app.component';
 ],
   providers: [
 	{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
+    { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true},
+	{ provide: LocationStrategy, useClass: HashLocationStrategy},
 ],
   bootstrap: [AppComponent],
 })

@@ -31,7 +31,6 @@ export class HomePage implements OnInit {
 
 	nombreLibro: string = '';
 
-	// quill = new Quill();
 
 	quillModules = {
 		'toolbar': [
@@ -84,18 +83,6 @@ export class HomePage implements OnInit {
 	}
 
 	ngOnInit() {
-		// this.quill = new Quill( '#quillText',{
-		// 	...this.quillModules,
-		// 	modules:  {
-		// 		ImageCompress:  {
-		// 			quality: 0.7, // default
-		// 			maxWidth: 1000, // default
-		// 			maxHeight: 1000, // defaultz
-		// 			imageType: 'image/jpeg', // default
-		// 			debug: true, // default
-		// 		}
-		// 	}
-		// })
 		this.dataService.locations.subscribe((dataReceived: any) => {
 			const { type, args } = dataReceived;
 			
