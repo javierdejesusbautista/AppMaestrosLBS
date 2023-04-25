@@ -18,9 +18,11 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class SecuenciasComponent implements OnInit {
 
+	skeleton: any[] = [100, 85, 100, 85, 100];
 	libros:any ;
 	secuenciasIsLoading: boolean = false;
 	secuenciasLibroLoading: boolean = false;
+	noHaySecuencias: boolean = false;
 	secuencia: any = [];
 	secuenciaClaveLibro: string;
 
@@ -229,11 +231,20 @@ export class SecuenciasComponent implements OnInit {
 		this.secuenciasLibroLoading = true;
 
 		this.secuenciasService.getSecuecias(claveLibro).subscribe(data => {
+			console.log(data);
 			this.secuenciasLibro = data.map(doc => doc.payload.doc.data())
 			.filter((secuencia: any) => secuencia.elemento.includes('sd_'))
 			.sort( (a: any, b:any) => {return a.pagina - b.pagina });
 			
-			setTimeout(() => this.secuenciasLibroLoading = false, 400);
+			
+			
+			setTimeout(() => {
+				this.secuenciasLibroLoading = false
+				if(this.secuenciasLibro.length === 0) this.noHaySecuencias = true;
+				else this.noHaySecuencias = false;
+				console.log(this.secuenciasLibro.length);
+				console.log(this.noHaySecuencias);
+			}, 400);
 		});
 		
 	}

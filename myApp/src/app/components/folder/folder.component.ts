@@ -13,7 +13,9 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./folder.component.scss'],
 })
 export class FolderComponent implements OnInit {
-
+	
+	skeleton: any[] = [100, 85, 100, 85, 100];
+	noHayLibrosAsignados: boolean = false;
 	botonesEstado = false;
 	acordeonEstado = false;
 	iframeEstado = false;
@@ -73,7 +75,8 @@ export class FolderComponent implements OnInit {
 			}, []);
 
 			console.log(this.librosAll);
-
+			
+			this.noHayLibrosAsignados = (this.librosAll.length === 0);
 			this.acordeonEstado = true;
 			this.librosLoading = true;
 		});

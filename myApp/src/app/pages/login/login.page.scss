@@ -23,3 +23,10 @@ ion-grid ion-row {
 	--color: #ffffff;
 	--background: #6228cf !important;
 }
+
+ion-item.msg-error-login {
+	--inner-padding-end: 0 !important;
+	--inner-padding-start: 0 !important;
+	--padding-start: 0;
+	--padding-end: 0;
+}

@@ -18,11 +18,11 @@ ion-card-header.ios {
 
 .container-loading {
 	text-align: center;
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 50%;
-	transform: translateY(-50%);
+	// position: absolute;
+	// left: 0;
+	// right: 0;
+	// top: 50%;
+	// transform: translateY(-50%);
 }
 
 .row-cards {
@@ -70,4 +70,16 @@ ion-card-header.ios {
 
 .margin-x-2 {
 	margin: 0 2px;
+}
+
+
+/** skeleton */
+
+ion-skeleton-text.skeleton-text {
+	// --border-radius: 10px;
+	// --background: #6228cf;
+	// --background-rgb: rgb(98, 40, 207);
+	--border-radius: 9999px;
+	--background: #6228cf;
+	--background-rgb: 98, 49, 207;
 }

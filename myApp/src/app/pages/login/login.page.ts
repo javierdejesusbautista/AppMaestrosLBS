@@ -12,6 +12,9 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginPage implements OnInit {
 
 	frmLogin: FormGroup;
+	msgErr: any = '';
+	isLoginError: boolean = false;
+	loginLoading: boolean = false;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -31,9 +34,14 @@ export class LoginPage implements OnInit {
 
  async onLogin() {
 	console.log(this.frmLogin);
+	this.isLoginError = false;;
 	
 	try {
-		if(this.frmLogin.status === 'INVALID') return;
+		this.loginLoading = true;
+		if(this.frmLogin.status === 'INVALID'){
+			this.loginLoading = false;
+			return;
+		}
 		
 		let data = this.frmLogin.value;
   
@@ -41,6 +49,7 @@ export class LoginPage implements OnInit {
 		
 		this.frmLogin.reset();
 		
+		this.loginLoading = false;
 		this.router.navigate(['home']);
   
   
@@ -48,6 +57,9 @@ export class LoginPage implements OnInit {
 	  catch(err) {
 		  console.log("Error");
 		  console.log(err);
+		  this.loginLoading = false;
+		  this.msgErr = err;
+		  this.isLoginError = true;
 	  }
 
   }

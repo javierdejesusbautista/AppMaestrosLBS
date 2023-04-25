@@ -47,9 +47,17 @@
                                         --background: #6228cf;
                                         --background-activated: #f76e8d;
                                         --background-focused: #f76e8d;
-                                        --background-hover: #f76e8d;" size="large" type="submit" expand="block">Entrar</ion-button>
+                                        --background-hover: #f76e8d;" size="large" type="submit" expand="block">
+											<span >Entrar</span>
+											<ion-spinner *ngIf="loginLoading" name="crescent"></ion-spinner>
+										</ion-button>
                                     </div>
                                 </ion-item>
+								<ion-item class="msg-error-login" lines="none" *ngIf="isLoginError">
+									<ion-text color="danger">
+										<ion-label>{{ msgErr }}</ion-label>
+									  </ion-text>
+								</ion-item>
                             </ion-list>
                         </div>
                     </ion-card>

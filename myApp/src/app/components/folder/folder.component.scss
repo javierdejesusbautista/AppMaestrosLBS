@@ -125,11 +125,11 @@ h6 {
 /* Loading indicator */
 .container-loading {
 	text-align: center;
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 50%;
-	transform: translateY(-50%);
+	// position: absolute;
+	// left: 0;
+	// right: 0;
+	// top: 50%;
+	// transform: translateY(-50%);
 }
 .contenedorIframe :hover{
 	cursor: pointer;
@@ -167,4 +167,13 @@ ion-fab-button {
 
 .btn-fab-pagina-number {
 	margin-bottom: 3rem;
+}
+
+ion-skeleton-text.skeleton-text {
+	// --border-radius: 10px;
+	// --background: #6228cf;
+	// --background-rgb: rgb(98, 40, 207);
+	--border-radius: 9999px;
+	--background: #6228cf;
+	--background-rgb: 98, 49, 207;
 }
