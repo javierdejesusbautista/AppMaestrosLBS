@@ -35,7 +35,7 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 /** Modal añadir secuencia **/
-ion-modal#modal-secuencia {
+ion-modal#modal-secuencia, ion-modal#main-modal {
 	--height: 762px;
 	--border-radius: 16px;
 	--box-shadow: 0 0px 12px -1px rgb(0 0 0 / 48%), 0 11px 29px -14px rgb(0 0 0 / 48%);
@@ -81,18 +81,18 @@ ion-modal #slcModal {
     color: #223254;
 }
 
-ion-modal #quillText {
+ion-modal #quillText, ion-modal #quillTextMain {
     height: 57%;
     width: 100%;
 }
 
-#quillText .ql-toolbar {
+#quillText .ql-toolbar, #quillTextMain .ql-toolbar {
     background-color: #ffffff;
     // border-top-left-radius: 4px;
     // border-top-right-radius: 4px;
 }
 
-#quillText .ql-container {
+#quillText .ql-container, #quillTextMain .ql-container {
     background-color: #ffffff;
     color: #000000;
     // border-bottom-left-radius: 4px;
@@ -209,6 +209,17 @@ body {
 
 .ql-container.ql-snow {
     border: none !important;
+}
+
+.ql-clipboard {
+	left: -100000px;
+	height: 1px;
+	overflow-y: hidden;
+	position: absolute;
+	top: 50%;
+	// ensure quill clipboard preserve whitespaces
+	white-space: pre-wrap;
+	word-wrap: break-word;
 }
 
 .fade-in-down {

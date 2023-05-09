@@ -45,6 +45,7 @@
                     <ion-item lines="none" style="--background-hover: #6228cf; order: 1;padding-top: 7px;" *ngIf="nombreLibro !== '' && appPages[0].activo" class="slide-in-animation">
                         <ion-select interface="popover" style="--background-hover: #6228cf;" [ngModel]="selectAcciones" (ionDismiss)="cleanSelectDropDown()" (ionChange)="selectDropDown( $event )" selected-text="Acciones" placeholder="Acciones">
                             <ion-select-option style="--background-hover: #6228cf;" value="crear-secuencia">Crear Secuencia</ion-select-option>
+                            <ion-select-option style="--background-hover: #6228cf;" value="nuevo-robotica">Nuevo ...</ion-select-option>
                             <!-- <ion-select-option style="--background-hover: #6228cf;" value="descargar-zip">Descargar zip</ion-select-option>
                             <ion-select-option style="--background-hover: #6228cf;" value="otros">Otros</ion-select-option> -->
                         </ion-select>
@@ -82,13 +83,18 @@
         </ion-header>
         <app-folder *ngIf="appPages[0].activo"></app-folder>
         <app-secuencias *ngIf="appPages[1].activo"></app-secuencias>
-		
-		
-    </div>
 
+	</div>
 	
-    <ion-modal id="modal-secuencia" style="--border-radius: 8px;" #modal [style.display]="dataService.displayModal" trigger="open-modal" [isOpen]="dataService.estadoModal" [initialBreakpoint]="0.8" [breakpoints]="[0.8, 0.15]" [backdropDismiss]="false" [backdropBreakpoint]="1"
-        handle="false" class="modalService">
+    <ion-modal id="modal-secuencia" style="--border-radius: 8px;" #modal [style.display]="dataService.displayModal" trigger="open-modal" 
+		class="modalService"
+		[isOpen]="dataService.estadoModal" 
+		[initialBreakpoint]="0.8"
+		[breakpoints]="[0.8, 0.8]"
+		[backdropDismiss]="false" 
+		[backdropBreakpoint]="1"
+		handleBehavior="none"
+        [handle]="false">
         <ng-template>
             <div style="height: 40px;width: 100%;">
                 <div style="background: #f2f6fc;height: 40px;width: 100%;    display: flex;">
@@ -107,10 +113,10 @@
                 </div>
             </div>
             <ion-content class="ion-padding">
-                <quill-editor style="padding: 2px;margin: 0;" [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+                <quill-editor #quilleditorSec style="padding: 2px;margin: 0;" [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
                 <div style="text-align: center; margin-top: 4px;">
                     <!-- <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()"> -->
-                    <ion-button shape="round" color="dark" (click)="guardarSecuencia()">
+                    <ion-button [disabled]="secuenciaAgregando" shape="round" color="dark" (click)="guardarSecuencia()">
                         <span *ngIf="!stateBotonGuardarEditarSecuencia">
 							<ion-icon slot="start" name="paper-plane"></ion-icon>
                         	Enviar
@@ -120,11 +126,68 @@
 							Editar
 						</span>
                     </ion-button>
+					<ion-button [disabled]="secuenciaBorrando" (click)="borrarSecuencia()" *ngIf="stateBotonGuardarEditarSecuencia" shape="round" color="danger" >
+						<ion-icon name="trash" slot="end"></ion-icon>Borrar
+                    </ion-button>
 
                 </div>
             </ion-content>
         </ng-template>
     </ion-modal>
+
+
+	<!-- Modal robotica - test  -->
+
+	<ion-modal id="main-modal" style="--border-radius: 8px;" #modal [style.display]="dataService.displayModalMain" trigger="open-modal" 
+	class="modalService"
+	[isOpen]="dataService.estadoModalMain" 
+	[initialBreakpoint]="0.8"
+	[breakpoints]="[0.8, 0.8]"
+	[backdropDismiss]="false" 
+	[backdropBreakpoint]="1"
+	handleBehavior="none"
+	[handle]="false">
+	<ng-template>
+		<div style="height: 40px;width: 100%;">
+			<div style="background: #f2f6fc;height: 40px;width: 100%;    display: flex;">
+				<ion-buttons style="color:#000000; right: 0;position: absolute;width: 40px;height: 40px;">
+					<ion-button shape="round" fill="clear" (click)="dataService.abrirModalMain()">
+						<ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
+					</ion-button>
+				</ion-buttons>
+				<select id="selectLeccion" #select name="select" [(ngModel)]="selectLeccion" value="{{selectLeccion}}"
+				style="border: none; margin: 10px 10px; background: transparent !important;">
+					<option value="1">Leccion 1</option>
+					<option value="2">Leccion 2</option>
+					<option value="3">Leccion 3</option>
+				</select>
+				<div lines="none" style="max-width: 381px;">
+					<p style="margin: auto; margin-top: 8px; margin-left: 25px;color: #000000;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{dataService.libroActual.Nombre}}</p>
+				</div>
+			</div>
+		</div>
+		<ion-content class="ion-padding">
+			<quill-editor style="padding: 2px;margin: 0;"  [formControl]="formCotenidoRequerimiento" [modules]="quillModules" id="quillTextMain" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+			<div style="text-align: center; margin-top: 4px;">
+				<!-- <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()"> -->
+				<ion-button shape="round" color="dark" (click)="guardarRequerimiento()">
+					<span *ngIf="!stateBotonGuardarEditarSecuencia">
+						<ion-icon slot="start" name="paper-plane"></ion-icon>
+						Enviar
+					</span>
+					<span *ngIf="stateBotonGuardarEditarSecuencia">
+						<ion-icon slot="start" name="create"></ion-icon>
+						Editar
+					</span>
+				</ion-button>
+
+			</div>
+		</ion-content>
+	</ng-template>
+</ion-modal>
+
+	
+
 	
 
 </ion-split-pane>

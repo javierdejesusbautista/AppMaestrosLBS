@@ -8,16 +8,23 @@ export class DataService {
 
 	estadoModal = false;
 	displayModal = 'none';
+
+	estadoModalMain = false;
+	displayModalMain = 'none';
+
 	libroActual: any = {};
 	totalPaginas: number = 0;
 
+	valueRobotica: any[] = [];
 	secuenciasLibroActual: any = {};
 	pagina: any;
   	public paginaSubejct$: Subject<any> = new Subject<any>();
 	public nombreLibroActual$: Subject<string> = new Subject<string>();
 	public stateIframe$: Subject<boolean> = new Subject<boolean>();
 	public addSecuencia$: Subject<any> = new Subject<any>();
+	public addRequerimiento$: Subject<any> = new Subject<any>();
 	public getSecuencias$: Subject<any> = new Subject<any>();
+	public deleteSecuencia$: Subject<any> = new Subject<any>();
   
 	nombreLibro: string;
 	stateIframe = false;
@@ -30,6 +37,7 @@ export class DataService {
 				type: event.data.type,
 				args: event.data.arguments
 			}; 
+			console.log(dataFromIndex);
 			pagina.next(dataFromIndex);
 		}, false);
 	});
@@ -41,13 +49,24 @@ export class DataService {
     this.estadoModal = this.estadoModal ? false : true;
     this.displayModal = 'none' ? 'inherit' : 'none'
   }
+
+  abrirModalMain() {
+	  this.estadoModalMain = this.estadoModalMain ? false : true;
+	  this.displayModalMain = 'none' ? 'inherit' : ' none';
+	  
+	  console.log("Modal main", this.displayModalMain);
+  }
   cambiarPaginaSubejct(pagina: any) {
     this.paginaSubejct$.next(pagina);
   }
 
   setNombreLibroActual(nombre: string) {
 	this.nombreLibroActual$.next(nombre);
-  }	
+  }
+  
+  deleteSecuencia(dataSecuencia: any) {
+	this.deleteSecuencia$.next(dataSecuencia);
+  }
 
   setStateIframe(state: boolean) {
 	this.stateIframe$.next(state);
@@ -55,6 +74,10 @@ export class DataService {
 
   addSecuencia(data: any) {
 	this.addSecuencia$.next(data);
+  }
+
+  addRequerimiento(data: any) {
+	this.addRequerimiento$.next(data);
   }
 
   getSecuencias(data: any) {

@@ -116,7 +116,7 @@ var Visor=(function() {
     };
 
 
-	 localStorage.setItem('USER_INFO', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21icmUiOiJEQU5JRUwiLCJ1c3VhcmlvIjoicHJvZmVzb3IxQSIsImlkIjoiMzQ3MTAiLCJncnVwbyI6IjAiLCJncmFkbyI6IjAiLCJjYW1wdXNpZCI6IjEzIiwiZXNjb2xhcmlkYWQiOiJFbGVtZW50YXJ5IFNjaG9vbCIsInRpcG8iOiJQcm9mZXNvciIsImhvbWUiOiJob21lIiwiYmQiOiJvbW1lZ2EiLCJleHAiOjE3MDk0OTgwMzgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6MjAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MjAwMCJ9.q6nZETJK2KOfX5-qZZ13jDHzqcDruyVCauBlsz7VlJk');
+	//  localStorage.setItem('USER_INFO', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub21icmUiOiJEQU5JRUwiLCJ1c3VhcmlvIjoicHJvZmVzb3IxQSIsImlkIjoiMzQ3MTAiLCJncnVwbyI6IjAiLCJncmFkbyI6IjAiLCJjYW1wdXNpZCI6IjEzIiwiZXNjb2xhcmlkYWQiOiJFbGVtZW50YXJ5IFNjaG9vbCIsInRpcG8iOiJQcm9mZXNvciIsImhvbWUiOiJob21lIiwiYmQiOiJvbW1lZ2EiLCJleHAiOjE3MDk0OTgwMzgsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6MjAwMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MjAwMCJ9.q6nZETJK2KOfX5-qZZ13jDHzqcDruyVCauBlsz7VlJk');
 
 
     // Initialize Firebase
@@ -505,6 +505,7 @@ var Visor=(function() {
                     //console.log(change.doc.data());
                  });
 
+				 console.log("/////data cargada////////////////////////////////");
                  resolve("Data Cargada");
 
             });
@@ -4175,7 +4176,11 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
                 <button id="btnFullScreen" title="Fullscreen" class="btn"><i class="fa fa-arrows-alt fa-lg" aria-hidden="true"></i></button>
             </div>
         </div>
-
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+			<div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+			<div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+		  </div>
         <div id="idrviewer" style="top: 0;">
 
         </div>
@@ -4221,10 +4226,10 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
         </div>
       </div>
     </div>
-    <txt-nota-lbs id="notaLbs" class="container animacion"></txt-nota-lbs>
-	<ver-nota-lbs id="verNotaLbs" class="container animacion" style="max-height: 40vh; height: 40vh; box-shadow: 0px 2px 10px 0px rgb(0 0 0 / 69%);"></ver-nota-lbs>
-	<list-notas-y-favoritos class="animacion" id="list-notas-favoritos" tabindex="-1" role="dialog" aria-hidden="true"></list-notas-y-favoritos>
-	<indice-lbs id="indicePaginas"></indice-lbs>
+    <txt-nota-lbs id="notaLbs" class="container animacion" style="display: none;"></txt-nota-lbs>
+	<ver-nota-lbs id="verNotaLbs" class="container animacion" style="max-height: 40vh; height: 40vh; box-shadow: 0px 2px 10px 0px rgb(0 0 0 / 69%); display: none;"></ver-nota-lbs>
+	<list-notas-y-favoritos  style="display: none;" class="animacion" id="list-notas-favoritos" tabindex="-1" role="dialog" aria-hidden="true"></list-notas-y-favoritos>
+	<indice-lbs id="indicePaginas" ></indice-lbs>
     <indice-lbs id="indiceTitulos"></indice-lbs>
     <div id="snackbar">Esta hoja no esta disponible para rayar</div>
      <script type="text/javascript">

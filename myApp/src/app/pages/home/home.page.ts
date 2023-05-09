@@ -1,9 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { DataService } from '../../services/data.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 
 
 import * as QuillNamespace from 'quill';
@@ -11,6 +12,10 @@ import ImageCompress from 'quill-image-compress';
 let Quill: any = QuillNamespace;
  Quill.register('modules/imageCompress', ImageCompress);
 
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
+import { QuillEditorComponent } from 'ngx-quill';
+import { AlertController } from '@ionic/angular';
+Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste);
 
 @Component({
   selector: 'app-home',
@@ -21,16 +26,24 @@ export class HomePage implements OnInit {
    
 	contenidoSecuencia = ''
 	formContenidoSecuencia: FormControl = new FormControl();
+	formCotenidoRequerimiento: FormControl = new FormControl();
 	pag = 1;
 	numeroPagina$ : any;
 	totalPaginas : number[] = [];
 	selectAcciones: string = '';
 	stateBotonGuardarEditarSecuencia: boolean = false;
 
-	
+	selectLeccion: any;
+
+	secuenciaActualData: any;
+	secuenciaAgregando: boolean = false;
+	secuenciaBorrando: boolean = false;
 
 	nombreLibro: string = '';
 
+	imageHandler1 = (imageDataUrl: any, type: any, imageData: any)=> {
+		console.log('Eating your pasted image.');
+	 }
 
 	quillModules = {
 		'toolbar': [
@@ -43,21 +56,14 @@ export class HomePage implements OnInit {
 				// custom dropdown
 			[{ 'color': [] }, { 'background': [] }],	// dropdown with defaults from theme
 			[{ 'align': [] }],
-
-			['link', 'image', 'video'],	// link and image, video
 		],
-		imageCompress: {
-			quality: 0.7, // default
-			maxWidth: 1000, // default
-			maxHeight: 1000, // default
-			imageType: 'image/jpeg', // default
-			debug: true, // default
-			suppressErrorLogging: false, // default
-			insertIntoEditor: undefined, // default
-		  }
-		
+		imageDropAndPaste: {
+			handler: this.imageHandler1 // prevnet drops from folders and copy paste insidde quill editor
+		}
 	};
 
+
+	globalInstance: any;
   
 	datosGenUsuario: any = {};
   
@@ -70,16 +76,19 @@ export class HomePage implements OnInit {
   public labels = ['Family', 'Friends', 'Notes'];
 
   libroExiste: any;
+  hasDataSecuencia: boolean = false;
 
   @ViewChild('#modal') modalSecuencia: ElementRef;
   @ViewChild('select') select: ElementRef;
 
+  @ViewChild(QuillEditorComponent, {read: ElementRef}) quilleditorSec: ElementRef;
+  
 
+  
   constructor(public dataService: DataService,
 	private authService: AuthService,
-	public toastService: ToastService) { 
-
-		
+	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
+	private alertController: AlertController, private secuenciasService: SecuenciasFsService) { 
 	}
 
 	ngOnInit() {
@@ -87,15 +96,16 @@ export class HomePage implements OnInit {
 			const { type, args } = dataReceived;
 			
 			if(type === 'pagina') {
+				this.stateBotonGuardarEditarSecuencia = false;
 				this.pag = parseInt(args.pagina);
-				if(this.dataService.estadoModal) {
-					this.stateBotonGuardarEditarSecuencia = false;
+				if(args.secuencia !== undefined) {
+					this.hasDataSecuencia = true;
+					this.secuenciaActualData = args.secuencia;
+					this.formContenidoSecuencia.setValue(args.secuencia['data']);
+					this.stateBotonGuardarEditarSecuencia = true;
+				} else {
 					this.formContenidoSecuencia.setValue('');
-	
-					if(args.secuencia !== undefined) {
-						this.formContenidoSecuencia.setValue(args.secuencia['data']);
-						this.stateBotonGuardarEditarSecuencia = true;
-					}
+					this.hasDataSecuencia = false;
 				}
 			}
 			if (type === 'totalPaginas') {
@@ -103,9 +113,37 @@ export class HomePage implements OnInit {
 					this.totalPaginas.push(index);
 				}
 			}
+
+			if(type === 'secuencia-accion') {
+				if(args[0]){
+					this.toastService.show('Secuencia didactica guardada.', { classname: 'bg-success text-light', delay: 3000 });
+					this.stateBotonGuardarEditarSecuencia = true;
+				} 
+				else
+					this.toastService.show('Ocurrio un problema al guardar la secuencia didactica. Por favor intente nuevamente.', { classname: 'bg-danger text-light', delay: 3000 });
+
+				this.secuenciaAgregando = false;
+			}
+
+			if(type === 'deleteSecuencia') {
+				if(args[0]) {
+					this.toastService.show('Secuencia didactica eliminada.', { classname: 'bg-success text-light', delay: 3000 });
+					this.formContenidoSecuencia.setValue('');
+					this.stateBotonGuardarEditarSecuencia = false;
+				}
+				else
+					this.toastService.show('Ocurrio un problema al eliminar la secuencia didactica. Por favor intente nuevamente.', { classname: 'bg-danger text-light', delay: 3000 });
+			}
+
+
 		});
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
+	}
+
+	onDrop(event: any) {
+		console.log(event);
+		console.log("event drop");
 	}
 
 	ionViewWillEnter() { 
@@ -140,10 +178,75 @@ export class HomePage implements OnInit {
 		 
 		 this.dataService.addSecuencia(sendDataLibro);
 
-		 this.toastService.show('Secuencia didactica guardada.', { classname: 'bg-success text-light', delay: 3000 });
+		 this.secuenciaAgregando = true;
+	}
 
 
-	  }
+
+	guardarRequerimiento() {
+		console.log("Guardar Requerimiento");
+		const contenidoRequerimiento = this.formCotenidoRequerimiento.getRawValue();
+
+		// revisar por posibles edits en blanco y/o eliminar
+		if(contenidoRequerimiento === null) {
+			this.toastService.show('El contenido no puede ir sin texto.', { classname: 'bg-warning text-dark', delay: 3000});
+			return;
+		}
+
+		this.selectLeccion = this.dataService.valueRobotica[0];
+
+		const sendDataLibro = {
+			type: 'addRequerimiento',
+			functionName: 'addRequerimiento',
+			arguments: {
+				data: contenidoRequerimiento,
+				ejercicio: 0,
+				elemento: `leccion_${this.selectLeccion}_robotica`,
+				libroid: 0,
+				userCreate: this.getTokenData('usuario')
+			}
+		};
+
+		console.log(sendDataLibro);
+		this.dataService.addRequerimiento(sendDataLibro);
+		
+		this.toastService.show('Contenido guardado.', { classname: 'bg-success text-dark', delay: 3000});
+	}
+
+	async borrarSecuencia() {
+
+		const { elemento, libroid} = this.secuenciaActualData;
+
+		const alert = await this.alertController.create({
+			subHeader: '¿Desea borrar la secuencia?',
+			buttons: [
+			{
+				text: 'Cancelar',
+				role: 'cancel',
+				handler: () => {
+				},
+			},
+			{
+				text: 'Aceptar',
+				role: 'confirm',
+				handler: async () => {
+					const sendData = {
+						type: 'deleteSecuencia',
+						arguments: [{
+							libroid: libroid,
+							elemento: elemento
+						}]
+					};
+					// this.dataService.deleteSecuencia(sendData);
+
+					this.dataService.deleteSecuencia(sendData);
+				},
+			},
+			],
+		});
+
+		await alert.present();
+	}
 
 	onChangePag(event:any) {
 		this.dataService.cambiarPaginaSubejct(event);
@@ -162,6 +265,7 @@ export class HomePage implements OnInit {
 	regresarInicio() {
 		console.log("regresar inicio");
 		const cerrarIframe  = false;
+		this.formContenidoSecuencia.setValue('');
 		this.dataService.estadoModal = false;
 		this.chosePage('libros');
 		this.dataService.setNombreLibroActual('');
@@ -172,11 +276,21 @@ export class HomePage implements OnInit {
 	selectDropDown(event: any) {
 		const opcion = event.detail.value;
 		this.selectAcciones = opcion;
-		console.log(opcion);
-		if(opcion === 'crear-secuencia') this.dataService.abrirModal();
-		if(opcion === 'descargar-zip') console.log("descargar-zip");
-		if(opcion === 'otros') console.log("otros");
-
+		if(opcion === 'crear-secuencia') {
+			this.dataService.abrirModal();
+			if(!this.hasDataSecuencia) {
+				this.formContenidoSecuencia.setValue('');
+				this.stateBotonGuardarEditarSecuencia = false;
+			}
+		}
+			
+		if(opcion === 'nuevo-robotica') this.dataService.abrirModalMain();
+		
+		//prevent drop event from other tabs
+		this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
+			event.preventDefault();
+		});
+		
 		console.log(this.selectAcciones);
 	}
 
@@ -208,9 +322,13 @@ export class HomePage implements OnInit {
 		return value;
 	}
 
+
+
 	ngOnDestroy() {
 
 	}
+	
 
+	
 
 }

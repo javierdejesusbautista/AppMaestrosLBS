@@ -16,7 +16,7 @@ export class AuthService {
 	}
 
 	 ifLoggedIn() {
-		if (localStorage.getItem("USER_INFO") != null) {
+		if (localStorage.getItem("USER_INFO") !== null) {
 			this.authState.next(true);
 		}
 	 }

@@ -510,6 +510,10 @@ var Visor=(function() {
                         //console.log("modified");
                         Visor.store.dispatch({ type: "ADD_BOOKS", payload: change.doc.data() });
                     }
+					if (change.type === "removed") {
+                        console.log("removed");
+                        Visor.store.dispatch({ type: "REMOVE_DATA", payload: change.doc.data() });
+                    }
                     //console.log(change.doc.data());
                  });
 
@@ -710,12 +714,18 @@ var Visor=(function() {
         d('pgCount').innerHTML = getPageString(data.page, data.pagecount);
         
 		const pagSecuencia = `sd_${data.page.toString()}`;
-		const secuenciaActual = Visor.store.getState().bookReducer.find(data => data.elemento === pagSecuencia);
+		const secuenciaActual = Visor.store.getState().bookReducer.filter(a => a.elemento == pagSecuencia);
+		let secuenciaSend;
+		if(secuenciaActual !== 0) {
+			secuenciaSend = secuenciaActual[0];
+		}
+		console.log(secuenciaSend);
+		//Visor.store.getState().bookReducer.find(data => data.elemento === pagSecuencia);
 		const paginaData = {
 			type: 'pagina',
 			arguments: {
 				pagina: data.page.toString(),
-				secuencia: secuenciaActual
+				secuencia: secuenciaSend
 			}
 		};
 		window.top.postMessage(paginaData , '*');
@@ -3129,7 +3139,36 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 			if(event.data.type === 'addSecuencia') {
 				 console.log(event.data);
 				let secuencia = {...event.data.arguments, libroid: Visor.idLibro};
-				Visor.saveDataFireStore(secuencia);
+				Visor.saveDataFireStore(secuencia).then((result)  => {
+					window.top.postMessage({type: 'secuencia-accion', arguments: [true]});
+				})
+				.catch((error) => {
+					window.top.postMessage({type: 'secuencia-accion', arguments: [false]});
+				});
+			}
+
+			if(event.data.type === 'deleteSecuencia') {
+				console.log(event.data);
+				let secuencia = { ...event.data.arguments[0] };
+
+				console.log(secuencia);
+				console.log("_deleteData");
+				const { usuario } = Visor.tokenUser;
+				const claveLibro  = IDRViewer.config.fileName.replace(".pdf",'');
+
+				Visor.dbFirestore.collection('maestrosApp')
+								.doc('libros')
+								.collection(claveLibro)
+								.doc(secuencia.elemento)
+								.delete()
+				.then(() => {
+					window.top.postMessage({type: 'deleteSecuencia', arguments: [true]})
+					// Visor.loadDataFirestore().then(() => {
+					// });
+				}).catch((error) => {
+					window.top.postMessage({type: 'deleteSecuencia', arguments: [false]});
+				});
+
 			}
 
 			if(event.data.type === 'getSecuencias') {
@@ -4236,7 +4275,7 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
           </div>
         </div>
       </div>
-    </div>
+    </div>                                                                                   
       <!-- Modal -->
     <div class="modal fade" id="FrmPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -4258,6 +4297,18 @@ var CalificarPregunta1=function(element,ejercicio,pregunta,tipo){
 	<list-notas-y-favoritos class="animacion" id="list-notas-favoritos" tabindex="-1" role="dialog" aria-hidden="true"></list-notas-y-favoritos>
 	<indice-lbs id="indicePaginas"></indice-lbs>
     <indice-lbs id="indiceTitulos"></indice-lbs>
+	<div id="panelFooterEncabezado" class="animate__animatedLocal footerEncabezado" >  
+         <h5 style="text-align: center;padding: 1.25rem; color: white">Secuencia didáctica.</h5> </div>
+        <div id="contenido1" style="text-align: justify">
+			<div class="card-body">
+				<p class="textoCard" style="padding: 0px 50px 0px 50px;font-size: 1.5rem;"></p>
+			</div>
+			<div class="card" style="width: 18rem;width: 100%;margin-bottom: 23px;background-color: #fff0;background-clip: border-box;border: none;border-radius: 0px;position: initial;">
+				<p id="contenido_secuencia" class="textoCard" style="padding-left: 30px;padding-right: 30px;"></p>
+				</div>
+			</div>
+        </div>
+    </div>
     <div id="snackbar">Esta hoja no esta disponible para rayar</div>
      <script type="text/javascript">
        var DateTime= new Date().getTime();

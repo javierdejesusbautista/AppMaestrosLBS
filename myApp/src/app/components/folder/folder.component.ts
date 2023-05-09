@@ -95,6 +95,10 @@ export class FolderComponent implements OnInit {
 				this.crearNotasActivated = false;
 				setTimeout(() => {this.crearNotasDesativado = false}, 400);
 			}
+			if(type === 'abrirGuardarPanelRobotica') {
+				this.dataService.valueRobotica = args;
+				this.dataService.abrirModalMain();	
+			}
 		});
 
 	
@@ -124,6 +128,15 @@ export class FolderComponent implements OnInit {
 		this.dataService.getSecuencias$.subscribe(data => {
 			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
 		});
+
+		this.dataService.addRequerimiento$.subscribe(data => { 
+			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
+		});
+
+		this.dataService.deleteSecuencia$.subscribe(data => {
+			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
+		 });
+
 	  }
 	
 	 

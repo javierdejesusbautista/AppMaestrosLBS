@@ -25,6 +25,15 @@ const bookReducer = (state = [],action) => {
 		return [...state,{ ...action.payload }];	
   }
 
+  if (action.type === "REMOVE_DATA"){
+
+	// console.log(state);
+	// console.log(action.payload.elemento);
+	
+	return state.filter(i => i.elemento !== action.payload.elemento );
+
+  }
+
   return state;
 };
 

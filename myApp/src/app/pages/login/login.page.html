@@ -1,4 +1,20 @@
-<ion-content>
+<div  class="loading-page" *ngIf="pageisLoading" style="border: 1px solid black;">
+	<div id="loading-container-logo">
+		<div class="sub-container-logo">
+			<div class="img-logo-container">
+				<img class="img-logo loading-animation" src="assets/lbslogo.png"/>
+			</div>
+			<!-- <div class="progress" style="width: 100%; margin: auto; height: 12px;">
+				<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%; background-color: #a425a4;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+				<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%; background-color: #ff438a;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+				<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%; background-color: #00dedc;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+				<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%; background-color: #ffe400;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+			</div> -->
+
+		</div>
+	</div>
+</div>
+<ion-content class="fadeIna" *ngIf="!pageisLoading">
     <ion-grid class="ion-justify-content-center" style="height: 100%;">
         <ion-row color="primary" class="ion-justify-content-center" style="height: 100%;">
             <ion-col class="align-self-center" size-md="6" size-lg="5" size-xs="12" style="margin-bottom: 10%;">

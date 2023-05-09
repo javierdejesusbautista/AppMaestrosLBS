@@ -1,0 +1,1 @@
+IDRViewer.config = {"pagecount":1,"title":"","author":"","fileName":"ESC_01_science_v2.pdf","bounds":[[909,1299]],"bookmarks":[],"thumbnailType":"png","pageType":"html","pageLabels":[]};

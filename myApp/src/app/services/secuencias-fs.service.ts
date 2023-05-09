@@ -19,19 +19,21 @@ export class SecuenciasFsService {
 
   constructor(private firestore: AngularFirestore,
 	private firebaseFunctions: AngularFireFunctions) { 
-	this.usuario = this.getKeyToken('usuario');
+		if(localStorage.getItem('USER_INFO') !== null ) {
+			this.usuario = this.getKeyToken('usuario');
+		}
   }
 
 	getLibrosSecuencias() {
-		return this.firestore.collection(this.usuario).snapshotChanges();
+		return this.firestore.collection('maestrosApp').snapshotChanges();
 	}
 
 	getSecuecias(claveLibro: string) {
-		return this.firestore.collection(`${this.usuario}/libros/${claveLibro}/`).snapshotChanges();
+		return this.firestore.collection(`maestrosApp/libros/${claveLibro}/`).snapshotChanges();
 	}
 
 	editSecuencia(claveLibro: string, libroData: any) {
-		return this.firestore.collection(this.usuario)
+		return this.firestore.collection('maestrosApp')
 			.doc('libros')
 			.collection(claveLibro)
 			.doc(libroData.elemento)
@@ -39,7 +41,7 @@ export class SecuenciasFsService {
 	}
 
 	deleteSecuenciaLibro(claveLibro: string, libroData: any) {
-		return this.firestore.collection(this.usuario)
+		return this.firestore.collection('maestrosApp')
 			.doc('libros')
 			.collection(claveLibro)
 			.doc(libroData.elemento)
@@ -49,7 +51,7 @@ export class SecuenciasFsService {
 
 	getLibrosCollectionCloudFunction() {
 		const librosCollection: any =  this.firebaseFunctions.httpsCallable('getLibrosCollections');
-			return librosCollection({docPath: `${this.usuario}/libros`});
+			return librosCollection({docPath: `maestrosApp/libros`});
 	}
 
 	getKeyToken(key: string): string {

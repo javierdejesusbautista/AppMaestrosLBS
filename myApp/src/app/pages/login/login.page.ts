@@ -15,6 +15,7 @@ export class LoginPage implements OnInit {
 	msgErr: any = '';
 	isLoginError: boolean = false;
 	loginLoading: boolean = false;
+	pageisLoading: boolean = true;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -27,9 +28,27 @@ export class LoginPage implements OnInit {
 	}
 
   ngOnInit() {
-	if(this.authService.isAuthenticated()) {
+	if(this.authService.isAuthenticated() || localStorage.getItem('USER_INFO') !== null) {
+		console.log("is logged in");
 		this.router.navigate(['home']);
 	}
+  }
+
+  ionViewWillEnter() {
+	this.pageisLoading = true;
+	if(this.authService.isAuthenticated() || localStorage.getItem('USER_INFO') !== null) {
+		console.log("is logged in");
+		this.router.navigate(['home']);
+	}
+  }
+
+  ionViewDidEnter() {
+	console.log("ionViewDidEnter");
+	setTimeout(() => { 
+
+		this.pageisLoading = false;
+	}, 2000);
+
   }
 
  async onLogin() {
