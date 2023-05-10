@@ -123,35 +123,75 @@ ion-item.msg-error-login {
 
 	@keyframes spin {
 		0% {
-			transform: rotate(0deg);
+			transform: rotate(1deg);
+			-webkit-transform: rotate(1deg);
 		}
-		50% {
-			transform: rotate(180deg);
-		}
+		// 25% {
+		// 	transform: rotate(90deg)
+		// }
+		// 50% {
+		// 	transform: rotate(180deg);
+		// 	-webkit-transform: rotate(180deg);
+		// }
+		// 75% {
+		// 	transform: rotate(270deg);
+		// 	-webkit-transform: rotate(270deg);
+		// }
 		100% {
 			transform: rotate(360deg);
+			-webkit-transform: rotate(360deg);
 		}
 	}
 	
 	@keyframes heartBeat {
 		0% {
 			transform: scale(1);
-		}
-		14% {
-			transform: scale(0.96);
-		}
-		28% {
+			-webkit-transform: scale(1);
+		  }
+		  50% {
+			transform: scale(1.1);
+			-webkit-transform: scale(1.25);
+		  }
+		  100% {
 			transform: scale(1);
-		}
-		42% {
-			transform: scale(0.96);
-		}
-		70% {
-			transform: scale(1);
-		}
+			-webkit-transform: scale(1);
+		  }
+		
 	}
-	.loading-animation {
-		animation: spin 0.5s infinite, heartBeat 2s infinite;
+
+	
+	.loading-animation-img {
+		animation-name: heartBeat;
+		animation-duration: 1000ms;
+		animation-iteration-count: infinite;
+		animation-timing-function: cubic-bezier(0.55, 1.02, 0.01, 0.51);
+		
+		-moz-animation-name: heartBeat;
+		-moz-animation-duration: 1000ms;
+		-moz-animation-iteration-count: infinite;
+		-moz-animation-timing-function: cubic-bezier(0.55, 1.02, 0.01, 0.51);
+		
+		-webkit-animation-name: heartBeat;
+		-webkit-animation-duration: 1000ms;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-timing-function: cubic-bezier(0.55, 1.02, 0.01, 0.51);
+	}
+
+	.loading-animation-div {
+		animation-name: spin;
+		animation-duration: 800ms;
+		animation-iteration-count: infinite;
+		animation-timing-function: cubic-bezier(0.55, 1.02, 0.01, 0.51);
+		
+		-moz-animation-name: spin;
+		-moz-animation-duration: 800ms;
+		-moz-animation-iteration-count: infinite;
+		-moz-animation-timing-function: cubic-bezier(0.55, 1.02, 0.01, 0.51);
+		
+		-webkit-animation-name: spin;
+		-webkit-animation-duration: 800ms;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-timing-function: cubic-bezier(0.55, 1.02, 0.01, 0.51);
 	}
 
 

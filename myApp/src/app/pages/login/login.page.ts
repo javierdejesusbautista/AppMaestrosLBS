@@ -29,7 +29,6 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 	if(this.authService.isAuthenticated() || localStorage.getItem('USER_INFO') !== null) {
-		console.log("is logged in");
 		this.router.navigate(['home']);
 	}
   }
@@ -37,15 +36,12 @@ export class LoginPage implements OnInit {
   ionViewWillEnter() {
 	this.pageisLoading = true;
 	if(this.authService.isAuthenticated() || localStorage.getItem('USER_INFO') !== null) {
-		console.log("is logged in");
 		this.router.navigate(['home']);
 	}
   }
 
   ionViewDidEnter() {
-	console.log("ionViewDidEnter");
 	setTimeout(() => { 
-
 		this.pageisLoading = false;
 	}, 2000);
 
