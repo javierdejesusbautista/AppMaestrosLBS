@@ -21,7 +21,20 @@ ion-grid ion-row {
 
 .bg-color-footer {
 	--color: #ffffff;
-	--background: #6228cf !important;
+	--background: #00c1eb !important;
+}
+
+hr.login-line {
+	border-top: 2px solid #00c1eb;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 10px 0;
+	margin-right: -90px;
+    opacity: 1;
+}
+
+.item-interactive.item-has-focus{
+	--highlight-background: #00c1eb;
 }
 
 ion-item.msg-error-login {
