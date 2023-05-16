@@ -110,7 +110,7 @@
                         </ion-button>
                     </ion-buttons>
                     <select id="slcModal" #select name="select" [(ngModel)]="pag" (ngModelChange)="onChangePag( $event )" value="{{numeroPagina$}}">
-			            <option *ngFor="let pag of totalPaginas">{{ pag  }}</option>
+			            <option *ngFor="let pagina of getRangePaginas(totalPaginas)">{{ pagina  }}</option>
 			        </select>
                     <div lines="none" style="max-width: 381px;">
                         <p style="margin: auto; margin-top: 8px; margin-left: 25px;color: #000000;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{dataService.libroActual.Nombre}}</p>
@@ -128,7 +128,7 @@
 						</span>
                         <span *ngIf="stateBotonGuardarEditarSecuencia">
 							<ion-icon slot="start" name="create"></ion-icon>
-							Editar
+							Guardar
 						</span>
                     </ion-button>
 					<ion-button [disabled]="secuenciaBorrando" (click)="borrarSecuencia()" *ngIf="stateBotonGuardarEditarSecuencia" shape="round" color="danger" >

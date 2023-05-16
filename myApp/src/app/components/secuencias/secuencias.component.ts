@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlertController } from '@ionic/angular';
 import { FormBuilder, FormControl } from '@angular/forms';
@@ -10,6 +10,7 @@ import { DataService } from 'src/app/services/data.service';
 import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 import { ToastService } from 'src/app/services/toast.service';
 
+import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-secuencias',
@@ -48,16 +49,17 @@ export class SecuenciasComponent implements OnInit {
 					// custom dropdown
 				[{ 'color': [] }, { 'background': [] }],	// dropdown with defaults from theme
 				[{ 'align': [] }],
-
-				['link', 'image', 'video'],	// link and image, video
 			]
 		};
 
 
+		
+	@ViewChild("quillVerSecuencia", {read: ElementRef}) quillVerSecuencia: ElementRef;
+
 	constructor(private domSanitizer: DomSanitizer, 
 		private alertController: AlertController,
 		private secuenciasService: SecuenciasFsService,
-		public toastService: ToastService) {
+		public toastService: ToastService, private renderer: Renderer2) {
 			this.frmContenido = this.frmContenido ?? new FormControl();
 	 }
 
@@ -149,10 +151,27 @@ export class SecuenciasComponent implements OnInit {
 	* Boton ver secuencia, abre el moddal
 	*/	
 	verSecuencia(libro: any, claveLibro: string) {
-		this.secuencia = libro
+		this.secuencia = libro;
 		this.secuenciaClaveLibro = claveLibro;
 		this.frmContenido.setValue(this.secuencia.data);
 		this.modalState();
+		
+		//Si no se pone el timeout no le da tiempo a la variable de formarse. dont ask why
+		setTimeout(() => {
+			this.renderer.listen(this.quillVerSecuencia.nativeElement, 'drop', (event) => {
+				event.preventDefault();
+			});
+	
+			this.renderer.listen(this.quillVerSecuencia.nativeElement, 'paste', (event: ClipboardEvent) => {
+				setTimeout(() => {
+					const regex = /<img\b[^>]*>/g;
+					let contenido = this.frmContenido.getRawValue();
+					let imgsDeleted: any;
+					imgsDeleted = contenido.replace(regex, '');
+					this.frmContenido.setValue(imgsDeleted); 
+				 }, 50);
+			});
+		}, 50);
 	}
 
 

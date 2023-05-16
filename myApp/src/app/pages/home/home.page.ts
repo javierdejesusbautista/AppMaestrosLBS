@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
 	formCotenidoRequerimiento: FormControl = new FormControl();
 	pag = 1;
 	numeroPagina$ : any;
-	totalPaginas : number[] = [];
+	totalPaginas : number;
 	selectAcciones: string = '';
 	stateBotonGuardarEditarSecuencia: boolean = false;
 
@@ -92,9 +92,11 @@ export class HomePage implements OnInit {
 				}
 			}
 			if (type === 'totalPaginas') {
-				for (let index = 1; index <= args; index++) {
-					this.totalPaginas.push(index);
-				}
+				this.totalPaginas = args;
+				// console.log(dataReceived);
+				// for (let index = 1; index <= args; index++) {
+				// 	this.totalPaginas.push(index);
+				// }
 			}
 
 			if(type === 'secuencia-accion') {
@@ -128,6 +130,10 @@ export class HomePage implements OnInit {
 		this.appPages[0].activo = true;
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
 		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
+	}
+
+	getRangePaginas(count: number): number[] {
+		return Array.from({length: count}, (_, index) => index + 1);
 	}
 
 
@@ -260,6 +266,7 @@ export class HomePage implements OnInit {
 			
 		if(opcion === 'nuevo-robotica') this.dataService.abrirModalMain();
 		
+		console.log(this.quilleditorSec);
 		//prevent drop event from other tabs
 		this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
 			event.preventDefault();
@@ -268,13 +275,12 @@ export class HomePage implements OnInit {
 		// evento al momento de pegar en el quill editor. Elimina las imagenes despues de hacer el pegado.
 		this.renderer.listen(this.quilleditorSec.nativeElement, 'paste', (event: ClipboardEvent) => {
 			setTimeout(() => {
-			const regex = /<img\b[^>]*>/g;
-			let contenido = this.formContenidoSecuencia.getRawValue();
-			let imgsDeleted: any;
-			imgsDeleted = contenido.replace(regex, '');
-			this.formContenidoSecuencia.setValue(imgsDeleted); 
-		 }, 50);
-
+				const regex = /<img\b[^>]*>/g;
+				let contenido = this.formContenidoSecuencia.getRawValue();
+				let imgsDeleted: any;
+				imgsDeleted = contenido.replace(regex, '');
+				this.formContenidoSecuencia.setValue(imgsDeleted); 
+			 }, 50);
 		});
 		
 	}
