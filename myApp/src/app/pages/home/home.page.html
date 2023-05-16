@@ -50,7 +50,7 @@
                     <ion-item lines="none" style="--background-hover: #028dac; order: 1;padding-top: 7px; color: white; --background: #00c1eb;" *ngIf="nombreLibro !== '' && appPages[0].activo" class="slide-in-animation acciones">
                         <ion-select [interfaceOptions]="{cssClass: 'accionesSelect'}" interface="popover" style="--background-hover: #028dac; font-family: Volte-Medium !important;" [ngModel]="selectAcciones" (ionDismiss)="cleanSelectDropDown()" (ionChange)="selectDropDown( $event )" selected-text="Acciones" placeholder="Acciones">
                             <ion-select-option style="--background-hover: #028dac; font-family: Volte-Medium !important;" value="crear-secuencia">Crear Secuencia</ion-select-option>
-                            <ion-select-option style="--background-hover: #028dac; font-family: Volte-Medium !important;" value="nuevo-robotica">Nuevo ...</ion-select-option>
+                            <!-- <ion-select-option style="--background-hover: #028dac; font-family: Volte-Medium !important;" value="nuevo-robotica">Nuevo ...</ion-select-option> -->
                             <!-- <ion-select-option style="--background-hover: #6228cf;" value="descargar-zip">Descargar zip</ion-select-option>
                             <ion-select-option style="--background-hover: #6228cf;" value="otros">Otros</ion-select-option> -->
                         </ion-select>
@@ -118,7 +118,7 @@
                 </div>
             </div>
             <ion-content class="ion-padding">
-                <quill-editor #quilleditorSec style="padding: 2px;margin: 0;" [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+                <quill-editor #quilleditorSec style="padding: 2px;margin: 0;"  [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
                 <div style="text-align: center; margin-top: 4px;">
                     <!-- <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()"> -->
                     <ion-button [disabled]="secuenciaAgregando" shape="round" color="dark" (click)="guardarSecuencia()">

@@ -6,16 +6,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 
-
-import * as QuillNamespace from 'quill';
-import ImageCompress from 'quill-image-compress';
-let Quill: any = QuillNamespace;
- Quill.register('modules/imageCompress', ImageCompress);
-
-import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import { QuillEditorComponent } from 'ngx-quill';
 import { AlertController } from '@ionic/angular';
-Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste);
+
 
 @Component({
   selector: 'app-home',
@@ -41,10 +34,6 @@ export class HomePage implements OnInit {
 
 	nombreLibro: string = '';
 
-	imageHandler1 = (imageDataUrl: any, type: any, imageData: any)=> {
-		console.log('Eating your pasted image.');
-	 }
-
 	quillModules = {
 		'toolbar': [
 			['bold', 'italic', 'underline', 'strike'],	// toggled buttons
@@ -57,9 +46,6 @@ export class HomePage implements OnInit {
 			[{ 'color': [] }, { 'background': [] }],	// dropdown with defaults from theme
 			[{ 'align': [] }],
 		],
-		imageDropAndPaste: {
-			handler: this.imageHandler1 // prevnet drops from folders and copy paste insidde quill editor
-		}
 	};
 
 
@@ -83,13 +69,10 @@ export class HomePage implements OnInit {
 
   @ViewChild(QuillEditorComponent, {read: ElementRef}) quilleditorSec: ElementRef;
   
-
-  
   constructor(public dataService: DataService,
 	private authService: AuthService,
 	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
-	private alertController: AlertController, private secuenciasService: SecuenciasFsService) { 
-	}
+	private alertController: AlertController, private secuenciasService: SecuenciasFsService) { }
 
 	ngOnInit() {
 		this.dataService.locations.subscribe((dataReceived: any) => {
@@ -135,22 +118,16 @@ export class HomePage implements OnInit {
 					this.toastService.show('Ocurrio un problema al eliminar la secuencia didactica. Por favor intente nuevamente.', { classname: 'bg-danger text-light', delay: 3000 });
 			}
 
-
 		});
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
-	}
-
-	onDrop(event: any) {
-		console.log(event);
-		console.log("event drop");
+		
 	}
 
 	ionViewWillEnter() { 
 		this.appPages[0].activo = true;
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
 		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
-
 	}
 
 
@@ -161,8 +138,7 @@ export class HomePage implements OnInit {
 			this.toastService.show('Las secuencias didacticas no pueden ir sin texto.', { classname: 'bg-warning text-dark', delay: 3000 });
 			return;
 		} 
-			
-
+		
 		const sendDataLibro = {
 			type: 'addSecuencia',
 			functionName: 'addSecuencia',
@@ -177,10 +153,8 @@ export class HomePage implements OnInit {
 		 };
 		 
 		 this.dataService.addSecuencia(sendDataLibro);
-
 		 this.secuenciaAgregando = true;
 	}
-
 
 
 	guardarRequerimiento() {
@@ -214,7 +188,6 @@ export class HomePage implements OnInit {
 	}
 
 	async borrarSecuencia() {
-
 		const { elemento, libroid} = this.secuenciaActualData;
 
 		const alert = await this.alertController.create({
@@ -251,7 +224,6 @@ export class HomePage implements OnInit {
 	onChangePag(event:any) {
 		this.dataService.cambiarPaginaSubejct(event);
 	}
-
 	
 	chosePage(pageTipo: string) {
 		this.nombreLibro = '';
@@ -278,6 +250,8 @@ export class HomePage implements OnInit {
 		this.selectAcciones = opcion;
 		if(opcion === 'crear-secuencia') {
 			this.dataService.abrirModal();
+			const elementEventPaste = this.quilleditorSec;
+
 			if(!this.hasDataSecuencia) {
 				this.formContenidoSecuencia.setValue('');
 				this.stateBotonGuardarEditarSecuencia = false;
@@ -290,8 +264,19 @@ export class HomePage implements OnInit {
 		this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
 			event.preventDefault();
 		});
+
+		// evento al momento de pegar en el quill editor. Elimina las imagenes despues de hacer el pegado.
+		this.renderer.listen(this.quilleditorSec.nativeElement, 'paste', (event: ClipboardEvent) => {
+			setTimeout(() => {
+			const regex = /<img\b[^>]*>/g;
+			let contenido = this.formContenidoSecuencia.getRawValue();
+			let imgsDeleted: any;
+			imgsDeleted = contenido.replace(regex, '');
+			this.formContenidoSecuencia.setValue(imgsDeleted); 
+		 }, 50);
+
+		});
 		
-		console.log(this.selectAcciones);
 	}
 
 	cleanSelectDropDown() {
@@ -311,24 +296,13 @@ export class HomePage implements OnInit {
 
 	getTokenData(key: string) {
 		const jwt = localStorage.getItem('USER_INFO');
-	
 		const jwtData = jwt!.split('.')[1];
 		// let decodedJwtJsonData = window.atob(jwtData);
 		const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
 		const decodedJwtData = JSON.parse(decodedJwtJsonData);
-	
 		const value = decodedJwtData[key];
 	
 		return value;
 	}
-
-
-
-	ngOnDestroy() {
-
-	}
-	
-
-	
 
 }
