@@ -160,19 +160,18 @@
 						<ion-icon slot="icon-only" size="large" name="close-circle"></ion-icon>
 					</ion-button>
 				</ion-buttons>
-				<select id="selectLeccion" #select name="select" [(ngModel)]="selectLeccion" value="{{selectLeccion}}"
-				style="border: none; margin: 10px 10px; background: transparent !important;">
-					<option value="1">Leccion 1</option>
-					<option value="2">Leccion 2</option>
-					<option value="3">Leccion 3</option>
-				</select>
+				<div lines="none" style="max-width: 381px;">
+					<p style=" margin: auto; margin-top: 8px; margin-left: 25px; color: #000000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+						{{ dataService.valueProyecto }}
+					</p>
+				</div>
 				<div lines="none" style="max-width: 381px;">
 					<p style="margin: auto; margin-top: 8px; margin-left: 25px;color: #000000;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{dataService.libroActual.Nombre}}</p>
 				</div>
 			</div>
 		</div>
 		<ion-content class="ion-padding">
-			<quill-editor style="padding: 2px;margin: 0;"  [formControl]="formCotenidoRequerimiento" [modules]="quillModules" id="quillTextMain" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+			<quill-editor style="padding: 2px;margin: 0;"  [formControl]="formCotenidoProyecto" [modules]="quillModules" id="quillTextMain" format="html" placeholder="Insertar texto aqui..."></quill-editor>
 			<div style="text-align: center; margin-top: 4px;">
 				<!-- <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()"> -->
 				<ion-button shape="round" color="dark" (click)="guardarRequerimiento()">

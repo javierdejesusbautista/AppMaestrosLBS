@@ -19,7 +19,7 @@ export class HomePage implements OnInit {
    
 	contenidoSecuencia = ''
 	formContenidoSecuencia: FormControl = new FormControl();
-	formCotenidoRequerimiento: FormControl = new FormControl();
+	formCotenidoProyecto: FormControl = new FormControl();
 	pag = 1;
 	numeroPagina$ : any;
 	totalPaginas : number;
@@ -120,6 +120,13 @@ export class HomePage implements OnInit {
 					this.toastService.show('Ocurrio un problema al eliminar la secuencia didactica. Por favor intente nuevamente.', { classname: 'bg-danger text-light', delay: 3000 });
 			}
 
+			if(type === 'abrirGuardarPanelProyecto') {
+				this.formCotenidoProyecto.setValue('');
+				 if(args.arguments.length > 0) {
+					this.formCotenidoProyecto.setValue(args.arguments[0].data);
+				 }
+			}	
+
 		});
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
@@ -140,7 +147,9 @@ export class HomePage implements OnInit {
 	  async guardarSecuencia() {
 		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
 
-		if(contenidoSecuencia === null) {
+		console.log(contenidoSecuencia);
+		if(contenidoSecuencia === '' || contenidoSecuencia === undefined || contenidoSecuencia === null) {
+			
 			this.toastService.show('Las secuencias didacticas no pueden ir sin texto.', { classname: 'bg-warning text-dark', delay: 3000 });
 			return;
 		} 
@@ -165,7 +174,7 @@ export class HomePage implements OnInit {
 
 	guardarRequerimiento() {
 		console.log("Guardar Requerimiento");
-		const contenidoRequerimiento = this.formCotenidoRequerimiento.getRawValue();
+		const contenidoRequerimiento = this.formCotenidoProyecto.getRawValue();
 
 		// revisar por posibles edits en blanco y/o eliminar
 		if(contenidoRequerimiento === null) {
@@ -173,15 +182,16 @@ export class HomePage implements OnInit {
 			return;
 		}
 
-		this.selectLeccion = this.dataService.valueRobotica[0];
+		this.selectLeccion = this.dataService.valueProyecto;
 
 		const sendDataLibro = {
-			type: 'addRequerimiento',
-			functionName: 'addRequerimiento',
+			type: 'addProyecto',
+			functionName: 'addProyecto',
 			arguments: {
 				data: contenidoRequerimiento,
 				ejercicio: 0,
-				elemento: `leccion_${this.selectLeccion}_robotica`,
+				elemento: `proyecto_${this.dataService.nomenclaturaProyecto}_${this.dataService.paginaActualProyecto}`,
+				pagina: this.dataService.paginaActualProyecto,
 				libroid: 0,
 				userCreate: this.getTokenData('usuario')
 			}

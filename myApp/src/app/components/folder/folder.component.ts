@@ -95,8 +95,19 @@ export class FolderComponent implements OnInit {
 				this.crearNotasActivated = false;
 				setTimeout(() => {this.crearNotasDesativado = false}, 400);
 			}
-			if(type === 'abrirGuardarPanelRobotica') {
-				this.dataService.valueRobotica = args;
+			if(type === 'abrirGuardarPanelProyecto') {
+				const projectMap: any = {
+					'p_1': 'Proyecto 1',
+					'p_2': 'Proyecto 2',
+					'p_3': 'Proyecto 3'
+				  };
+				  
+				  if (args.proyecto in projectMap) {
+					this.dataService.valueProyecto = projectMap[args.proyecto];
+				  }
+
+				this.dataService.nomenclaturaProyecto = args.proyecto;
+				this.dataService.paginaActualProyecto = args.pagina
 				this.dataService.abrirModalMain();	
 			}
 		});
@@ -136,6 +147,7 @@ export class FolderComponent implements OnInit {
 		this.dataService.deleteSecuencia$.subscribe(data => {
 			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
 		 });
+
 
 	  }
 	

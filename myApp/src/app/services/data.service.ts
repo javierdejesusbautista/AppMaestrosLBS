@@ -15,9 +15,12 @@ export class DataService {
 	libroActual: any = {};
 	totalPaginas: number = 0;
 
-	valueRobotica: any[] = [];
+	valueProyecto: string;
+	paginaActualProyecto: string | number;
+	nomenclaturaProyecto: string;
 	secuenciasLibroActual: any = {};
 	pagina: any;
+
   	public paginaSubejct$: Subject<any> = new Subject<any>();
 	public nombreLibroActual$: Subject<string> = new Subject<string>();
 	public stateIframe$: Subject<boolean> = new Subject<boolean>();
@@ -83,6 +86,7 @@ export class DataService {
   getSecuencias(data: any) {
 	this.getSecuencias$.next(data);
   }
+
 
 
   constructor() { 
