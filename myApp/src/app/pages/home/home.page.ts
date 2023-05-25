@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
 
 	globalInstance: any;
   
-	datosGenUsuario: any = {};
+	datosGenUsuario: any = {};                                  
   
    appPages = [
     { title: 'Libros', icon: 'book-outline', tipo: 'libros', activo: true },
@@ -139,20 +139,23 @@ export class HomePage implements OnInit {
 		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
 	}
 
-	getRangePaginas(count: number): number[] {
+	getRangePaginas(count: number): number[] {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 		return Array.from({length: count}, (_, index) => index + 1);
 	}
 
 
 	  async guardarSecuencia() {
 		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
-
-		console.log(contenidoSecuencia);
 		if(contenidoSecuencia === '' || contenidoSecuencia === undefined || contenidoSecuencia === null) {
-			
 			this.toastService.show('Las secuencias didacticas no pueden ir sin texto.', { classname: 'bg-warning text-dark', delay: 3000 });
 			return;
 		} 
+
+		if(contenidoSecuencia.length > 50000) { 
+			this.toastService.show('La secuencia tiene demasiado contenido Por favor reduzcalo.', { classname: 'bg-warning text-dark', delay: 5000 });
+			return;
+		}
+
 		
 		const sendDataLibro = {
 			type: 'addSecuencia',
@@ -272,7 +275,7 @@ export class HomePage implements OnInit {
 				this.formContenidoSecuencia.setValue('');
 				this.stateBotonGuardarEditarSecuencia = false;
 			}
-		}
+		}             
 			
 		if(opcion === 'nuevo-robotica') this.dataService.abrirModalMain();
 		
