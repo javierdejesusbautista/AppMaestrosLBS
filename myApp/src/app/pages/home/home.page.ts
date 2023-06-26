@@ -55,7 +55,7 @@ export class HomePage implements OnInit {
   
    appPages = [
     { title: 'Libros', icon: 'book-outline', tipo: 'libros', activo: true },
-    { title: 'Secuencias', icon: 'document-text-outline', tipo: 'secuencias', activo: false },
+    // { title: 'Secuencias', icon: 'document-text-outline', tipo: 'secuencias', activo: false },
 
   ];
   

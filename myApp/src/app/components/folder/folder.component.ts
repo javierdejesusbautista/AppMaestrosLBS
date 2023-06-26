@@ -90,7 +90,7 @@ export class FolderComponent implements OnInit {
 			if(type === 'crearNotaActivated') {
 				this.crearNotasActivated = true;
 			}
-			if(type === 'crearNotaDesactivated') {
+		if(type === 'crearNotaDesactivated') {
 				this.crearNotasDesativado = true;
 				this.crearNotasActivated = false;
 				setTimeout(() => {this.crearNotasDesativado = false}, 400);

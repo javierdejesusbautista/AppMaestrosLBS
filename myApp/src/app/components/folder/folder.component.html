@@ -40,7 +40,7 @@
 
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
         <div class="contenedorIframe" style="height: 91vh;">
-				<!-- <ion-fab [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" (click)="openFabsMenuLibro()" >
+				<ion-fab [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" (click)="openFabsMenuLibro()" >
 					<ion-fab-button size="small" close-icon="chevron-down"><ion-icon name="chevron-up-outline"></ion-icon></ion-fab-button>
 					<ion-fab-list side="top" [activated]="fabBtnOpen">
 					  <ion-fab-button>
@@ -63,7 +63,7 @@
 					  </ion-fab-button>
 					</ion-fab-list>
 				  
-				  </ion-fab> -->
+				  </ion-fab> 
 	
 				  <ion-fab size="small" (click)="abrirIndice()" [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" style="margin-bottom: 0rem;">
 					<ion-fab-button size="small" style="--background: #FF5722; --color: #ffffff;">{{ paginaActual}}</ion-fab-button>
@@ -79,6 +79,7 @@
 			</ion-fab> -->
             <!-- <iframe id="iframe10" #iframe src="../../../assets/ESC_03_matematicas_v2/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
             <!-- <iframe id="iframe10" #iframe src="../../../assets/ESC_01_science_v2_loading/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
+            <!-- <iframe id="iframe10" #iframe src="../../../assets/prueba_iconos_1/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
             <iframe id="iframe10" #iframe [src]="urlLibrodev" frameborder="0" style="height: 100%; width: 100%;"></iframe>
         </div>
     </div>

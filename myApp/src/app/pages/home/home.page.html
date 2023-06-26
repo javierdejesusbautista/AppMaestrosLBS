@@ -58,7 +58,7 @@
                     <ion-breadcrumbs color ="light" style="font-family: Volte-Regular; order: 2;margin-top: 10px; flex: 1; white-space: nowrap;flex-wrap: nowrap;">
                         <ion-breadcrumb (click)="regresarInicio()">Inicio</ion-breadcrumb>
                         <ion-breadcrumb *ngIf="appPages[0].activo" (click)="regresarInicio()">Libros</ion-breadcrumb>
-                        <ion-breadcrumb *ngIf="appPages[1].activo">Secuencias</ion-breadcrumb>
+                        <!-- <ion-breadcrumb *ngIf="appPages[1].activo">Secuencias</ion-breadcrumb> -->
                         <ion-breadcrumb *ngIf="nombreLibro !== '' && appPages[0].activo">{{nombreLibro}}</ion-breadcrumb>
                         <ion-breadcrumb *ngIf="nombreLibro !== '' && appPages[0].activo">Pagina: {{ pag }}</ion-breadcrumb>
                     </ion-breadcrumbs>
@@ -87,7 +87,7 @@
             </ion-toolbar>
         </ion-header>
         <app-folder style="z-index: 1;" *ngIf="appPages[0].activo"></app-folder>
-        <app-secuencias style="z-index: 1;" *ngIf="appPages[1].activo"></app-secuencias>
+        <!-- <app-secuencias style="z-index: 1;" *ngIf="appPages[1].activo"></app-secuencias> -->
 
 	</div>
 	
