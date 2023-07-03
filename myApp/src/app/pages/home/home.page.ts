@@ -45,6 +45,7 @@ export class HomePage implements OnInit {
 				// custom dropdown
 			[{ 'color': [] }, { 'background': [] }],	// dropdown with defaults from theme
 			[{ 'align': [] }],
+			['link'],
 		],
 	};
 
@@ -75,7 +76,8 @@ export class HomePage implements OnInit {
 	private alertController: AlertController, private secuenciasService: SecuenciasFsService) { }
 
 	ngOnInit() {
-		this.dataService.locations.subscribe((dataReceived: any) => {
+		this.dataService.locationsHome.subscribe((dataReceived: any) => {
+			console.log("[data received]: ", dataReceived);
 			const { type, args } = dataReceived;
 			
 			if(type === 'pagina') {
@@ -247,10 +249,11 @@ export class HomePage implements OnInit {
 	chosePage(pageTipo: string) {
 		this.nombreLibro = '';
 		this.dataService.estadoModal = false;
+		this.dataService.estadoModalMain = false;
 		this.dataService.setNombreLibroActual('');
 		this.dataService.setStateIframe(false);
 		this.appPages[0].activo = pageTipo === 'libros';
-		this.appPages[1].activo = pageTipo === 'secuencias';
+		// this.appPages[1].activo = pageTipo === 'secuencias';
 	}
 
 	regresarInicio() {
@@ -258,6 +261,7 @@ export class HomePage implements OnInit {
 		const cerrarIframe  = false;
 		this.formContenidoSecuencia.setValue('');
 		this.dataService.estadoModal = false;
+		this.dataService.estadoModalMain = false;
 		this.chosePage('libros');
 		this.dataService.setNombreLibroActual('');
 		this.dataService.setStateIframe( cerrarIframe );
@@ -270,7 +274,7 @@ export class HomePage implements OnInit {
 		if(opcion === 'crear-secuencia') {
 			this.dataService.abrirModal();
 			const elementEventPaste = this.quilleditorSec;
-
+			this.dataService.estadoModalMain = false;
 			if(!this.hasDataSecuencia) {
 				this.formContenidoSecuencia.setValue('');
 				this.stateBotonGuardarEditarSecuencia = false;
@@ -304,11 +308,12 @@ export class HomePage implements OnInit {
 
 	onLogout() {
 		this.dataService.estadoModal = false;
+		this.dataService.estadoModalMain = false;
 		this.dataService.setNombreLibroActual('');
 		this.dataService.setStateIframe( false );
 		setTimeout(() => {
 			this.appPages[0].activo = false;
-			this.appPages[1].activo = false;
+			// this.appPages[1].activo = false;
 			this.authService.logout();
 		}, 50);
 	}

@@ -82,7 +82,8 @@ export class FolderComponent implements OnInit {
 		});
 
 
-		this.dataService.locations.subscribe((dataReceived: any) => { 
+		this.dataService.locationsFolder.subscribe((dataReceived: any) => { 
+			console.log("data in folder from index: ", dataReceived)
 			const { type, args } = dataReceived;
 			if(type === 'pagina') {
 				this.paginaActual = parseInt(args.pagina);
@@ -109,6 +110,7 @@ export class FolderComponent implements OnInit {
 				this.dataService.nomenclaturaProyecto = args.proyecto;
 				this.dataService.paginaActualProyecto = args.pagina
 				this.dataService.abrirModalMain();	
+				this.dataService.estadoModal = false;
 			}
 		});
 

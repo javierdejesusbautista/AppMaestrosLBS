@@ -34,19 +34,94 @@ export class DataService {
 
 	currentIframe: any;
 
-	locations = new Observable((pagina: any) => {
-		window.addEventListener('message', (event)=>{
+	private observerHome: any;
+	private observerFolder: any;
+
+	locationsFolder = new Observable((observer) => {
+		this.observerFolder = observer;
+
+		window.addEventListener('message', this.receiveMessageFolder, false);
+
+		//cleanup function to unsuscribe from the observable // test 
+
+		// return () => {
+		// 	console.log("cleanup function");
+		// 	window.removeEventListener('message', this.receiveMessage,);
+		// }
+	});
+
+	locationsHome = new Observable((observer) => {
+		this.observerHome = observer;
+
+		window.addEventListener('message', this.receiveMessageHome, false);
+
+	});
+
+	receiveMessageFolder = (event: any) => { 
+		console.log(event);
+
+		const dataFromIndex = { 
+			type: event.data.type,
+			args: event.data.arguments
+		}
+		console.log("window listener message: ", dataFromIndex);
+
+		this.observerFolder.next(dataFromIndex);
+	}
+
+	receiveMessageHome = (event: any) => { 
+		console.log(event);
+
+		const dataFromIndex = { 
+			type: event.data.type,
+			args: event.data.arguments
+		}
+		console.log("window listener message: ", dataFromIndex);
+
+		this.observerHome.next(dataFromIndex);
+	}
+
+	
+
+
+
+
+
+
+
+
+/*
+
+	
+	locations = new Observable((pagina: any) => { 
+		// this.pagina = pagina;
+		console.log("pagina", pagina);
+		window.addEventListener('message', this.receiveMessage, false); 
+
+		
+	});
+	
+    
+		receiveMessage = (event: any)  => {
+			console.log(event);
 			const dataFromIndex = {
 				type: event.data.type,
 				args: event.data.arguments
-			}; 
-			console.log(dataFromIndex);
-			pagina.next(dataFromIndex);
-		}, false);
-	});
-    
-
+			}
+			console.log("window listener message: ", dataFromIndex);
+			event.next(dataFromIndex);
+		}
   
+	*/
+
+	// 	const dataFromIndex = {
+		// 		type: event.data.type,
+		// 		args: event.data.arguments
+		// 	}; 
+		// 	console.log(dataFromIndex);
+		// 	pagina.next(dataFromIndex);
+		// }, false);
+	
 
   abrirModal(){
     this.estadoModal = this.estadoModal ? false : true;
@@ -55,6 +130,7 @@ export class DataService {
 
   abrirModalMain() {
 	  this.estadoModalMain = this.estadoModalMain ? false : true;
+	//   console.log(this.estadoModalMain);
 	  this.displayModalMain = 'none' ? 'inherit' : ' none';
 	  
 	  console.log("Modal main", this.displayModalMain);
