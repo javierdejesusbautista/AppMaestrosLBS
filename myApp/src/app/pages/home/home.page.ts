@@ -67,7 +67,8 @@ import { Config } from 'jodit/src/config';
     enter: 'p',
     height: '500px',
     width: 'auto',
-    events: { beforePaste : this.handleBeforePaste }
+    events: { beforePaste : this.handleBeforePaste },
+    language: 'es',
 
 
 
