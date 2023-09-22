@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { DataService } from '../../services/data.service';
@@ -6,17 +6,72 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 
-import { QuillEditorComponent } from 'ngx-quill';
+import { EditorChangeContent, EditorChangeSelection, QuillEditorComponent } from 'ngx-quill';
 import { AlertController } from '@ionic/angular';
 
+import { NgxJoditComponent } from 'ngx-jodit';
 
-@Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
-})
-export class HomePage implements OnInit {
-   
+import { Config } from 'jodit/src/config';
+
+    @Component({
+      selector: 'app-home',
+      templateUrl: './home.page.html',
+      styleUrls: ['./home.page.scss'],
+      // changeDetection: ChangeDetectionStrategy.OnPush
+    })
+
+    export class HomePage implements OnInit, AfterViewInit {
+
+
+      handleBeforePaste = event => {
+        const items = (event.clipboardData || event.originalEvent.clipboardData)
+          .items;
+        let hasImage = false;
+        // console.log('items', items[0].type);
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image') === 0) {
+            hasImage = true;
+            break;
+          }
+        }
+        if (hasImage) {
+          this.toastService.show('No se puede adjuntar imagenes.', { classname: 'bg-danger text-light', delay: 3000 });
+          return false;
+        }
+        const data = (
+          event.clipboardData || event.originalEvent.clipboardData
+        ).getData('text/html');
+        if (!data) return;
+        const doc = new DOMParser().parseFromString(data, 'text/html');
+        const images = doc.querySelectorAll('img');
+        if (!images.length) return;
+
+        this.toastService.show('No se puede adjuntar imagenes.', { classname: 'bg-danger text-light', delay: 3000 });
+        return false;
+      };
+  value = '';
+  options: Partial<Config> | undefined = {
+    readonly: false, // Define si el editor es de solo lectura
+    toolbar: true, //
+    toolbarButtonSize: 'small', // Tamaño de los botones en la barra de herramientas ('small', 'default', 'large')
+    // buttonsXS: ['bold'], // Tamaño de
+    theme: 'default', // Tema del editor ('default', 'dark', 'light')
+    statusbar: false, // Tamaño de
+
+    // Configuración de la barra de herramientas
+    // buttonsXS: 'bold, italic, underline, strikethrough, superscript, subscript,|, ul, ol',
+    buttonsXS: "bold,italic,underline,strikethrough,|,fontsize,paragraph,|,ul,ol,align,brush,undo,redo",
+    buttonsSM: "bold,italic,underline,strikethrough,|,fontsize,paragraph,|,ul,ol,align,brush,undo,redo",
+    buttonsMD: "bold,italic,underline,strikethrough,|,fontsize,paragraph,|,ul,ol,align,brush,undo,redo",
+    buttons:   "bold,italic,underline,strikethrough,|,fontsize,paragraph,|,ul,ol,align,brush,undo,redo",
+    enter: 'p',
+    height: '500px',
+    width: 'auto',
+    events: { beforePaste : this.handleBeforePaste }
+
+
+
+  };
 	contenidoSecuencia = ''
 	formContenidoSecuencia: FormControl = new FormControl();
 	formCotenidoProyecto: FormControl = new FormControl();
@@ -34,32 +89,33 @@ export class HomePage implements OnInit {
 
 	nombreLibro: string = '';
 
-	quillModules = {
-		'toolbar': [
-			['bold', 'italic', 'underline', 'strike'],	// toggled buttons
-			['blockquote', 'code-block'],
-			[{'header': 1}, {'header': 2}],
-			[{ 'size': ['small', false, 'large', 'huge'] }],	// custom button values
-			[{ 'list': 'ordered' }, { 'list': 'bullet' }],
-							// text direction
-				// custom dropdown
-			[{ 'color': [] }, { 'background': [] }],	// dropdown with defaults from theme
-			[{ 'align': [] }],
-			['link'],
-		],
-	};
+	// quillModules = {
+	// 	'toolbar': [
+	// 		['bold', 'italic', 'underline', 'strike'],	// toggled buttons
+	// 		['blockquote', 'code-block'],
+	// 		[{'header': 1}, {'header': 2}],
+	// 		[{ 'size': ['small', false, 'large', 'huge'] }],	// custom button values
+	// 		[{ 'list': 'ordered' }, { 'list': 'bullet' }],
+	// 						// text direction
+	// 			// custom dropdown
+	// 		[{ 'color': [] }, { 'background': [] }],	// dropdown with defaults from theme
+	// 		[{ 'align': [] }],
+	// 		['link'],
+	// 	]
+	// };
 
 
 	globalInstance: any;
-  
-	datosGenUsuario: any = {};                                  
-  
+  editorCreatd:any
+
+	datosGenUsuario: any = {};
+
    appPages = [
     { title: 'Libros', icon: 'book-outline', tipo: 'libros', activo: true },
     // { title: 'Secuencias', icon: 'document-text-outline', tipo: 'secuencias', activo: false },
 
   ];
-  
+
   public labels = ['Family', 'Friends', 'Notes'];
 
   libroExiste: any;
@@ -68,28 +124,28 @@ export class HomePage implements OnInit {
   @ViewChild('#modal') modalSecuencia: ElementRef;
   @ViewChild('select') select: ElementRef;
 
-  @ViewChild(QuillEditorComponent, {read: ElementRef}) quilleditorSec: ElementRef;
-  
+  @ViewChild(NgxJoditComponent, {read: ElementRef}) quilleditorSec: ElementRef;
+
   constructor(public dataService: DataService,
 	private authService: AuthService,
 	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
-	private alertController: AlertController, private secuenciasService: SecuenciasFsService) { }
+	private alertController: AlertController, private secuenciasService: SecuenciasFsService, private zone: NgZone) { }
 
 	ngOnInit() {
 		this.dataService.locationsHome.subscribe((dataReceived: any) => {
 			console.log("[data received]: ", dataReceived);
 			const { type, args } = dataReceived;
-			
+
 			if(type === 'pagina') {
 				this.stateBotonGuardarEditarSecuencia = false;
 				this.pag = parseInt(args.pagina);
 				if(args.secuencia !== undefined) {
 					this.hasDataSecuencia = true;
 					this.secuenciaActualData = args.secuencia;
-					this.formContenidoSecuencia.setValue(args.secuencia['data']);
+					this.value = args.secuencia['data'];
 					this.stateBotonGuardarEditarSecuencia = true;
 				} else {
-					this.formContenidoSecuencia.setValue('');
+					this.value = '';
 					this.hasDataSecuencia = false;
 				}
 			}
@@ -105,17 +161,18 @@ export class HomePage implements OnInit {
 				if(args[0]){
 					this.toastService.show('Secuencia didactica guardada.', { classname: 'bg-success text-light', delay: 3000 });
 					this.stateBotonGuardarEditarSecuencia = true;
-				} 
+				}
 				else
 					this.toastService.show('Ocurrio un problema al guardar la secuencia didactica. Por favor intente nuevamente.', { classname: 'bg-danger text-light', delay: 3000 });
 
 				this.secuenciaAgregando = false;
+
 			}
 
 			if(type === 'deleteSecuencia') {
 				if(args[0]) {
 					this.toastService.show('Secuencia didactica eliminada.', { classname: 'bg-success text-light', delay: 3000 });
-					this.formContenidoSecuencia.setValue('');
+          this.value = '';
 					this.stateBotonGuardarEditarSecuencia = false;
 				}
 				else
@@ -123,42 +180,55 @@ export class HomePage implements OnInit {
 			}
 
 			if(type === 'abrirGuardarPanelProyecto') {
-				this.formCotenidoProyecto.setValue('');
+				this.value = '';
 				 if(args.arguments.length > 0) {
-					this.formCotenidoProyecto.setValue(args.arguments[0].data);
+					this.value = args.arguments[0].data;
 				 }
-			}	
+			}
 
 		});
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
-		
-	}
 
-	ionViewWillEnter() { 
+
+	}
+  ngAfterViewInit(): void {
+
+  }
+
+  initEditor(): void {
+
+  }
+
+	ionViewWillEnter() {
 		this.appPages[0].activo = true;
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
 		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
+    setTimeout(() => {
+      this.initEditor();
+      console.log("enter")
+    }, 5000)
+
 	}
 
-	getRangePaginas(count: number): number[] {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+	getRangePaginas(count: number): number[] {
 		return Array.from({length: count}, (_, index) => index + 1);
 	}
 
 
 	  async guardarSecuencia() {
-		const contenidoSecuencia = this.formContenidoSecuencia.getRawValue();
+		const contenidoSecuencia = this.value;
 		if(contenidoSecuencia === '' || contenidoSecuencia === undefined || contenidoSecuencia === null) {
 			this.toastService.show('Las secuencias didacticas no pueden ir sin texto.', { classname: 'bg-warning text-dark', delay: 3000 });
 			return;
-		} 
+		}
 
-		if(contenidoSecuencia.length > 50000) { 
+		if(contenidoSecuencia.length > 50000) {
 			this.toastService.show('La secuencia tiene demasiado contenido Por favor reduzcalo.', { classname: 'bg-warning text-dark', delay: 5000 });
 			return;
 		}
 
-		
+
 		const sendDataLibro = {
 			type: 'addSecuencia',
 			functionName: 'addSecuencia',
@@ -171,7 +241,7 @@ export class HomePage implements OnInit {
 				userCreate: this.getTokenData('usuario')
 			}
 		 };
-		 
+
 		 this.dataService.addSecuencia(sendDataLibro);
 		 this.secuenciaAgregando = true;
 	}
@@ -179,7 +249,7 @@ export class HomePage implements OnInit {
 
 	guardarRequerimiento() {
 		console.log("Guardar Requerimiento");
-		const contenidoRequerimiento = this.formCotenidoProyecto.getRawValue();
+		const contenidoRequerimiento = this.value;
 
 		// revisar por posibles edits en blanco y/o eliminar
 		if(contenidoRequerimiento === null) {
@@ -204,7 +274,7 @@ export class HomePage implements OnInit {
 
 		console.log(sendDataLibro);
 		this.dataService.addRequerimiento(sendDataLibro);
-		
+
 		this.toastService.show('Contenido guardado.', { classname: 'bg-success text-dark', delay: 3000});
 	}
 
@@ -245,7 +315,7 @@ export class HomePage implements OnInit {
 	onChangePag(event:any) {
 		this.dataService.cambiarPaginaSubejct(event);
 	}
-	
+
 	chosePage(pageTipo: string) {
 		this.nombreLibro = '';
 		this.dataService.estadoModal = false;
@@ -259,7 +329,7 @@ export class HomePage implements OnInit {
 	regresarInicio() {
 		console.log("regresar inicio");
 		const cerrarIframe  = false;
-		this.formContenidoSecuencia.setValue('');
+    this.value = '';
 		this.dataService.estadoModal = false;
 		this.dataService.estadoModalMain = false;
 		this.chosePage('libros');
@@ -267,8 +337,8 @@ export class HomePage implements OnInit {
 		this.dataService.setStateIframe( cerrarIframe );
 	}
 
-
 	selectDropDown(event: any) {
+
 		const opcion = event.detail.value;
 		this.selectAcciones = opcion;
 		if(opcion === 'crear-secuencia') {
@@ -276,14 +346,15 @@ export class HomePage implements OnInit {
 			const elementEventPaste = this.quilleditorSec;
 			this.dataService.estadoModalMain = false;
 			if(!this.hasDataSecuencia) {
-				this.formContenidoSecuencia.setValue('');
+        this.value = '';
 				this.stateBotonGuardarEditarSecuencia = false;
 			}
-		}             
-			
+		}
+
 		if(opcion === 'nuevo-robotica') this.dataService.abrirModalMain();
-		
-		console.log(this.quilleditorSec);
+
+		// console.log(this.quilleditorSec);
+		// console.log(this.quilleditorSec.nativeElement);
 		//prevent drop event from other tabs
 		this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
 			event.preventDefault();
@@ -293,13 +364,13 @@ export class HomePage implements OnInit {
 		this.renderer.listen(this.quilleditorSec.nativeElement, 'paste', (event: ClipboardEvent) => {
 			setTimeout(() => {
 				const regex = /<img\b[^>]*>/g;
-				let contenido = this.formContenidoSecuencia.getRawValue();
+				let contenido = this.value;
 				let imgsDeleted: any;
 				imgsDeleted = contenido.replace(regex, '');
-				this.formContenidoSecuencia.setValue(imgsDeleted); 
+				this.value = imgsDeleted;
 			 }, 50);
 		});
-		
+
 	}
 
 	cleanSelectDropDown() {
@@ -325,8 +396,29 @@ export class HomePage implements OnInit {
 		const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
 		const decodedJwtData = JSON.parse(decodedJwtJsonData);
 		const value = decodedJwtData[key];
-	
+
 		return value;
 	}
 
 }
+
+// export class AppComponent {
+//   public quill: Quill;
+
+//   private get tableModule(): BetterTableModule {
+//     return this.quill.getModule("better-table");
+//   }
+
+//   public editorCreated(event: Quill): void {
+//     this.quill = event;
+//     // Example on how to add new table to editor
+//     this.addNewtable();
+//   }
+
+//   private addNewtable(): void {
+//     this.tableModule.insertTable(3, 3);
+//   }
+
+
+
+

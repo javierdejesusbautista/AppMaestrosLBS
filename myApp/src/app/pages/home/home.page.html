@@ -11,7 +11,7 @@
 					<img class="img-logo shadow-hover" src="/assets/lbslogo.png" alt="" >
 				  </ion-thumbnail>
 				</div> -->
-			
+
 
         </ion-header>
         <ion-content style="font-family: Volte-Bold !important; border-right: inset;">
@@ -43,7 +43,7 @@
 
 
     <div id="main-content">
-		
+
         <ion-header>
             <ion-toolbar style="font-family: Volte-Regular !important; --background: #00c1eb;">
                 <div style="display: flex;justify-content: space-between; width: 100%; overflow-x: auto; overflow-y: hidden;">
@@ -90,13 +90,13 @@
         <!-- <app-secuencias style="z-index: 1;" *ngIf="appPages[1].activo"></app-secuencias> -->
 
 	</div>
-	
-    <ion-modal id="modal-secuencia" style="--border-radius: 8px; font-family: Volte-Regular;" #modal [style.display]="dataService.displayModal" trigger="open-modal" 
+
+    <ion-modal id="modal-secuencia" style="--border-radius: 8px; font-family: Volte-Regular;" #modal [style.display]="dataService.displayModal" trigger="open-modal"
 		class="modalService"
-		[isOpen]="dataService.estadoModal" 
+		[isOpen]="dataService.estadoModal"
 		[initialBreakpoint]="0.8"
 		[breakpoints]="[0.8, 0.8]"
-		[backdropDismiss]="false" 
+		[backdropDismiss]="false"
 		[backdropBreakpoint]="1"
 		handleBehavior="none"
         [handle]="false">
@@ -118,7 +118,8 @@
                 </div>
             </div>
             <ion-content class="ion-padding">
-                <quill-editor #quilleditorSec style="padding: 2px;margin: 0;"  [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor>
+                <!-- <quill-editor #quilleditorSec style="padding: 2px;margin: 0;"  [formControl]="formContenidoSecuencia" [modules]="quillModules" id="quillText" format="html" placeholder="Insertar texto aqui..."></quill-editor> -->
+                <ngx-jodit #quilleditorSec [options]="options" [(value)]="value" ></ngx-jodit>
                 <div style="text-align: center; margin-top: 4px;">
                     <!-- <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()"> -->
                     <ion-button [disabled]="secuenciaAgregando" shape="round" color="dark" (click)="guardarSecuencia()">
@@ -145,10 +146,10 @@
 
 	<ion-modal id="main-modal" style="--border-radius: 8px; font-family: Volte-Regular;" #modal [style.display]="dataService.displayModalMain"
 	class="modalService"
-	[isOpen]="dataService.estadoModalMain" 
+	[isOpen]="dataService.estadoModalMain"
 	[initialBreakpoint]="0.8"
 	[breakpoints]="[0.8, 0.8]"
-	[backdropDismiss]="false" 
+	[backdropDismiss]="false"
 	[backdropBreakpoint]="1"
 	handleBehavior="none"
 	[handle]="false">
@@ -171,8 +172,9 @@
 			</div>
 		</div>
 		<ion-content class="ion-padding">
-			<quill-editor style="padding: 2px;margin: 0;"  [formControl]="formCotenidoProyecto" [modules]="quillModules" id="quillTextMain" format="html" placeholder="Insertar texto aqui..."></quill-editor>
-			<div style="text-align: center; margin-top: 4px;">
+			<!-- <quill-editor style="padding: 2px;margin: 0;"  [formControl]="formCotenidoProyecto" [modules]="quillModules" id="quillTextMain" format="html" placeholder="Insertar texto aqui..."></quill-editor> -->
+      <ngx-jodit  [options]="options" [(value)]="value" ></ngx-jodit>
+      <div style="text-align: center; margin-top: 4px;">
 				<!-- <ion-button shape="round" color="dark" *ngIf="!stateBotonGuardarEditarSecuencia" (click)="addNewList()"> -->
 				<ion-button shape="round" color="dark" (click)="guardarRequerimiento()">
 					<span *ngIf="!stateBotonGuardarEditarSecuencia">
@@ -190,9 +192,9 @@
 	</ng-template>
 </ion-modal>
 
-	
 
-	
+
+
 
 </ion-split-pane>
 
