@@ -31,7 +31,7 @@
             </ion-item>
             <div class="fade-in-down" *ngFor="let libro of grado.Libros;;" slot="content">
                 <ion-item button slot="content" (click)="abrirLibro(libro)" style="--background-hover: #028dac;">
-                    <ion-label style="font-family: Volte-Regular; padding-left: 20px;">{{ libro.Nombre }}</ion-label>
+                    <ion-label style="font-family: Volte-Regular; padding-left: 20px;">{{libro.Escolaridad}} - {{ libro.Grados }} {{ libro.Nombre }} - {{ libro.Idioma }}</ion-label>
                 </ion-item>
             </div>
         </ion-accordion>

@@ -58,25 +58,25 @@ export class DataService {
 	});
 
 	receiveMessageFolder = (event: any) => { 
-		console.log(event);
+		//console.log(event);
 
 		const dataFromIndex = { 
 			type: event.data.type,
 			args: event.data.arguments
 		}
-		console.log("window listener message: ", dataFromIndex);
+		//console.log("window listener message: ", dataFromIndex);
 
 		this.observerFolder.next(dataFromIndex);
 	}
 
 	receiveMessageHome = (event: any) => { 
-		console.log(event);
+//		console.log(event);
 
 		const dataFromIndex = { 
 			type: event.data.type,
 			args: event.data.arguments
 		}
-		console.log("window listener message: ", dataFromIndex);
+		//console.log("window listener message: ", dataFromIndex);
 
 		this.observerHome.next(dataFromIndex);
 	}

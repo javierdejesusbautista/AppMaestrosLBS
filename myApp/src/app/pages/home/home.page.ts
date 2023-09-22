@@ -121,7 +121,7 @@ import { Config } from 'jodit/src/config';
   libroExiste: any;
   hasDataSecuencia: boolean = false;
 
-  @ViewChild('#modal') modalSecuencia: ElementRef;
+  @ViewChild('#modal') modalSecuencia: IonModal;
   @ViewChild('select') select: ElementRef;
 
   @ViewChild(NgxJoditComponent, {read: ElementRef}) quilleditorSec: ElementRef;
@@ -131,9 +131,8 @@ import { Config } from 'jodit/src/config';
 	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
 	private alertController: AlertController, private secuenciasService: SecuenciasFsService, private zone: NgZone) { }
 
-	ngOnInit() {
 		this.dataService.locationsHome.subscribe((dataReceived: any) => {
-			console.log("[data received]: ", dataReceived);
+			//console.log("[data received]: ", dataReceived);
 			const { type, args } = dataReceived;
 
 			if(type === 'pagina') {
@@ -265,14 +264,14 @@ import { Config } from 'jodit/src/config';
 			arguments: {
 				data: contenidoRequerimiento,
 				ejercicio: 0,
-				elemento: `proyecto_${this.dataService.nomenclaturaProyecto}_${this.dataService.paginaActualProyecto}`,
+				elemento: `proyecto_${this.dataService.nomenclaturaProyecto}`,
 				pagina: this.dataService.paginaActualProyecto,
 				libroid: 0,
 				userCreate: this.getTokenData('usuario')
 			}
 		};
 
-		console.log(sendDataLibro);
+		// console.log(sendDataLibro);
 		this.dataService.addRequerimiento(sendDataLibro);
 
 		this.toastService.show('Contenido guardado.', { classname: 'bg-success text-dark', delay: 3000});
@@ -327,7 +326,7 @@ import { Config } from 'jodit/src/config';
 	}
 
 	regresarInicio() {
-		console.log("regresar inicio");
+		// console.log("regresar inicio");
 		const cerrarIframe  = false;
     this.value = '';
 		this.dataService.estadoModal = false;
