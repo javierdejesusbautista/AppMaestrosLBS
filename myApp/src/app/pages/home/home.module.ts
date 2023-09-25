@@ -25,8 +25,6 @@ import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.co
 import { menuComponent } from 'src/app/components/menu/menu.component';
 import { navbarComponent } from 'src/app/components/navbar/navbar.component';
 import { sharedModule } from 'src/app/shared/shared.module';
-import { EstadisticasPageModule } from '../estadisticas/estadisticas.module';
-import { EstadisticasPage } from '../estadisticas/estadisticas.page';
 
 
 @NgModule({
@@ -51,6 +49,6 @@ import { EstadisticasPage } from '../estadisticas/estadisticas.page';
 	FolderComponent,
 	IonMenu
   ],
-  declarations: [HomePage, FolderComponent, SecuenciasComponent,menuComponent,navbarComponent,EstadisticasPage],
+  declarations: [HomePage, FolderComponent, SecuenciasComponent,menuComponent,navbarComponent],
 })
 export class HomePageModule {}
