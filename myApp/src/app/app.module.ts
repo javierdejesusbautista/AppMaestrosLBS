@@ -19,10 +19,9 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
+import { sharedModule } from './shared/shared.module';
 
 //import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
-
-
 
 
 @NgModule({
@@ -30,7 +29,8 @@ import { AppComponent } from './app.component';
 	AppComponent, 
 	SelectScrollDirective, 
 	],
-  imports: [BrowserModule,
+  imports: [
+	BrowserModule,
 	IonicModule.forRoot(),
 	AppRoutingModule,
 	FormsModule,
@@ -38,6 +38,7 @@ import { AppComponent } from './app.component';
 	AngularFireModule.initializeApp(environment.firebase),
 	AngularFirestoreModule,
 	AngularFireFunctionsModule,
+	sharedModule,
 	//NgbToastModule
 
 	//QuillModule.forRoot(),

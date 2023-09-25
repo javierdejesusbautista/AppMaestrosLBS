@@ -7,7 +7,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 
 
-import { IonicModule } from '@ionic/angular';
+import { IonMenu, IonicModule } from '@ionic/angular';
 
 import { QuillModule } from 'ngx-quill';
 import ImageCompress from 'quill-image-compress';
@@ -22,6 +22,12 @@ import { SelectScrollDirective } from '../../directives/select-scroll.directive'
 import { ToastsComponent } from 'src/app/components/toasts/toasts.component';
 import { FolderComponent } from 'src/app/components/folder/folder.component';
 import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.component';
+import { menuComponent } from 'src/app/components/menu/menu.component';
+import { navbarComponent } from 'src/app/components/navbar/navbar.component';
+import { sharedModule } from 'src/app/shared/shared.module';
+import { EstadisticasPageModule } from '../estadisticas/estadisticas.module';
+import { EstadisticasPage } from '../estadisticas/estadisticas.page';
+
 
 @NgModule({
 	imports: [
@@ -38,11 +44,13 @@ import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.co
 		}]
 	}),
 	AngularFirestoreModule,
-	ToastsComponent
+	ToastsComponent,
+	sharedModule,
   ],
   providers: [
-	FolderComponent
+	FolderComponent,
+	IonMenu
   ],
-  declarations: [HomePage, FolderComponent, SecuenciasComponent],
+  declarations: [HomePage, FolderComponent, SecuenciasComponent,menuComponent,navbarComponent,EstadisticasPage],
 })
 export class HomePageModule {}

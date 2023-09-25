@@ -58,29 +58,36 @@ export class FolderComponent implements OnInit {
 	ngOnInit() {
 		this.acordeonEstado = false;
 		this.librosLoading = false;
-
+		
 		this.librosService.getTodosLosLibros().subscribe(libros => {
 			this.librosTemp = libros;
-			console.log(libros)
-			//Agrupo los libros por grado
+		  
+			console.log(this.librosTemp);
+			// Agrupa los libros por escolaridad y grado
+			const escolaridades = ['Kinder','Elementary School', 'Junior High School']; // Agrega más si es necesario
 			const grades = ['0', '1', '2', '3', '4', '5', '6'];
 			const gradeNames = ['0', '1st', '2nd', '3rd', '4th', '5th', '6th'];
-			
-			this.librosAll = grades.reduce((acc: any[], grade, index) => {
-				const libros = this.librosTemp.filter(libro => libro.Grados === grade);
-				if(libros.length > 0) {
-					acc.push({'Grados': gradeNames[index], 'Libros': libros});
+		  
+			this.librosAll = escolaridades.map(escolaridad => {
+			  const librosDeEscolaridad = this.librosTemp.filter(libro => libro.Escolaridad === escolaridad);
+		  
+			  const librosPorGrado = grades.reduce((acc: any[], grade, index) => {
+				const libros = librosDeEscolaridad.filter(libro => libro.Grados === grade);
+				if (libros.length > 0) {
+				  acc.push({ Grados: gradeNames[index], Libros: libros });
 				}
 				return acc;
-			}, []);
-
+			  }, []);
+		  
+			  return { Escolaridad: escolaridad, Grados: librosPorGrado };
+			});
+		  
 			console.log(this.librosAll);
-			
+		  
 			this.noHayLibrosAsignados = (this.librosAll.length === 0);
 			this.acordeonEstado = true;
 			this.librosLoading = true;
-		});
-
+		  });
 
 		this.dataService.locationsFolder.subscribe((dataReceived: any) => { 
 			console.log("data in folder from index: ", dataReceived)

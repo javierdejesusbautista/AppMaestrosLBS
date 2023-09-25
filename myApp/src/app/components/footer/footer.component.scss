@@ -1,0 +1,27 @@
+.bg-color-footer {
+  --color: #ffffff;
+  --background: #00c1eb !important;
+}
+
+.toolbar {
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  --min-height: 0;
+}
+
+p {
+  font-family: Volte;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0px auto;
+  padding: 10px;
+}
+
+.img {
+  width: 20px;
+  margin-left: 15px;
+  pointer-events: none;
+  filter: brightness(0) invert(1);
+}

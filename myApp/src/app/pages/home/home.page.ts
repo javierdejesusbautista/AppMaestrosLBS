@@ -10,6 +10,7 @@ import { QuillEditorComponent } from 'ngx-quill';
 import { AlertController } from '@ionic/angular';
 
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -73,7 +74,8 @@ export class HomePage implements OnInit {
   constructor(public dataService: DataService,
 	private authService: AuthService,
 	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
-	private alertController: AlertController, private secuenciasService: SecuenciasFsService) { }
+	private alertController: AlertController, private secuenciasService: SecuenciasFsService,
+	) { }
 
 	ngOnInit() {
 		this.dataService.locationsHome.subscribe((dataReceived: any) => {
@@ -134,11 +136,25 @@ export class HomePage implements OnInit {
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
 		
 	}
-
-	ionViewWillEnter() { 
+	
+	ionViewWillEnter() {
+		console.log('traer datos');
 		this.appPages[0].activo = true;
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
-		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
+
+		 function capitalizeFirstLetter(inputString: string):string {
+			// Verifica si la cadena es nula o vacía
+			if (!inputString || inputString.length === 0) {
+			  return inputString;
+			}
+		  
+			// Convierte la primera letra en mayúscula y las demás en minúscula
+			return inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase();
+		  }
+		  let nombre = this.getTokenData('nombre');
+
+		  this.datosGenUsuario['nombre'] = capitalizeFirstLetter(nombre);
+		
 	}
 
 	getRangePaginas(count: number): number[] {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
