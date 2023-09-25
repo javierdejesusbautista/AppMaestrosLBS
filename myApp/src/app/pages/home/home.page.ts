@@ -23,11 +23,60 @@ import { Config } from 'jodit/src/config';
     export class HomePage implements OnInit, AfterViewInit {
 
 
+
+      handleAfterPaste = event => {
+        const data = event.clipboardData?.getData('text/html');
+
+        var modal = document.querySelector('.jodit.jodit-dialog.jodit-dialog_theme_default.jodit-dialog_resizable_true.jodit-dialog_footer_true.jodit-dialog_active_true.jodit-dialog_modal_true.jodit-dialog_fullsize_false');
+
+        let cancelled = false
+
+        const btnTacha = modal?.querySelector('button:not([ref])');
+        const btnCancelar = modal?.querySelector('button:not([ref]):not(.jodit-toolbar-button__button)');
+
+        // console.log('modal', modal);
+        // console.log('tacha', btnTacha);
+        // console.log('cancelar', btnCancelar);
+
+        btnTacha?.addEventListener('click', () => { cancelled = true; });
+        btnCancelar?.addEventListener('click', () => { cancelled = true; });
+
+        const callback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
+          for (const mutation of mutationsList) {
+            if (mutation.type === 'childList' && !document.contains(modal)) {
+              // El div específico se ha eliminado del DOM
+              // console.log('El div específico ha sido eliminado del DOM');
+              // console.log('cancelled?', cancelled);
+
+              if (!cancelled){
+                setTimeout(() => {
+                  this.checkImagesFromWord(data);
+                }, 50);
+              }
+
+              observer.disconnect();
+              break;
+              // Detén la observación si es necesario
+            }
+          }
+        };
+
+        // Crea una instancia de MutationObserver con la función de devolución de llamada
+        const observer = new MutationObserver(callback);
+        // Configura las opciones de observación (puedes ajustarlas según tus necesidades)
+        const config = { childList: true, subtree: true };
+        // Comienza a observar cambios en el DOM
+        observer.observe(document.body, config);
+
+      }
+
+
       handleBeforePaste = event => {
+        console.log('handleBeforePaste');
         const items = (event.clipboardData || event.originalEvent.clipboardData)
           .items;
         let hasImage = false;
-        // console.log('items', items[0].type);
+        console.log('items', items[0].type);
         for (let i = 0; i < items.length; i++) {
           if (items[i].type.indexOf('image') === 0) {
             hasImage = true;
@@ -35,7 +84,8 @@ import { Config } from 'jodit/src/config';
           }
         }
         if (hasImage) {
-          this.toastService.show('No se puede adjuntar imagenes.', { classname: 'bg-danger text-light', delay: 3000 });
+          console.log('clipboard data');
+          this.toastService.show('No se puede adjuntar imágenes.', { classname: 'bg-danger text-light', delay: 3000 });
           return false;
         }
         const data = (
@@ -44,9 +94,11 @@ import { Config } from 'jodit/src/config';
         if (!data) return;
         const doc = new DOMParser().parseFromString(data, 'text/html');
         const images = doc.querySelectorAll('img');
+        console.log('doc', doc);
+        console.log('images', images);
         if (!images.length) return;
-
-        this.toastService.show('No se puede adjuntar imagenes.', { classname: 'bg-danger text-light', delay: 3000 });
+        console.log('de word data', data);
+        this.toastService.show('No se puede adjuntar imágenes.', { classname: 'bg-danger text-light', delay: 3000 });
         return false;
       };
   value = '';
@@ -67,10 +119,9 @@ import { Config } from 'jodit/src/config';
     enter: 'p',
     height: '500px',
     width: 'auto',
-    events: { beforePaste : this.handleBeforePaste },
+    events: { beforePaste : this.handleBeforePaste, afterPaste: this.handleAfterPaste },
     language: 'es',
-
-
+    disablePlugins: ' , resize-handler',
 
   };
 	contenidoSecuencia = ''
@@ -211,6 +262,25 @@ import { Config } from 'jodit/src/config';
     }, 5000)
 
 	}
+
+  checkImagesFromWord(data: string, ): any {
+    console.log("checkImagesFromWord");
+    if (!data) return;
+    const doc = new DOMParser().parseFromString(data, 'text/html');
+    const images = doc.querySelectorAll('img');
+    if (!images.length) return;
+    this.toastService.show('No se puede adjuntar imágenes.', { classname: 'bg-danger text-light', delay: 3000 });
+
+    setTimeout(() => {
+      const regex = /<img\b[^>]*>/g;
+      let contenido = this.value;
+      let imgsDeleted: any;
+      imgsDeleted = contenido.replace(regex, '');
+      this.value = imgsDeleted;
+    }, 50);
+
+    return false;
+  }
 
 	getRangePaginas(count: number): number[] {
 		return Array.from({length: count}, (_, index) => index + 1);
@@ -357,13 +427,14 @@ import { Config } from 'jodit/src/config';
 		// console.log(this.quilleditorSec);
 		// console.log(this.quilleditorSec.nativeElement);
 		//prevent drop event from other tabs
-		this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
-			event.preventDefault();
-		});
+		// this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
+		// 	event.preventDefault();
+		// });
 
 		// evento al momento de pegar en el quill editor. Elimina las imagenes despues de hacer el pegado.
 		this.renderer.listen(this.quilleditorSec.nativeElement, 'paste', (event: ClipboardEvent) => {
 			setTimeout(() => {
+        console.log('after paste viejo')
 				const regex = /<img\b[^>]*>/g;
 				let contenido = this.value;
 				let imgsDeleted: any;
