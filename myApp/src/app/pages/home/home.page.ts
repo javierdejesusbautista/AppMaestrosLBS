@@ -54,6 +54,45 @@ import { Config } from 'jodit/src/config';
                 }, 50);
               }
 
+              const doc = document.querySelector('.jodit-wysiwyg');
+              const elementos = doc?.querySelectorAll('p.MsoNormal');
+              console.log('doc', doc);
+              console.log('elementos', elementos);
+
+              // Define el patrón de estilo que deseas buscar (margin con valores variables)
+              const patronEstilo = /margin:\s*0px 0px (\d+)px (-\d+)px/;
+
+              elementos?.forEach(function(element){
+
+                const estilo = element.getAttribute('style');
+
+                if (estilo) {
+                  // Verifica si el atributo "style" coincide con el patrón
+                  const coincidencia = estilo.match(patronEstilo);
+
+                  if (coincidencia) {
+                    // Obtiene los valores variables del margen y del cuarto atributo
+                    const valorDelMargen = coincidencia[1];
+                    const valorCuartoAtributo = coincidencia[2];
+
+                    // Reemplaza el estilo original eliminando los valores variables
+                    const nuevoEstilo = estilo.replace(
+                      patronEstilo,
+                      `margin: 0px 0px ${valorDelMargen}px;`
+                    );
+
+                    // Actualiza el atributo "style" del elemento con el nuevo estilo
+                    element.setAttribute('style', nuevoEstilo);
+                    console.log(`Elemento con estilo margin: 0px 0px ${valorDelMargen}px ${valorCuartoAtributo}px; :`, element);
+
+                  }
+                }
+
+                // }
+              });
+
+
+
               observer.disconnect();
               break;
               // Detén la observación si es necesario
