@@ -9,7 +9,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 import { IonMenu, IonicModule } from '@ionic/angular';
 
-import { QuillModule } from 'ngx-quill';
+import { QuillConfig, QuillModule } from 'ngx-quill';
 import ImageCompress from 'quill-image-compress';
 
 
@@ -22,6 +22,7 @@ import { SelectScrollDirective } from '../../directives/select-scroll.directive'
 import { ToastsComponent } from 'src/app/components/toasts/toasts.component';
 import { FolderComponent } from 'src/app/components/folder/folder.component';
 import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.component';
+import { NgxJoditModule } from 'ngx-jodit'
 import { menuComponent } from 'src/app/components/menu/menu.component';
 
 
@@ -29,23 +30,30 @@ import { menuComponent } from 'src/app/components/menu/menu.component';
 	imports: [
     CommonModule,
     IonicModule,
-	HttpClientModule,
+	  HttpClientModule,
+    NgxJoditModule,
     HomePageRoutingModule,
-	FormsModule,
-	ReactiveFormsModule,
-	QuillModule.forRoot({
-		customModules: [{
-			implementation: ImageCompress,
-			path: 'modules/imageCompressor'
-		}]
+    FormsModule,
+    ReactiveFormsModule,
+    QuillModule.forRoot({
+      customModules: [{
+        implementation: ImageCompress,
+        path: 'modules/imageCompressor'
+      }]
+
+
+
 	}),
 	AngularFirestoreModule,
 	ToastsComponent,
   ],
+
   providers: [
 	FolderComponent,
 	IonMenu
   ],
   declarations: [HomePage, FolderComponent, SecuenciasComponent,menuComponent],
 })
+
+
 export class HomePageModule {}
