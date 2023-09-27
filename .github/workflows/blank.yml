@@ -38,6 +38,7 @@ jobs:
       #build
       - name: Build app ionic
         run: ionic build --prod --service-worker
+        working-directory: myApp
       #Deploy to Github pages
       - name: Deploy Github Pages
         uses: crazy-max/ghaction-github-pages@v4.0.0
