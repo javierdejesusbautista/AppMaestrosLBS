@@ -34,6 +34,7 @@ jobs:
       #Install dependecies
       - name: Install deps
         run: npm install
+        working-directory: ./Projects/myApp
       #build
       - name: Build app ionic
         run: ionic build --prod --service-worker
