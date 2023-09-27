@@ -36,7 +36,9 @@ jobs:
         run: npm install -g @ionic/cli
       #Install dependecies
       - name: Install deps
-        run: npm install
+        run: |
+              npm install
+              npm i quill-better-table
         working-directory: myApp
       #build
       - name: Build app ionic
