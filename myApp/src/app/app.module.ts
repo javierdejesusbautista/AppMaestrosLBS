@@ -23,14 +23,13 @@ import { AppComponent } from './app.component';
 //import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 
-
-
 @NgModule({
   declarations: [
 	AppComponent, 
 	SelectScrollDirective, 
 	],
-  imports: [BrowserModule,
+  imports: [
+	BrowserModule,
 	IonicModule.forRoot(),
 	AppRoutingModule,
 	FormsModule,

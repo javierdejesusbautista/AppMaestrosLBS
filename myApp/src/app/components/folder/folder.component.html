@@ -1,8 +1,5 @@
-<ion-content [fullscreen]="true" style="font-family:  Volte-Regular;">
-	<img style="width: 400px; position: absolute;right: 50px;bottom: 0px; z-index: 0; pointer-events: none; filter: invert(100%) sepia(82%) saturate(526%) hue-rotate(172deg) brightness(101%) contrast(98%);" src="/assets/icon/icono_perseus.svg" alt="PerseusApp" role="presentation">
+<ion-content style="font-family:Volte-Regular;">
 	
-    <!-- Libro sections-->
-    <ion-title style="font-family: Volte-Bold; margin-top: 30px;font-size: 30px;font-weight: 500;" *ngIf="!iframeEstado">Libros</ion-title>
 	<div class="container-loading" *ngIf="!acordeonEstado && !librosLoading" >
 		<ion-list [inset]="true">
 			<ion-item *ngFor="let skele of skeleton; index as i" lines="none">
@@ -16,27 +13,35 @@
 					</ion-col>
 					</ion-row>
 				</ion-grid>
-			</ion-item>
+			</ion-item> 
 		</ion-list>
 	</div>
-    <ion-accordion-group style="margin-right: 40px; z-index:1;" expand="inset" *ngIf="acordeonEstado">
 
-		<ion-item *ngIf="noHayLibrosAsignados" style="--border-color: #00c1eb; --border-radius: 15px; --background-hover: #028dac;">
-			<ion-label>No hay libros asignados. Por favor comunicarse con el Coordinador.</ion-label>			
-		</ion-item>
+	<div *ngIf="!iframeEstado">
+		<div *ngFor="let escolaridad of librosAll; index as i;" style="margin-bottom: 37px;" >
 
-        <ion-accordion class="fade-in" *ngFor="let grado of librosAll; index as i;" [value]="i">
-            <ion-item slot="header" style="--background-hover: #028dac; --ripple-color: #00c1eb; ">
-                <ion-label style="font-family: Volte-Regular;  font-weight: 500;">{{ grado.Grados }} Grado</ion-label>
-            </ion-item>
-            <div class="fade-in-down" *ngFor="let libro of grado.Libros;;" slot="content">
-                <ion-item button slot="content" (click)="abrirLibro(libro)" style="--background-hover: #028dac;">
-                    <ion-label style="font-family: Volte-Regular; padding-left: 20px;">{{ libro.Nombre }}</ion-label>
-                </ion-item>
-            </div>
-        </ion-accordion>
+			<ion-title class="titulo">{{ escolaridad.Escolaridad }}</ion-title>
+			
+			<ion-accordion-group class="accordion-group" expand="inset" *ngIf="acordeonEstado">
+				
+				<ion-item *ngIf="noHayLibrosAsignados" style="--border-color: #00c1eb; --border-radius: 15px; --background-hover: #028dac;">
+					<ion-label>No hay libros asignados. Por favor comunicarse con el Coordinador.</ion-label>			
+				</ion-item>
+				
+				<ion-accordion class="fade-in" toggleIcon="none" *ngFor="let grado of escolaridad.Grados">
+					<ion-item slot="header">
+						<ion-label class="listado">{{ grado.Grados }} Grado</ion-label>
+					</ion-item>
+					<div class="fade-in-down" *ngFor="let libro of grado.Libros" slot="content">
+						<ion-item lines="none" button slot="content" (click)="abrirLibro(libro)" >
+							<ion-label class="libros">{{ libro.Nombre }}</ion-label>
+						</ion-item>
+					</div>
+				</ion-accordion>
 
-    </ion-accordion-group>
+			</ion-accordion-group>
+		</div>
+	</div>
 
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
         <div class="contenedorIframe" style="height: 91vh;">
@@ -72,15 +77,9 @@
 				  <ion-fab [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado  }" vertical="bottom" horizontal="start" style="margin-bottom: 3rem;">
 					<ion-fab-button size="small" (click)="regresar()" color="medium"><ion-icon name="arrow-undo"></ion-icon></ion-fab-button>
 				  </ion-fab>
-			  <!-- <ion-fab vertical="bottom" horizontal="s|tart" style="padding-bottom: 11rem;" >
-				<ion-fab-button (click)="regresar()" color="medium">
-					<ion-icon name="arrow-undo"></ion-icon>
-				</ion-fab-button>
-			</ion-fab> -->
-            <!-- <iframe id="iframe10" #iframe src="../../../assets/ESC_03_matematicas_v2/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
-            <!-- <iframe id="iframe10" #iframe src="../../../assets/ESC_01_science_v2_loading/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
+			 
             <!-- <iframe id="iframe10" #iframe src="../../../assets/prueba_iconos_1/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
-            <iframe id="iframe10" #iframe [src]="urlLibrodev" frameborder="0" style="height: 100%; width: 100%;"></iframe>
+            <iframe id="iframe10" #iframe [src]="urlLibrodev" frameborder="0" style="height: 100%; width: 100%; margin-bottom: 36px;"></iframe>
         </div>
     </div>
 </ion-content>

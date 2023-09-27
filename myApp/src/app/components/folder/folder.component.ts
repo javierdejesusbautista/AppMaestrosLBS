@@ -58,32 +58,36 @@ export class FolderComponent implements OnInit {
 	ngOnInit() {
 		this.acordeonEstado = false;
 		this.librosLoading = false;
-
+		
 		this.librosService.getTodosLosLibros().subscribe(libros => {
 			this.librosTemp = libros;
-			console.log(libros)
-			//Agrupo los libros por grado
+		  
+			// Agrupa los libros por escolaridad y grado
+			const escolaridades = ['Kinder','Elementary School', 'Junior High School']; // Agrega más si es necesario
 			const grades = ['0', '1', '2', '3', '4', '5', '6'];
 			const gradeNames = ['0', '1st', '2nd', '3rd', '4th', '5th', '6th'];
-			
-			this.librosAll = grades.reduce((acc: any[], grade, index) => {
-				const libros = this.librosTemp.filter(libro => libro.Grados === grade);
-				if(libros.length > 0) {
-					acc.push({'Grados': gradeNames[index], 'Libros': libros});
+		  
+			this.librosAll = escolaridades.map(escolaridad => {
+			  const librosDeEscolaridad = this.librosTemp.filter(libro => libro.Escolaridad === escolaridad);
+		  
+			  const librosPorGrado = grades.reduce((acc: any[], grade, index) => {
+				const libros = librosDeEscolaridad.filter(libro => libro.Grados === grade);
+				if (libros.length > 0) {
+				  acc.push({ Grados: gradeNames[index], Libros: libros });
 				}
 				return acc;
-			}, []);
-
-			console.log(this.librosAll);
-			
+			  }, []);
+		  
+			  return { Escolaridad: escolaridad, Grados: librosPorGrado };
+			});
+		  
+		  
 			this.noHayLibrosAsignados = (this.librosAll.length === 0);
 			this.acordeonEstado = true;
 			this.librosLoading = true;
-		});
-
+		  });
 
 		this.dataService.locationsFolder.subscribe((dataReceived: any) => { 
-			console.log("data in folder from index: ", dataReceived)
 			const { type, args } = dataReceived;
 			if(type === 'pagina') {
 				this.paginaActual = parseInt(args.pagina);
@@ -123,7 +127,6 @@ export class FolderComponent implements OnInit {
 	
 
 		this.dataService.paginaSubejct$.subscribe(value => {
-			console.log(value)
 			const message = {
 				type: 'callFunction',
 				functionName: 'nombreDeTuFuncion',
@@ -134,7 +137,6 @@ export class FolderComponent implements OnInit {
 
 
 		this.dataService.addSecuencia$.subscribe(data => {
-			console.log(data);
 			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
 		});
 
@@ -161,12 +163,9 @@ export class FolderComponent implements OnInit {
 
 		let urlTempdev = `${mainUrl}${libro.NombreArchivo.split("_prueba")[0]}/index.html`;
 		
-		console.log("url libro", urlTempdev);
-		console.log("nombrelibro:",libro.NombreArchivo.split("_prueba")[0] );
 
 		this.urlLibrodev = this.domSanitizer.bypassSecurityTrustResourceUrl(urlTempdev);
 		
-		console.log('abrirLibro', libro);
 		this.librosLoading = true;
 		this.dataService.libroActual = libro;
 		// const { Id } = libro;

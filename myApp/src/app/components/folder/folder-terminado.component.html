@@ -1,0 +1,87 @@
+<ion-content style="font-family:Volte-Regular; margin-right: 69px; ">
+
+	
+    <!-- Libro sections-->
+	<div class="container-loading" *ngIf="!acordeonEstado && !librosLoading" >
+		<ion-list [inset]="true">
+			<ion-item *ngFor="let skele of skeleton; index as i" lines="none">
+				<ion-grid number="skele">
+					<ion-row class="ion-justify-content-between">
+					<ion-col size="8">
+							<ion-skeleton-text class="skeleton-text" [animated]="true" style="width: {{skele}}%"></ion-skeleton-text>
+					</ion-col>
+					<ion-col size="1">
+							<ion-skeleton-text class="skeleton-text" [animated]="true" style="width: 50%; margin-right: 70%;"></ion-skeleton-text>
+					</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-item>
+		</ion-list>
+	</div>
+	
+	<div *ngIf="!iframeEstado">
+		<div *ngFor="let escolaridad of librosAll; index as i;" style="margin-bottom: 37px;" >
+
+			<ion-title class="titulo">{{ escolaridad.Escolaridad }}</ion-title>
+			
+			<ion-accordion-group class="accordion-group" expand="inset" *ngIf="acordeonEstado">
+				
+				<ion-item *ngIf="noHayLibrosAsignados" style="--border-color: #00c1eb; --border-radius: 15px; --background-hover: #028dac;">
+					<ion-label>No hay libros asignados. Por favor comunicarse con el Coordinador.</ion-label>			
+				</ion-item>
+				
+				<ion-accordion class="fade-in" toggleIcon="none" *ngFor="let grado of escolaridad.Grados">
+					<ion-item slot="header">
+						<ion-label class="listado">{{ grado.Grados }} Grado</ion-label>
+					</ion-item>
+					<div class="fade-in-down" *ngFor="let libro of grado.Libros" slot="content">
+						<ion-item lines="none" button slot="content" (click)="abrirLibro(libro)" >
+							<ion-label class="libros">{{ libro.Nombre }}</ion-label>
+						</ion-item>
+					</div>
+				</ion-accordion>
+
+			</ion-accordion-group>
+		</div>
+	</div>
+
+    <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
+        <div class="contenedorIframe" style="height: 91vh;">
+				<ion-fab [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" (click)="openFabsMenuLibro()" >
+					<ion-fab-button size="small" close-icon="chevron-down"><ion-icon name="chevron-up-outline"></ion-icon></ion-fab-button>
+					<ion-fab-list side="top" [activated]="fabBtnOpen">
+					  <ion-fab-button>
+						<ion-icon name="bookmark"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button (click)="openListaFavoritosYNotas()">
+						<ion-icon name="star"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button>
+						<ion-icon name="list"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button (click)="openActivarNotaDinamica()">
+						<ion-icon name="document"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button>
+						<ion-icon name="create"></ion-icon>
+					  </ion-fab-button>
+					  <ion-fab-button>
+						<ion-icon name="sparkles"></ion-icon>
+					  </ion-fab-button>
+					</ion-fab-list>
+				  
+				  </ion-fab> 
+	
+				  <ion-fab size="small" (click)="abrirIndice()" [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado }" vertical="bottom" horizontal="start" style="margin-bottom: 0rem;">
+					<ion-fab-button size="small" style="--background: #FF5722; --color: #ffffff;">{{ paginaActual}}</ion-fab-button>
+				  </ion-fab>
+				  
+				  <ion-fab [class]="fabPageNumberClass" [ngClass]="{'traslateY-fab-crear-nota-activated': crearNotasActivated, 'traslateY-fab-crear-nota-desactivated': crearNotasDesativado  }" vertical="bottom" horizontal="start" style="margin-bottom: 3rem;">
+					<ion-fab-button size="small" (click)="regresar()" color="medium"><ion-icon name="arrow-undo"></ion-icon></ion-fab-button>
+				  </ion-fab>
+			 
+            <!-- <iframe id="iframe10" #iframe src="../../../assets/prueba_iconos_1/index.html" frameborder="0" style="height: 100%; width: 100%;"></iframe> -->
+            <iframe id="iframe10" #iframe [src]="urlLibrodev" frameborder="0" style="height: 100%; width: 100%; margin-bottom: 36px;"></iframe>
+        </div>
+    </div>
+</ion-content>

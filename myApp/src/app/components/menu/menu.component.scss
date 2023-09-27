@@ -1,0 +1,155 @@
+.active p {
+  color: #03c1ea;
+  font-size: 24px;
+  font-family: Volte;
+  font-weight: 700;
+  word-wrap: break-word;
+  a {
+    text-decoration: none;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.zoomOut {
+  animation-name: zoomOut;
+}
+
+@keyframes zoomInLeft {
+  from {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(-1000px, 0, 0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(10px, 0, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+.zoomInLeft {
+  animation-name: zoomInLeft;
+}
+
+.menu {
+  ul {
+    list-style-type: none; /* Quita los puntos de la lista */
+  }
+
+  li {
+    animation: zoomInLeft 0.4s ease-in-out both;
+  }
+  /* a {
+    padding-top: 10px;
+    color: black;
+    font-size: 24px;
+    font-family: Volte;
+    font-weight: 400;
+    word-wrap: break-word;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+    margin-right: 0px;
+  } */
+
+  &.zoomOut {
+    li {
+      animation-name: zoomOut;
+    }
+  }
+}
+.li-list {
+  display: flex;
+  align-items: center;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.a-menu {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-left: 24px;
+}
+
+.img-list {
+  width: 24px;
+  height: 24px;
+  margin-right: 19px;
+  margin-left: 15px;
+}
+
+p {
+  margin: 0;
+  color: black;
+  font-size: 24px;
+  font-family: Volte;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+
+
+.boton-x {
+  background-color: transparent; 
+  border: none; 
+  cursor: pointer; 
+  outline: none; 
+}
+
+.circle {
+  width: 18px; 
+  height: 18px; 
+  border-radius: 50%; 
+  background: rgba(217, 217, 217, 0.70);
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  color: #03c1ea; 
+  font-size: 24px; 
+  margin-right: 32px;
+  margin-top: 20px;
+}
+
+.x {
+  line-height: 0; 
+}
+
+.menu-button {
+  padding-left: 39px;
+  padding-top: 20px;
+  margin-right: 96px;
+  background-color: transparent;
+  &:active {
+    transform: scale(0.9);
+  }
+  &:focus {
+  }
+}
+.container {
+  display: flex; /* Usa Flexbox para el contenedor principal */
+  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+}
+
+.menu-column {
+  flex: 0 0 20%; /* El menú ocupa el 20% del ancho disponible */
+  border: 1px solid black;
+}
+
+.content-column {
+  flex: 1; /* El contenido principal se expande para llenar el espacio restante */
+  border: 1px solid black;
+}

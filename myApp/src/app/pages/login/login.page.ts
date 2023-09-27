@@ -48,7 +48,6 @@ export class LoginPage implements OnInit {
   }
 
  async onLogin() {
-	console.log(this.frmLogin);
 	this.isLoginError = false;;
 	
 	try {
@@ -70,8 +69,6 @@ export class LoginPage implements OnInit {
   
 	  }
 	  catch(err) {
-		  console.log("Error");
-		  console.log(err);
 		  this.loginLoading = false;
 		  this.msgErr = err;
 		  this.isLoginError = true;

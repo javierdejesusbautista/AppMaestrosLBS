@@ -7,7 +7,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 
 
-import { IonicModule } from '@ionic/angular';
+import { IonMenu, IonicModule } from '@ionic/angular';
 
 import { QuillConfig, QuillModule } from 'ngx-quill';
 import ImageCompress from 'quill-image-compress';
@@ -23,9 +23,7 @@ import { ToastsComponent } from 'src/app/components/toasts/toasts.component';
 import { FolderComponent } from 'src/app/components/folder/folder.component';
 import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.component';
 import { NgxJoditModule } from 'ngx-jodit'
-// import { BrowserModule } from "@angular/platform-browser";
-import Quill from "quill";
-import QuillBetterTable from "quill-better-table";
+import { menuComponent } from 'src/app/components/menu/menu.component';
 
 
 @NgModule({
@@ -47,14 +45,14 @@ import QuillBetterTable from "quill-better-table";
 
 	}),
 	AngularFirestoreModule,
-	ToastsComponent
+	ToastsComponent,
   ],
 
   providers: [
-    FolderComponent
+	FolderComponent,
+	IonMenu
   ],
-  declarations: [ HomePage, FolderComponent, SecuenciasComponent],
-  // bootstrap: [AppComponent]
+  declarations: [HomePage, FolderComponent, SecuenciasComponent,menuComponent],
 })
 
 

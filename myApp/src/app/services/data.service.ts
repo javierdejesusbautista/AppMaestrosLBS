@@ -6,6 +6,8 @@ import { Observable, Subject } from "rxjs";
 })
 export class DataService {
 
+	rutaActual: string = '';
+
 	estadoModal = false;
 	displayModal = 'none';
 
@@ -37,6 +39,10 @@ export class DataService {
 	private observerHome: any;
 	private observerFolder: any;
 
+	navigateTo(value:string){
+		this.rutaActual = value;
+	}
+
 	locationsFolder = new Observable((observer) => {
 		this.observerFolder = observer;
 
@@ -58,25 +64,21 @@ export class DataService {
 	});
 
 	receiveMessageFolder = (event: any) => { 
-		console.log(event);
 
 		const dataFromIndex = { 
 			type: event.data.type,
 			args: event.data.arguments
 		}
-		console.log("window listener message: ", dataFromIndex);
 
 		this.observerFolder.next(dataFromIndex);
 	}
 
 	receiveMessageHome = (event: any) => { 
-		console.log(event);
 
 		const dataFromIndex = { 
 			type: event.data.type,
 			args: event.data.arguments
 		}
-		console.log("window listener message: ", dataFromIndex);
 
 		this.observerHome.next(dataFromIndex);
 	}
@@ -133,7 +135,6 @@ export class DataService {
 	//   console.log(this.estadoModalMain);
 	  this.displayModalMain = 'none' ? 'inherit' : ' none';
 	  
-	  console.log("Modal main", this.displayModalMain);
   }
   cambiarPaginaSubejct(pagina: any) {
     this.paginaSubejct$.next(pagina);

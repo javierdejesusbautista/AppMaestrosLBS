@@ -8,6 +8,8 @@ import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 
 import { EditorChangeContent, EditorChangeSelection, QuillEditorComponent } from 'ngx-quill';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 import { NgxJoditComponent } from 'ngx-jodit';
 
@@ -180,20 +182,7 @@ import { Config } from 'jodit/src/config';
 
 	nombreLibro: string = '';
 
-	// quillModules = {
-	// 	'toolbar': [
-	// 		['bold', 'italic', 'underline', 'strike'],	// toggled buttons
-	// 		['blockquote', 'code-block'],
-	// 		[{'header': 1}, {'header': 2}],
-	// 		[{ 'size': ['small', false, 'large', 'huge'] }],	// custom button values
-	// 		[{ 'list': 'ordered' }, { 'list': 'bullet' }],
-	// 						// text direction
-	// 			// custom dropdown
-	// 		[{ 'color': [] }, { 'background': [] }],	// dropdown with defaults from theme
-	// 		[{ 'align': [] }],
-	// 		['link'],
-	// 	]
-	// };
+	rutaActual:string = ''; 
 
 
 	globalInstance: any;
@@ -218,13 +207,23 @@ import { Config } from 'jodit/src/config';
   @ViewChild(NgxJoditComponent, {read: ElementRef}) quilleditorSec: ElementRef;
 
   constructor(public dataService: DataService,
-	private authService: AuthService,
-	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
-	private alertController: AlertController, private secuenciasService: SecuenciasFsService, private zone: NgZone) { }
+		private authService: AuthService,
+		public toastService: ToastService, 
+		private elementRef: ElementRef, 
+		private renderer: Renderer2,
+		private alertController: AlertController, 
+		private secuenciasService: SecuenciasFsService,
+		private router: Router,
+		private zone: NgZone,
+	) { }
 
 	ngOnInit() {
+
+		let ruta: string = this.router.url;
+		let rutaArray: string[] = ruta.split('/');
+		this.rutaActual = rutaArray[2];
+
 		this.dataService.locationsHome.subscribe((dataReceived: any) => {
-			console.log("[data received]: ", dataReceived);
 			const { type, args } = dataReceived;
 
 			if(type === 'pagina') {
@@ -295,11 +294,6 @@ import { Config } from 'jodit/src/config';
 		this.appPages[0].activo = true;
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
 		this.datosGenUsuario['nombre'] = this.getTokenData('nombre');
-    setTimeout(() => {
-      this.initEditor();
-      console.log("enter")
-    }, 5000)
-
 	}
 
   checkImagesFromWord(data: string, ): any {
@@ -382,7 +376,6 @@ import { Config } from 'jodit/src/config';
 			}
 		};
 
-		console.log(sendDataLibro);
 		this.dataService.addRequerimiento(sendDataLibro);
 
 		this.toastService.show('Contenido guardado.', { classname: 'bg-success text-dark', delay: 3000});
@@ -437,7 +430,6 @@ import { Config } from 'jodit/src/config';
 	}
 
 	regresarInicio() {
-		console.log("regresar inicio");
 		const cerrarIframe  = false;
     this.value = '';
 		this.dataService.estadoModal = false;
@@ -462,9 +454,7 @@ import { Config } from 'jodit/src/config';
 		}
 
 		if(opcion === 'nuevo-robotica') this.dataService.abrirModalMain();
-
-		// console.log(this.quilleditorSec);
-		// console.log(this.quilleditorSec.nativeElement);
+		
 		//prevent drop event from other tabs
 		// this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
 		// 	event.preventDefault();
@@ -513,22 +503,6 @@ import { Config } from 'jodit/src/config';
 
 }
 
-// export class AppComponent {
-//   public quill: Quill;
-
-//   private get tableModule(): BetterTableModule {
-//     return this.quill.getModule("better-table");
-//   }
-
-//   public editorCreated(event: Quill): void {
-//     this.quill = event;
-//     // Example on how to add new table to editor
-//     this.addNewtable();
-//   }
-
-//   private addNewtable(): void {
-//     this.tableModule.insertTable(3, 3);
-//   }
 
 
 

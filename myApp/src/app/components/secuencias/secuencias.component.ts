@@ -65,7 +65,6 @@ export class SecuenciasComponent implements OnInit {
 
 	
 	 ngOnInit() {
-		console.log("secuencias ominit");
 		this.secuenciasIsLoading = true;
 		this.getDataSecuencia();	
    	}
@@ -93,10 +92,8 @@ export class SecuenciasComponent implements OnInit {
 	async getDataSecuencia() {
 
 		this.secuenciasService.getLibrosCollectionCloudFunction().subscribe( (data: any) => {
-			console.log(data)
 			this.librosData = data.librosColelction;
 			this.secuenciasIsLoading = false;
-			console.log(this.librosData);
 		});
 
 
@@ -105,7 +102,6 @@ export class SecuenciasComponent implements OnInit {
 		// 		this.librosData[index] = doc.payload.doc.data();
 		// 		this.librosData[index]['claveLibro'] = doc.payload.doc.id;
 		// 	});
-		// 	console.log(this.librosData);
 			
 		// 	setTimeout(() => {
 		// 		this.secuenciasIsLoading = false;
@@ -118,7 +114,6 @@ export class SecuenciasComponent implements OnInit {
 	* Delete la secuencia seleccionada, crea un alert, para despues recargar los datos.
 	*/
 	async borrarSecuencia(secuencia: any, claveLibro: string) {
-		console.log(secuencia, claveLibro);
 		const alert = await this.alertController.create({
 			subHeader: '¿Desea borrar la secuencia?',
 			buttons: [
@@ -134,7 +129,6 @@ export class SecuenciasComponent implements OnInit {
 				handler: async () => {
 					this.secuenciasIsLoading = true;
 					this.secuenciasService.deleteSecuenciaLibro(claveLibro, secuencia).then( (res) => {
-						console.log(res);
 						this.toastService.show('Se elimino la secuencia didactica.', { classname: 'bg-danger text-light', delay: 2500 });
 						this.secuenciasIsLoading = false;
 						this.getDataSecuencia();
@@ -181,9 +175,6 @@ export class SecuenciasComponent implements OnInit {
 	*/
 	async guardarEdited(libro: any) {
 
-		console.log(libro);
-		console.log(this.frmContenido.getRawValue());
-		console.log(this.secuenciaClaveLibro);
 		
 		const libroData = { ...libro, 
 			data: this.frmContenido.getRawValue() 
@@ -250,7 +241,6 @@ export class SecuenciasComponent implements OnInit {
 		this.secuenciasLibroLoading = true;
 
 		this.secuenciasService.getSecuecias(claveLibro).subscribe(data => {
-			console.log(data);
 			this.secuenciasLibro = data.map(doc => doc.payload.doc.data())
 			.filter((secuencia: any) => secuencia.elemento.includes('sd_'))
 			.sort( (a: any, b:any) => {return a.pagina - b.pagina });
@@ -261,8 +251,6 @@ export class SecuenciasComponent implements OnInit {
 				this.secuenciasLibroLoading = false
 				if(this.secuenciasLibro.length === 0) this.noHaySecuencias = true;
 				else this.noHaySecuencias = false;
-				console.log(this.secuenciasLibro.length);
-				console.log(this.noHaySecuencias);
 			}, 400);
 		});
 		

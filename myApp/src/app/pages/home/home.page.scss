@@ -1,338 +1,428 @@
+/* Nuevos estilos */
+.perseus-fondo {
+  width: 300px;
+  height: 362px;
+  position: absolute;
+  right: 34px;
+  bottom: 31px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.acciones {
+  --background-hover: #028dac;
+  font-size: 20px;
+  font-family: Volte;
+  font-weight: 400;
+  word-wrap: break-word;
+  order: 1;
+  color: white;
+  --background: #00c1eb;
+  margin-bottom: 16px;
+  
+}
+.history {
+  color: white;
+  font-size: 20px;
+  font-family: Volte;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+.active {
+  color: white;
+  font-size: 20px;
+  font-family: Volte;
+  font-weight: 700;
+  word-wrap: break-word;
+}
+.iniciales {
+  color: white;
+  font-size: 24px;
+  font-family: Volte;
+  font-weight: 700;
+  word-wrap: break-word;
+  text-transform: capitalize;
+}
+.nombre {
+  color: #03c1ea;
+  font-size: 40px;
+  font-family: Volte;
+  font-weight: 500;
+  word-wrap: break-word;
+  text-transform: capitalize;
+}
+.historial-link {
+  color: white;
+  font-size: 20px;
+  font-family: Volte;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+
+.logo-center {
+  img {
+    width: 200px;
+    height: 35px;
+    padding-left: 35px;
+    pointer-events: none;
+    margin-bottom: 18px;
+  }
+}
+.centrar-circulo {
+  margin-bottom: 16px;
+}
+.title {
+  color: #03c1ea;
+  font-size: 48px;
+  font-family: Volte;
+  font-weight: 700;
+  word-wrap: break-word;
+}
+
+.circle-nuevo {
+  width: 49px; /* Ancho del círculo */
+  height: 49px; /* Altura del círculo (igual que el ancho para que sea un círculo) */
+  border-radius: 50%; /* Hace que el borde sea redondo */
+  background-color: #03c1ea; /* Color de fondo del círculo */
+  display: flex; /* Para centrar el contenido verticalmente */
+  justify-content: center; /* Para centrar el contenido horizontalmente */
+  align-items: center; /* Para centrar el contenido verticalmente */
+}
+
+/* Nuevos estilos */
 ion-menu {
-    --side-max-width: 15%;
-    --side-min-width: 230px;
-    border-right: hidden;
-    --background: #FAFBFC;
+  --side-max-width: 15%;
+  --side-min-width: 230px;
+  border-right: hidden;
+  --background: #fafbfc;
 }
 
 ion-menu ion-content {
-    --background: var(--ion-item-background, var(--ion-background-color, #FAFBFC));
+  --background: var(
+    --ion-item-background,
+    var(--ion-background-color, #fafbfc)
+  );
 }
 
 ion-menu.md ion-content {
-    --padding-start: 8px;
-    --padding-end: 1px;
-    --padding-top: 20px;
-    --padding-bottom: 20px;
+  --padding-start: 8px;
+  --padding-end: 1px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
 }
 
 ion-menu.md ion-list {
-    padding: 20px 0;
+  padding: 20px 0;
 }
 
 ion-menu.md ion-note {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 ion-menu.md ion-list-header,
 ion-menu.md ion-note {
-    text-align: center;
+  text-align: center;
 }
 
 ion-menu.md ion-list#inbox-list {
-    border-bottom: 1px solid var(--ion-color-step-150, #cdcecf);
-    margin-left: -5px;
-
+  border-bottom: 1px solid var(--ion-color-step-150, #cdcecf);
+  margin-left: -5px;
 }
 
 ion-menu.md ion-list#inbox-list ion-list-header {
-    font-size: 32px;
-    font-weight: 600;
-    min-height: 20px;
+  font-size: 32px;
+  font-weight: 600;
+  min-height: 20px;
 }
 
 ion-menu.md ion-list#labels-list ion-list-header {
-    font-size: 16px;
-    margin-bottom: 18px;
-    color: #757575;
-    min-height: 26px;
+  font-size: 16px;
+  margin-bottom: 18px;
+  color: #757575;
+  min-height: 26px;
 }
 
 ion-menu.md ion-item {
-    --padding-start: 10px;
-    --padding-end: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: gray;
-    --background: #FAFBFC;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: gray;
+  --background: #fafbfc;
 }
 
 ion-menu.md ion-item.isActive {
-    color: black;
-    --background: #FAFBFC;
+  color: black;
+  --background: #fafbfc;
 }
 
 ion-menu.md ion-item.selected {
-    --background: rgba(var(--ion-color-dark-rgb), 0.14);
+  --background: rgba(var(--ion-color-dark-rgb), 0.14);
 }
 
 ion-menu.md ion-item.selected ion-icon {
-    color: var(--ion-color-medium);
+  color: var(--ion-color-medium);
 }
 
 ion-menu.md ion-item ion-icon {
-    color: #616e7e;
+  color: #616e7e;
 }
 
 ion-menu.md ion-item ion-label {
-    font-family: 'Volte-Medium';
-    font-weight: 500;
+  font-family: "Volte-Medium";
+  font-weight: 500;
 }
 
 ion-menu.ios ion-content {
-    --padding-bottom: 20px;
+  --padding-bottom: 20px;
 }
 
 ion-menu.ios ion-list {
-    padding: 20px 0 0 0;
+  padding: 20px 0 0 0;
 }
 
 ion-menu.ios ion-note {
-    line-height: 24px;
-    margin-bottom: 20px;
+  line-height: 24px;
+  margin-bottom: 20px;
 }
 
 ion-menu.ios ion-item {
-    --padding-start: 16px;
-    --padding-end: 16px;
-    --min-height: 50px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 50px;
 }
 
 ion-menu.ios ion-item.selected ion-icon {
-    color: var(--ion-color-medium);
+  color: var(--ion-color-medium);
 }
 
 ion-menu.ios ion-item ion-icon {
-    font-size: 24px;
-    color: #73849a;
+  font-size: 24px;
+  color: #73849a;
 }
 
 ion-menu.ios ion-list#labels-list ion-list-header {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 ion-menu.ios ion-list-header,
 ion-menu.ios ion-note {
-    padding-left: 16px;
-    padding-right: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 ion-menu.ios ion-note {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 .acciones:hover {
-    font-weight: bolder;
-    --color-hover: white;
-    --background-hover: #00c1eb;
+  font-weight: bolder;
+  --color-hover: white;
+  --background-hover: #00c1eb;
 }
 
 ion-note {
-    display: inline-block;
-    font-size: 16px;
-    color: var(--ion-color-medium-shade);
+  display: inline-block;
+  font-size: 16px;
+  color: var(--ion-color-medium-shade);
 }
 
 ion-item.selected {
-    --color: var(--ion-color-light);
+  --color: var(--ion-color-light);
 }
 
 ion-split-pane {
-    --side-min-width: 0 !important;
+  --side-min-width: 0 !important;
 }
 
 .parent {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 11px;
-    grid-row-gap: 0px;
-    align-items: center;
-    grid-auto-columns: auto;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 11px;
+  grid-row-gap: 0px;
+  align-items: center;
+  grid-auto-columns: auto;
 }
 
 .div1 {
-    grid-area: 1 / 1 / 3 / 2;
-    width: 45px;
-    height: 45px;
+  grid-area: 1 / 1 / 3 / 2;
+  width: 45px;
+  height: 45px;
 }
 
 .div2 {
-    grid-area: 1 / 2 / 3 / 3;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
+  grid-area: 1 / 2 / 3 / 3;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .div3 {
-    grid-area: 2/2/3/3;
-    overflow: hidden;
+  grid-area: 2/2/3/3;
+  overflow: hidden;
 }
 
 .circle {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: rgb(0, 126, 182);
-    color: white;
-    text-align: center;
-    font-size: 20px;
-    line-height: 45px;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background-color: rgb(0, 126, 182);
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  line-height: 45px;
 }
 
 .circle2 {
-    font-family: 'Volte-Bold';
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    color: white;
-    text-align: center;
-    font-size: 20px;
-    line-height: 45px;
-    border-style: solid;
-    font-weight: bold;
+  font-family: "Volte-Bold";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  line-height: 45px;
+  border-style: solid;
+  font-weight: bold;
 }
 
 h6 {
-    font-family: 'Volte-Bold';
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin-top: 21px;
-    margin: 0;
-    padding: 0;
+  font-family: "Volte-Bold";
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 21px;
+  margin: 0;
+  padding: 0;
 }
 
 .parrafoCirculo {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin-bottom: 0;
-    font-size: 12px;
-    text-align: left;
-    padding: 0;
-    margin: 0;
-    font-weight: 400;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 0;
+  font-size: 12px;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
 }
 
 .custom-select {
-    position: relative;
+  position: relative;
 }
 
 .custom-select {
-    position: relative;
-    font-family: Arial;
+  position: relative;
+  font-family: Arial;
 }
 
 .custom-select select {
-    display: none;
-    /*hide original SELECT element:*/
+  display: none;
+  /*hide original SELECT element:*/
 }
 
 .select-selected {
-    background-color: DodgerBlue;
+  background-color: DodgerBlue;
 }
-
 
 /*style the arrow inside the select element:*/
 
 .select-selected:after {
-    position: absolute;
-    content: "";
-    top: 14px;
-    right: 10px;
-    width: 0;
-    height: 0;
-    border: 6px solid transparent;
-    border-color: #fff transparent transparent transparent;
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
 }
 
 /*point the arrow upwards when the select box is open (active):*/
 
 .select-selected.select-arrow-active:after {
-    border-color: transparent transparent #fff transparent;
-    top: 7px;
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
 }
-
 
 /*style the items (options), including the selected item:*/
 
 .select-items div,
 .select-selected {
-    color: #ffffff;
-    padding: 8px 16px;
-    border: 1px solid transparent;
-    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
-    cursor: pointer;
-    user-select: none;
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
 }
-
 
 /*style items (options):*/
 
 .select-items {
-    position: absolute;
-    background-color: DodgerBlue;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 99;
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
 }
-
 
 /*hide the items when the select box is closed:*/
 
 .select-hide {
-    display: none;
+  display: none;
 }
 
 .select-items div:hover,
 .same-as-selected {
-    background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 ion-split-pane {
-    --side-min-width: 0 !important;
+  --side-min-width: 0 !important;
 }
 
 ion-breadcrumb {
-    font-family: 'Volte-Medium';
-    cursor: pointer;
+  font-family: "Volte-Medium";
+  cursor: pointer;
 }
 
 .slide-in-animation {
-	animation: fadeInLeft;
-	animation-duration: 800ms;
+  animation: fadeInLeft;
+  animation-duration: 800ms;
 }
 
 /*Modal */
 #slcModal {
-	font-weight: 500;
-	padding: 0px;
-	border: none;
-	border-color: #f2f6fc;
-	font-size: 15px;
-	font-family: Solitreo;
-	background-color: #f2f6fc;
-	color: #000000;
+  font-weight: 500;
+  padding: 0px;
+  border: none;
+  border-color: #f2f6fc;
+  font-size: 15px;
+  font-family: Solitreo;
+  background-color: #f2f6fc;
+  color: #000000;
 }
 
 #label-select-modal {
-	padding-left: 18px;
-	padding-right: 4px;
-	padding-top: 9px;
-	font-size: 15px;
-	font-weight: 500;
-	color: #000000;
+  padding-left: 18px;
+  padding-right: 4px;
+  padding-top: 9px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
 }
 
 .img-logo {
-	width: 50%;
-    margin: 4px 2rem 0 0px;
-    border-radius: 2px;
-    padding: 1px;
+  width: 50%;
+  margin: 4px 2rem 0 0px;
+  border-radius: 2px;
+  padding: 1px;
 }
 
 #options-trigger {
-	cursor: pointer;
+  cursor: pointer;
 }

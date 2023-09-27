@@ -32,7 +32,6 @@ export class AuthService {
 		  this.authState.next(true);
 		}
 		catch(err: any) {
-		  console.log(err);
 		  const error = err.status == 0 ? "Error con la conexión al servidor" : err.error;
 		  throw error;
 		}
@@ -51,7 +50,6 @@ export class AuthService {
 	  }
 	
 	  isAuthenticated() {
-		console.log(this.authState.value);
 		return this.authState.value;
 	  }
 	
