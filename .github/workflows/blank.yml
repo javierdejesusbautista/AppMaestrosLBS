@@ -48,6 +48,6 @@ jobs:
       - name: Deploy Github Pages
         uses: crazy-max/ghaction-github-pages@v4.0.0
         with:
-          build_dir: myApp/dist/
+          build_dir: myApp/www
         env:
           GITHUB_TOKE: ${{secrets.GITHUB_TOKEN}}
