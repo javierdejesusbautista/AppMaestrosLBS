@@ -42,7 +42,7 @@ jobs:
         working-directory: myApp
       #build
       - name: Build app ionic
-        run: ionic build --prod --service-worker
+        run: ionic build --prod --service-worker -- --base-href /eguerrabobadilla.github.io/AppMaestrosLBS/ --deploy-url /eguerrabobadilla.github.io/AppMaestrosLBS/
         working-directory: myApp
       #Deploy to Github pages
       - name: Deploy Github Pages
