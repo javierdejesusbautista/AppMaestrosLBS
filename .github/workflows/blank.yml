@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.8.1
         with:
-          node-version: "16.3"
+          node-version: "16.13"
       #Setup ionic cli
       - name: Install Ionic CLI
         run: npm install -g @ionic/cli
