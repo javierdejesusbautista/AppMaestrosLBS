@@ -50,4 +50,4 @@ jobs:
         with:
           build_dir: myApp/www
         env:
-          GITHUB_TOKE: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
