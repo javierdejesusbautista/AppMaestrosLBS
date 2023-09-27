@@ -4,14 +4,28 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomePage } from './home.page';
 import { FolderComponent } from 'src/app/components/folder/folder.component';
 
+
 const routes: Routes = [
   {
     path: '',
-    component: HomePage
+    redirectTo: 'libros', 
+    pathMatch: 'full',   
   },
   {
-    path: 'libros',
-    component: FolderComponent
+    path: '',         
+    component: HomePage,
+    children: [
+      {
+        path: 'libros',          
+        component: FolderComponent,
+      },
+      {
+        path: 'estadisticas',
+        loadChildren: () =>
+          import('../estadisticas/estadisticas.module').then((m) => m.EstadisticasPageModule),
+      },
+      
+    ],
   },
   
 ];

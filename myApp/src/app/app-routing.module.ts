@@ -8,20 +8,11 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
-  //   {
-  //     path: 'libros/Libro',
-  //     loadChildren: () => import('./pages/folder/folder.module').then( m => m.FolderPageModule)
-  //   },
-  //   {
-  //     path: 'secuencias/Secuencia',
-  //     loadChildren: () => import('./pages/secuencias/secuencias.module').then( m => m.SecuenciasPageModule),
-  // 	canActivate: [AuthGuardService]
-  //   },
   {
     path: 'login',
     loadChildren: () =>
     import('./pages/login/login.module').then((m) => m.LoginPageModule),
-    // canActivate: [AuthGuardService]
+    
   },
   {
     path: 'home',
@@ -29,12 +20,7 @@ const routes: Routes = [
     import('./pages/home/home.module').then((m) => m.HomePageModule),
     canActivate: [AuthGuardService],
   },
-  {
-    path: 'estadisticas',
-    loadChildren: () =>
-      import('./pages/estadisticas/estadisticas.module').then((m) => m.EstadisticasPageModule),
-      canActivate: [AuthGuardService],
-  },
+  
 ];
 
 @NgModule({

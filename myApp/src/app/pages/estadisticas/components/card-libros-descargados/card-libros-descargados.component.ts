@@ -1,0 +1,57 @@
+import { Component, OnInit } from '@angular/core';
+
+declare var Chart: any;
+
+@Component({
+    selector: 'card-libros-descargados',
+    templateUrl: './card-libros-descargados.component.html',
+    styleUrls: ['./card-libros-descargados.component.scss']
+})
+
+export class cardLibrosDescargadosComponent implements OnInit {
+
+    public items: number[] = [1,2,3,4];
+
+    opciones: string[] = [];
+    opcionSeleccionada: string = '';
+
+    public pocentaje0a39: string ='#FF6464';
+    public pocentaje40a69: string ='#FFD464';
+    public pocentaje70a100: string ='#00DE80';
+    
+    constructor() { }
+
+    
+    ngOnInit(): void {
+        const ctx = document.getElementById('miGrafico');
+        new Chart(ctx, {
+          type: 'doughnut', // Tipo de gráfico dona
+          data: {
+            labels: ['Descargados','No descargados'],
+            datasets: [{
+              data: [76,23], // El valor 100 representa el 100% del gráfico y es de color verde
+              backgroundColor: ['#00DE80','transparent'], // Cambia el color aquí
+            }]
+          },
+          options: {
+              cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false, // Desactiva la leyenda
+                    },
+                    tooltip: {
+                        enabled: true, // Desactiva las etiquetas emergentes al pasar el mouse sobre el gráfico
+                    },
+                },
+          }
+        });
+      }
+
+
+      agregarOpcion() {
+        if (this.opcionSeleccionada.trim() !== '') {
+          this.opciones.push(this.opcionSeleccionada);
+          this.opcionSeleccionada = '';
+        }
+      }
+}

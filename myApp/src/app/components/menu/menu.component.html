@@ -1,40 +1,47 @@
 
-  <div>
+<div>
            
-        <img 
-          class="menu-button" 
-          [ngStyle]="{ 'display': isMenuOpen ? 'none' : 'block' }" 
-          (click)="toggleMenu()" 
-          src="/assets/icon/menu-icon.svg" 
-          alt="menu"
-        >
-    
-    <div class="menu slideInLeft" [ngStyle]="{ 'display': isMenuOpen ? 'block' : 'none' }">
-      <ul>
+  <img 
+    class="menu-button" 
+    [ngStyle]="{ 'display': isMenuOpen ? 'none' : 'block' }" 
+    (click)="toggleMenu()" 
+    src="/assets/icon/menu-icon.svg" 
+    alt="menu"
+  >
 
-        <li routerLinkActive="active">
-          <img class="menu-list" src="/assets/icon/Book.svg" alt="book">
-          <a [routerLink]="['/home']" ><p>Libros</p></a>
-          <div class="boton-x">
-            <button class="boton-x" [ngStyle]="{ 'display': isMenuOpen ? 'block' : 'none' }" (click)="closeMenu()">
-              <div class="circle">
-                x
-              </div>
-            </button>
-          </div>
-        </li>
+<div class="menu slideInLeft" [ngStyle]="{ 'display': isMenuOpen ? 'block' : 'none' }">
+<ul style="width:350px; ">
+  
+  <button 
+  class="boton-x" 
+  [ngStyle]="{ 'display': isMenuOpen ? 'block' : 'none' }"
+  style="margin-left: auto;"
+  (click)="closeMenu()">
+  <div class="circle">
+    <span class="x">x</span>
+  </div>
+  </button>
+  
+  <!-- Menu list -->
+  <li class="li-list" routerLink="/home/libros" routerLinkActive="active" (click)="navigateTo('Libros')">
+      <a class="a-menu">
+        <img class="img-list" src="/assets/icon/Book.svg" alt="book">
+        <p>Libros</p>
+      </a>
+  </li>
 
-        <!-- Menu list -->
-        <!-- <li routerLinkActive="active">
-          <img class="menu-list" src="/assets/icon/file.svg" alt="file">
-          <a [routerLink]="['/secuencias'] "><p>Secuencias</p></a>
-        </li> -->
-        
-        <li routerLinkActive="active">
-          <img class="menu-list" src="/assets/icon/estadisticas.svg" alt="secuencias">
-          <a [routerLink]="['/estadisticas'] "><p>Estadisticas</p></a>
-        </li>
-        <!-- Menu list -->
-      </ul>
-      </div> 
-    </div>
+  <!-- <li routerLinkActive="active">
+    <img class="menu-list" src="/assets/icon/file.svg" alt="file">
+    <a [routerLink]="['/secuencias']"><p>Secuencias</p></a>
+  </li> -->
+  
+  <li class="li-list" routerLink="/home/estadisticas" routerLinkActive="active" (click)="navigateTo('Estadisticas')">
+    <a class="a-menu">
+    <img class="img-list" src="/assets/icon/estadisticas.svg" alt="secuencias">
+      <p>Estadisticas</p>
+    </a>
+  </li>
+  <!-- Menu list -->
+</ul>
+</div> 
+</div>

@@ -62,7 +62,6 @@ export class FolderComponent implements OnInit {
 		this.librosService.getTodosLosLibros().subscribe(libros => {
 			this.librosTemp = libros;
 		  
-			console.log(this.librosTemp);
 			// Agrupa los libros por escolaridad y grado
 			const escolaridades = ['Kinder','Elementary School', 'Junior High School']; // Agrega más si es necesario
 			const grades = ['0', '1', '2', '3', '4', '5', '6'];
@@ -82,7 +81,6 @@ export class FolderComponent implements OnInit {
 			  return { Escolaridad: escolaridad, Grados: librosPorGrado };
 			});
 		  
-			console.log(this.librosAll);
 		  
 			this.noHayLibrosAsignados = (this.librosAll.length === 0);
 			this.acordeonEstado = true;
@@ -90,7 +88,6 @@ export class FolderComponent implements OnInit {
 		  });
 
 		this.dataService.locationsFolder.subscribe((dataReceived: any) => { 
-			console.log("data in folder from index: ", dataReceived)
 			const { type, args } = dataReceived;
 			if(type === 'pagina') {
 				this.paginaActual = parseInt(args.pagina);
@@ -130,7 +127,6 @@ export class FolderComponent implements OnInit {
 	
 
 		this.dataService.paginaSubejct$.subscribe(value => {
-			console.log(value)
 			const message = {
 				type: 'callFunction',
 				functionName: 'nombreDeTuFuncion',
@@ -141,7 +137,6 @@ export class FolderComponent implements OnInit {
 
 
 		this.dataService.addSecuencia$.subscribe(data => {
-			console.log(data);
 			this.iframe.nativeElement.contentWindow.postMessage( data, '*');
 		});
 
@@ -168,12 +163,9 @@ export class FolderComponent implements OnInit {
 
 		let urlTempdev = `${mainUrl}${libro.NombreArchivo.split("_prueba")[0]}/index.html`;
 		
-		console.log("url libro", urlTempdev);
-		console.log("nombrelibro:",libro.NombreArchivo.split("_prueba")[0] );
 
 		this.urlLibrodev = this.domSanitizer.bypassSecurityTrustResourceUrl(urlTempdev);
 		
-		console.log('abrirLibro', libro);
 		this.librosLoading = true;
 		this.dataService.libroActual = libro;
 		// const { Id } = libro;

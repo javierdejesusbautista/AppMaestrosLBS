@@ -4,10 +4,9 @@
   font-family: Volte;
   font-weight: 700;
   word-wrap: break-word;
-  a{
+  a {
     text-decoration: none;
   }
-  
 }
 
 @keyframes zoomOut {
@@ -48,19 +47,14 @@
 }
 
 .menu {
-  margin-right: 145px;
   ul {
     list-style-type: none; /* Quita los puntos de la lista */
   }
 
   li {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 13px;
     animation: zoomInLeft 0.4s ease-in-out both;
   }
-  a {
+  /* a {
     padding-top: 10px;
     color: black;
     font-size: 24px;
@@ -70,7 +64,7 @@
     text-decoration: none;
     transition: color 0.3s ease-in-out;
     margin-right: 0px;
-  }
+  } */
 
   &.zoomOut {
     li {
@@ -78,48 +72,62 @@
     }
   }
 }
+.li-list {
+  display: flex;
+  align-items: center;
+  color: white;
+  margin-bottom: 40px;
+}
 
-/* Estilos para los ítems del menú */
+.a-menu {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-left: 24px;
+}
 
-.menu-list {
+.img-list {
   width: 24px;
-  height: 21px;
-  margin-left: 16px;
-  margin-right: 24px;
-  margin-top: 0px;
-  margin-bottom: 10px;
+  height: 24px;
+  margin-right: 19px;
+  margin-left: 15px;
+}
+
+p {
+  margin: 0;
+  color: black;
+  font-size: 24px;
+  font-family: Volte;
+  font-weight: 400;
+  word-wrap: break-word;
+}
+
+
+.boton-x {
+  background-color: transparent; 
+  border: none; 
+  cursor: pointer; 
+  outline: none; 
 }
 
 .circle {
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
+  width: 18px; 
+  height: 18px; 
+  border-radius: 50%; 
+  background: rgba(217, 217, 217, 0.70);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
+  justify-content: center; 
+  align-items: center; 
+  color: #03c1ea; 
+  font-size: 24px; 
+  margin-right: 32px;
+  margin-top: 20px;
 }
 
-.circle::after {
-  font-weight: bold;
-  font-size: 30px;
+.x {
+  line-height: 0; 
 }
 
-.boton-x {
-  padding: 0;
-  width: 20px; /* Ancho del botón */
-  height: 20px; /* Altura del botón (mismo valor que el ancho) */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%; /* Hace que el botón sea circular */
-  font-size: 30px; /* Tamaño de fuente */
-  color: #03c1ea;
-  margin-left: 30px;
-  &:active {
-    transform: scale(0.95);
-  }
-}
 .menu-button {
   padding-left: 39px;
   padding-top: 20px;

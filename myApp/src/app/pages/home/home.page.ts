@@ -8,6 +8,7 @@ import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 
 import { QuillEditorComponent } from 'ngx-quill';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 
 
@@ -34,6 +35,8 @@ export class HomePage implements OnInit {
 	secuenciaBorrando: boolean = false;
 
 	nombreLibro: string = '';
+
+	rutaActual:string = ''; 
 
 	quillModules = {
 		'toolbar': [
@@ -72,14 +75,22 @@ export class HomePage implements OnInit {
   @ViewChild(QuillEditorComponent, {read: ElementRef}) quilleditorSec: ElementRef;
   
   constructor(public dataService: DataService,
-	private authService: AuthService,
-	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
-	private alertController: AlertController, private secuenciasService: SecuenciasFsService,
+		private authService: AuthService,
+		public toastService: ToastService, 
+		private elementRef: ElementRef, 
+		private renderer: Renderer2,
+		private alertController: AlertController, 
+		private secuenciasService: SecuenciasFsService,
+		private router: Router
 	) { }
 
 	ngOnInit() {
+
+		let ruta: string = this.router.url;
+		let rutaArray: string[] = ruta.split('/');
+		this.rutaActual = rutaArray[2];
+
 		this.dataService.locationsHome.subscribe((dataReceived: any) => {
-			console.log("[data received]: ", dataReceived);
 			const { type, args } = dataReceived;
 			
 			if(type === 'pagina') {
@@ -138,7 +149,6 @@ export class HomePage implements OnInit {
 	}
 	
 	ionViewWillEnter() {
-		console.log('traer datos');
 		this.appPages[0].activo = true;
 		this.datosGenUsuario['iniciales'] = this.getTokenData('nombre').substring(0, 2);
 
@@ -194,7 +204,6 @@ export class HomePage implements OnInit {
 
 
 	guardarRequerimiento() {
-		console.log("Guardar Requerimiento");
 		const contenidoRequerimiento = this.formCotenidoProyecto.getRawValue();
 
 		// revisar por posibles edits en blanco y/o eliminar
@@ -218,7 +227,6 @@ export class HomePage implements OnInit {
 			}
 		};
 
-		console.log(sendDataLibro);
 		this.dataService.addRequerimiento(sendDataLibro);
 		
 		this.toastService.show('Contenido guardado.', { classname: 'bg-success text-dark', delay: 3000});
@@ -273,7 +281,6 @@ export class HomePage implements OnInit {
 	}
 
 	regresarInicio() {
-		console.log("regresar inicio");
 		const cerrarIframe  = false;
 		this.formContenidoSecuencia.setValue('');
 		this.dataService.estadoModal = false;
@@ -299,7 +306,6 @@ export class HomePage implements OnInit {
 			
 		if(opcion === 'nuevo-robotica') this.dataService.abrirModalMain();
 		
-		console.log(this.quilleditorSec);
 		//prevent drop event from other tabs
 		this.renderer.listen(this.quilleditorSec.nativeElement, 'drop', (event) => {
 			event.preventDefault();

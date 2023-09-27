@@ -19,7 +19,6 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
-import { sharedModule } from './shared/shared.module';
 
 //import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -38,7 +37,6 @@ import { sharedModule } from './shared/shared.module';
 	AngularFireModule.initializeApp(environment.firebase),
 	AngularFirestoreModule,
 	AngularFireFunctionsModule,
-	sharedModule,
 	//NgbToastModule
 
 	//QuillModule.forRoot(),

@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { EstadisticasPage } from './estadisticas.page';
 import { IonicModule } from '@ionic/angular';
 import { estadisticasRoutingModule } from './estadisticas-routing.module';
-import { sharedModule } from 'src/app/shared/shared.module';
+import { cardUsuariosComponent } from './components/card-usuarios/card-usuarios.component';
+import { cardLibrosDescargadosComponent } from './components/card-libros-descargados/card-libros-descargados.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -11,12 +13,15 @@ import { sharedModule } from 'src/app/shared/shared.module';
 
   declarations: [
     EstadisticasPage,
+    cardUsuariosComponent,
+    cardLibrosDescargadosComponent,
   ],
+  exports:[EstadisticasPage],
   imports: [
     estadisticasRoutingModule,
     CommonModule,
     IonicModule,
-    sharedModule
+    FormsModule,
   ]
 })
 export class EstadisticasPageModule { }

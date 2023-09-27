@@ -23,8 +23,6 @@ import { ToastsComponent } from 'src/app/components/toasts/toasts.component';
 import { FolderComponent } from 'src/app/components/folder/folder.component';
 import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.component';
 import { menuComponent } from 'src/app/components/menu/menu.component';
-import { navbarComponent } from 'src/app/components/navbar/navbar.component';
-import { sharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -43,12 +41,11 @@ import { sharedModule } from 'src/app/shared/shared.module';
 	}),
 	AngularFirestoreModule,
 	ToastsComponent,
-	sharedModule,
   ],
   providers: [
 	FolderComponent,
 	IonMenu
   ],
-  declarations: [HomePage, FolderComponent, SecuenciasComponent,menuComponent,navbarComponent],
+  declarations: [HomePage, FolderComponent, SecuenciasComponent,menuComponent],
 })
 export class HomePageModule {}

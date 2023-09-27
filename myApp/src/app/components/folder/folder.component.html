@@ -1,5 +1,22 @@
 <ion-content style="font-family:Volte-Regular;">
 	
+	<div class="container-loading" *ngIf="!acordeonEstado && !librosLoading" >
+		<ion-list [inset]="true">
+			<ion-item *ngFor="let skele of skeleton; index as i" lines="none">
+				<ion-grid number="skele">
+					<ion-row class="ion-justify-content-between">
+					<ion-col size="8">
+							<ion-skeleton-text class="skeleton-text" [animated]="true" style="width: {{skele}}%"></ion-skeleton-text>
+					</ion-col>
+					<ion-col size="1">
+							<ion-skeleton-text class="skeleton-text" [animated]="true" style="width: 50%; margin-right: 70%;"></ion-skeleton-text>
+					</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-item> 
+		</ion-list>
+	</div>
+
 	<div *ngIf="!iframeEstado">
 		<div *ngFor="let escolaridad of librosAll; index as i;" style="margin-bottom: 37px;" >
 

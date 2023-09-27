@@ -37,11 +37,9 @@
             color ="light" 
             style=" padding-left: 160px; margin-bottom: 16px;">
             <ion-breadcrumb class="history" (click)="regresarInicio()">Inicio</ion-breadcrumb>
-                <ion-breadcrumb class="history" 
-                    [routerLink]="['/home']" 
-                    routerLinkActive="active" 
-                    *ngIf="appPages[0].activo" 
-                    (click)="regresarInicio()">Libros</ion-breadcrumb>
+                <ion-breadcrumb 
+                    class="history active" 
+                    (click)="regresarInicio()">{{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}</ion-breadcrumb>
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">{{nombreLibro}}</ion-breadcrumb>
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">Pagina: {{ pag }}</ion-breadcrumb>
         </ion-breadcrumbs>
@@ -88,7 +86,7 @@
             </div>
             
             <ion-text class="title" style="position: absolute;left: 370px;">
-                Libros
+                {{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}
             </ion-text>
         </div>
     </ion-col>
@@ -99,13 +97,12 @@
 <ion-row style="width: 100%; height: 100%;">
     <div  style="width: 100%; display: flex;">
         <app-menu></app-menu>
-        <div style="width: 100%; margin-right: 69px;">
-            <app-folder *ngIf="appPages[0].activo"></app-folder>
-            <!-- <router-outlet></router-outlet> -->
-            
-            
-       </div>
-    
+        
+        <div style="width: 100%; height: 100%; margin-right: 69px;">
+            <router-outlet id="main-content"></router-outlet>
+        </div>
+    </div>
+</ion-row>
 
 <ion-modal id="modal-secuencia" style="--border-radius: 8px; font-family: Volte-Regular;" #modal [style.display]="dataService.displayModal" trigger="open-modal" 
 class="modalService"

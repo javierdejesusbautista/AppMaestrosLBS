@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+
 
 @Component({
     selector: 'app-menu',
@@ -7,10 +9,10 @@ import { Component } from '@angular/core';
 })
 
 export class menuComponent   {
-    constructor() { }
+    constructor(private dataService: DataService) { }
 
     isMenuOpen = false;
-
+     
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
@@ -18,5 +20,9 @@ export class menuComponent   {
   closeMenu() {
     this.isMenuOpen = false;
   }
-  
+
+  navigateTo(value: string){
+    this.dataService.navigateTo(value);
+  }
+
 }
