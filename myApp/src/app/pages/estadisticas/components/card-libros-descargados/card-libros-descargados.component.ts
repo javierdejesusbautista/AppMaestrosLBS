@@ -16,8 +16,20 @@ export class cardLibrosDescargadosComponent implements OnInit {
     public pocentaje0a39: string ='#FF6464';
     public pocentaje40a69: string ='#FFD464';
     public pocentaje70a100: string ='#00DE80';
+
+    librosDescargadosSelect : object = {
+      
+      cssClass: 'librosDescargados-select',
+      animated: true,
+      mode: 'ios',
+      dismissOnSelect: false,
+      side: 'bottom',
+      alignment: 'start'
+    }
     
-    constructor() { }
+    constructor() { 
+     
+    }
 
     
     ngOnInit(): void {
