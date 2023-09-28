@@ -10,7 +10,13 @@
     
     <p class="title-card">Libros descargados.</p>
     
-          <ion-select class="input-select" interface="popover" placeholder="Selecciona Campus" [multiple]="true">
+          <ion-select 
+            class="input-select" 
+            interface="popover" 
+            placeholder="Selecciona Campus" 
+            [multiple]="true"
+            [interfaceOptions]="librosDescargadosSelect"
+          >
             <ion-select-option value="Mazatlan">Mazatlán</ion-select-option>
             <ion-select-option value="Culiacan">Culiacán</ion-select-option>
             <ion-select-option value="San Luis Potosi">San Luis Potosi</ion-select-option>

@@ -30,6 +30,47 @@
   word-wrap: break-word;
 }
 
+
+
+// ::ng-deep {
+
+// ion-popover{
+
+//   ion-label.sc-ion-label-md-h {
+//     --color: white !important;
+//   }
+  
+//   ion-list.list-md {
+//     border-top-left-radius: 13px;
+//     border-top-right-radius: 13px;
+//     --ion-item-background: #606060;
+//   }
+  
+//   ion-item {
+//     --background: #606060;
+//     color: white;
+//     font-size: 13px;
+//     font-family: Volte;
+//     font-weight: 400;
+//     word-wrap: break-word;
+//     margin-left: 10px;
+//     margin-right: 10px;
+//     border-bottom: 1px solid white;
+//     &:hover,
+//     &:active {
+//       color: white;
+//     }
+//   }
+  
+//   ion-checkbox {
+//     --border-radius: 50% !important;
+//     --background-checked: #03c1ea !important;
+//     --border-color-checked: #03c1ea !important;
+//     --border-color: white;
+//   }
+// }
+// }
+  
 .ver-mas-boton {
   background: #03c1ea;
   border-radius: 77px;
