@@ -12,8 +12,6 @@ export class cardLibrosDescargadosComponent implements OnInit {
 
     public items: number[] = [1,2,3,4];
 
-    opciones: string[] = [];
-    opcionSeleccionada: string = '';
 
     public pocentaje0a39: string ='#FF6464';
     public pocentaje40a69: string ='#FFD464';
@@ -23,7 +21,7 @@ export class cardLibrosDescargadosComponent implements OnInit {
 
     
     ngOnInit(): void {
-        const ctx = document.getElementById('miGrafico');
+        const ctx = document.getElementById('LibrosDescargados');
         new Chart(ctx, {
           type: 'doughnut', // Tipo de gráfico dona
           data: {
@@ -47,11 +45,4 @@ export class cardLibrosDescargadosComponent implements OnInit {
         });
       }
 
-
-      agregarOpcion() {
-        if (this.opcionSeleccionada.trim() !== '') {
-          this.opciones.push(this.opcionSeleccionada);
-          this.opcionSeleccionada = '';
-        }
-      }
 }

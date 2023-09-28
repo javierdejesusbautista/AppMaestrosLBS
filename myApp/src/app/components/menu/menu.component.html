@@ -5,7 +5,7 @@
     class="menu-button" 
     [ngStyle]="{ 'display': isMenuOpen ? 'none' : 'block' }" 
     (click)="toggleMenu()" 
-    src="/assets/icon/menu-icon.svg" 
+    src="./assets/icon/menu-icon.svg" 
     alt="menu"
   >
 
@@ -25,7 +25,7 @@
   <!-- Menu list -->
   <li class="li-list" routerLink="/home/libros" routerLinkActive="active" (click)="navigateTo('Libros')">
       <a class="a-menu">
-        <img class="img-list" src="/assets/icon/Book.svg" alt="book">
+        <img class="img-list" src="./assets/icon/Book.svg" alt="book">
         <p>Libros</p>
       </a>
   </li>
@@ -37,7 +37,7 @@
   
   <li class="li-list" routerLink="/home/estadisticas" routerLinkActive="active" (click)="navigateTo('Estadisticas')">
     <a class="a-menu">
-    <img class="img-list" src="/assets/icon/estadisticas.svg" alt="secuencias">
+    <img class="img-list" src="./assets/icon/estadisticas.svg" alt="secuencias">
       <p>Estadisticas</p>
     </a>
   </li>
