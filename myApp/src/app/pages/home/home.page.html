@@ -39,7 +39,10 @@
             <ion-breadcrumb class="history" (click)="regresarInicio()">Inicio</ion-breadcrumb>
                 <ion-breadcrumb 
                     class="history active" 
-                    (click)="regresarInicio()">{{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}</ion-breadcrumb>
+                    (click)="regresarInicio()">
+                    {{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}
+                </ion-breadcrumb>
+            
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">{{nombreLibro}}</ion-breadcrumb>
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">Pagina: {{ pag }}</ion-breadcrumb>
         </ion-breadcrumbs>

@@ -22,6 +22,7 @@ export class menuComponent   {
   }
 
   navigateTo(value: string){
+    this.dataService.reiniciarNombreLibro('');
     this.dataService.navigateTo(value);
   }
 

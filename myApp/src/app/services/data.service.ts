@@ -82,47 +82,6 @@ export class DataService {
 
 		this.observerHome.next(dataFromIndex);
 	}
-
-	
-
-
-
-
-
-
-
-
-/*
-
-	
-	locations = new Observable((pagina: any) => { 
-		// this.pagina = pagina;
-		console.log("pagina", pagina);
-		window.addEventListener('message', this.receiveMessage, false); 
-
-		
-	});
-	
-    
-		receiveMessage = (event: any)  => {
-			console.log(event);
-			const dataFromIndex = {
-				type: event.data.type,
-				args: event.data.arguments
-			}
-			console.log("window listener message: ", dataFromIndex);
-			event.next(dataFromIndex);
-		}
-  
-	*/
-
-	// 	const dataFromIndex = {
-		// 		type: event.data.type,
-		// 		args: event.data.arguments
-		// 	}; 
-		// 	console.log(dataFromIndex);
-		// 	pagina.next(dataFromIndex);
-		// }, false);
 	
 
   abrirModal(){
@@ -164,6 +123,10 @@ export class DataService {
 	this.getSecuencias$.next(data);
   }
 
+	//   Nuevas Funciones
+	reiniciarNombreLibro(value: string){
+		this.nombreLibroActual$.next(value);
+	}
 
 
   constructor() { 

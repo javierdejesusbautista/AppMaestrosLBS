@@ -300,6 +300,14 @@ body {
     --background: transparent;
     --offset-y:-10px;
 
+    ion-select-popover{
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 13px;
+        border-bottom-right-radius: 13px;
+        width: 180px;
+    }
+
    
 
   ion-label.sc-ion-label-ios-h {
@@ -344,12 +352,3 @@ body {
   }
 }
 
-// .img-prueba{
-//     display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-image: url("./assets/images/fondo-col-derecho.jpg");
-//   background-size: cover;
-//   background-repeat: no-repeat;
-//   background-position: center;
-// }
