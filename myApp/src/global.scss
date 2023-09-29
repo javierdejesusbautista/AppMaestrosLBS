@@ -297,14 +297,17 @@ body {
 
 .librosDescargados-select {
   
+    --background: transparent;
+    --offset-y:-10px;
+
+   
+
   ion-label.sc-ion-label-ios-h {
     --color: white !important;
   }
   
   ion-list.list-ios {
     background:#606060;
-    border-top-left-radius: 13px;
-    border-top-right-radius: 13px;
     --ion-item-background: #606060;
   }
   

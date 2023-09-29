@@ -12,7 +12,7 @@
 .acciones {
   --background-hover: #028dac;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-Semibold';
   font-weight: 400;
   word-wrap: break-word;
   order: 1;
@@ -24,21 +24,21 @@
 .history {
   color: white;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-Regular';
   font-weight: 400;
   word-wrap: break-word;
 }
 .active {
   color: white;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
 }
 .iniciales {
   color: white;
   font-size: 24px;
-  font-family: Volte;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
   text-transform: capitalize;
@@ -46,7 +46,7 @@
 .nombre {
   color: #03c1ea;
   font-size: 40px;
-  font-family: Volte;
+  font-family: 'Volte-Regular';
   font-weight: 500;
   word-wrap: break-word;
   text-transform: capitalize;
@@ -54,7 +54,7 @@
 .historial-link {
   color: white;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-Regular';
   font-weight: 400;
   word-wrap: break-word;
 }
@@ -74,7 +74,7 @@
 .title {
   color: #03c1ea;
   font-size: 48px;
-  font-family: Volte;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
 }
@@ -169,7 +169,7 @@ ion-menu.md ion-item ion-icon {
 }
 
 ion-menu.md ion-item ion-label {
-  font-family: "Volte-Medium";
+  font-family: "'Volte-Regular'-Medium";
   font-weight: 500;
 }
 
@@ -275,7 +275,7 @@ ion-split-pane {
 }
 
 .circle2 {
-  font-family: "Volte-Bold";
+  font-family: 'Volte-bold';
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -288,7 +288,7 @@ ion-split-pane {
 }
 
 h6 {
-  font-family: "Volte-Bold";
+  font-family: "'Volte-Regular'-Bold";
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -386,7 +386,7 @@ ion-split-pane {
 }
 
 ion-breadcrumb {
-  font-family: "Volte-Medium";
+  font-family: "'Volte-Regular'-Medium";
   cursor: pointer;
 }
 
