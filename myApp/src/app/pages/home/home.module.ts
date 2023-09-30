@@ -25,7 +25,7 @@ import { SecuenciasComponent } from 'src/app/components/secuencias/secuencias.co
 import { NgxJoditModule } from 'ngx-jodit'
 // import { BrowserModule } from "@angular/platform-browser";
 import Quill from "quill";
-import QuillBetterTable from "quill-better-table";
+//import QuillBetterTable from "quill-better-table";
 
 
 @NgModule({

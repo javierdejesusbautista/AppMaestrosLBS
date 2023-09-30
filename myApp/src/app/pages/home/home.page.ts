@@ -7,7 +7,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 
 import { EditorChangeContent, EditorChangeSelection, QuillEditorComponent } from 'ngx-quill';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonModal } from '@ionic/angular';
 
 import { NgxJoditComponent } from 'ngx-jodit';
 
@@ -184,7 +184,7 @@ import { Config } from 'jodit/src/config';
   constructor(public dataService: DataService,
 	private authService: AuthService,
 	public toastService: ToastService, private elementRef: ElementRef, private renderer: Renderer2,
-	private alertController: AlertController, private secuenciasService: SecuenciasFsService, private zone: NgZone) { }
+	private alertController: AlertController, private secuenciasService: SecuenciasFsService, private zone: NgZone) {
 
 		this.dataService.locationsHome.subscribe((dataReceived: any) => {
 			//console.log("[data received]: ", dataReceived);
@@ -246,8 +246,13 @@ import { Config } from 'jodit/src/config';
 
 
 	}
+
   ngAfterViewInit(): void {
 
+  }
+
+  ngOnInit(): void {
+	  
   }
 
   initEditor(): void {
@@ -547,7 +552,7 @@ import { Config } from 'jodit/src/config';
 
 		return value;
 	}
-
+	
 }
 
 // export class AppComponent {
