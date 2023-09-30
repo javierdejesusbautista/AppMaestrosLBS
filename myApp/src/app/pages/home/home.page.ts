@@ -54,44 +54,8 @@ import { Config } from 'jodit/src/config';
                 }, 50);
               }
 
-              const doc = document.querySelector('.jodit-wysiwyg');
-              const elementos = doc?.querySelectorAll('p.MsoNormal');
-              console.log('doc', doc);
-              console.log('elementos', elementos);
-
-              // Define el patrón de estilo que deseas buscar (margin con valores variables)
-              const patronEstilo = /margin:\s*0px 0px (\d+)px (-\d+)px/;
-
-              elementos?.forEach(function(element){
-
-                const estilo = element.getAttribute('style');
-
-                if (estilo) {
-                  // Verifica si el atributo "style" coincide con el patrón
-                  const coincidencia = estilo.match(patronEstilo);
-
-                  if (coincidencia) {
-                    // Obtiene los valores variables del margen y del cuarto atributo
-                    const valorDelMargen = coincidencia[1];
-                    const valorCuartoAtributo = coincidencia[2];
-
-                    // Reemplaza el estilo original eliminando los valores variables
-                    const nuevoEstilo = estilo.replace(
-                      patronEstilo,
-                      `margin: 0px 0px ${valorDelMargen}px;`
-                    );
-
-                    // Actualiza el atributo "style" del elemento con el nuevo estilo
-                    element.setAttribute('style', nuevoEstilo);
-                    console.log(`Elemento con estilo margin: 0px 0px ${valorDelMargen}px ${valorCuartoAtributo}px; :`, element);
-
-                  }
-                }
-
-                // }
-              });
-
-
+              this.checkMarginNormal();
+              this.checkMarginLista();
 
               observer.disconnect();
               break;
@@ -318,6 +282,80 @@ import { Config } from 'jodit/src/config';
     }, 50);
 
     return false;
+  }
+
+  checkMarginNormal(){
+
+    const doc = document.querySelector('.jodit-wysiwyg');
+    const elementos = doc?.querySelectorAll('p.MsoNormal');
+    const patronEstilo = /margin:\s*0px 0px (\d+)px (-\d+)px/;
+
+    elementos?.forEach(function(element){
+
+      const estilo = element.getAttribute('style');
+
+      if (estilo) {
+        const coincidencia = estilo.match(patronEstilo);
+
+        if (coincidencia) {
+          const valorDelMargen = coincidencia[1];
+          const nuevoEstilo = estilo.replace(
+            patronEstilo,
+            `margin: 0px 0px ${valorDelMargen}px;`
+          );
+
+          element.setAttribute('style', nuevoEstilo);
+
+        }
+      }
+    });
+
+  }
+
+  checkMarginLista() {
+
+    const doc = document.querySelector('.jodit-wysiwyg');
+    const elementos = doc?.querySelectorAll('p[class^="MsoListParagraph"]');
+
+    const patronEstilo = /margin:\s*0px 0px (\d+)px(;|\s|$)/
+    const patronEstilo2 = /margin:\s*(0)px(;|$)/
+
+    elementos?.forEach(function (element) {
+      const estilo = element.getAttribute('style');
+
+
+      if (estilo) {
+
+        const coincidencia = estilo.match(patronEstilo);
+        const coincidencia2 = estilo.match(patronEstilo2);
+
+
+        if (coincidencia) {
+
+          if(coincidencia[2] == ' ') return;
+
+          const valorDelMargen = coincidencia[1];
+          const nuevoEstilo = estilo.replace(
+            patronEstilo,
+            `margin: 0px 0px ${valorDelMargen}px 48px;`
+          );
+
+          element.setAttribute('style', nuevoEstilo);
+        }
+        if (coincidencia2) {
+
+          const valorDelMargen = coincidencia2[1];
+          const nuevoEstilo = estilo.replace(
+            patronEstilo2,
+            `margin: 0px 0px ${valorDelMargen}px 48px;`
+          );
+
+          element.setAttribute('style', nuevoEstilo);
+        }
+      }
+    });
+
+
   }
 
 	getRangePaginas(count: number): number[] {
