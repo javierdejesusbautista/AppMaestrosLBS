@@ -13,7 +13,7 @@
           <ion-select 
             class="input-select" 
             interface="popover" 
-            placeholder="Selecciona Campus" 
+            placeholder="Todos" 
             [multiple]="true"
             [interfaceOptions]="librosDescargadosSelect"
           >
@@ -51,6 +51,6 @@
 </div>
 
 <div style="width: 100%;height: 15%;">
-    <button class="ver-mas-boton">Ver más</button>
+    <button class="ver-mas-boton" (click)="navigateTo()">Ver más</button>
 </div>
 

@@ -297,16 +297,14 @@ body {
 
 .librosDescargados-select {
   
-    --background: transparent;
-    --offset-y:-10px;
+    // --background: transparent;
+    --offset-x:23px;
+    --max-width:170px;
 
-    ion-select-popover{
         border-top-right-radius: 0px;
         border-top-left-radius: 0px;
         border-bottom-left-radius: 13px;
         border-bottom-right-radius: 13px;
-        width: 180px;
-    }
 
    
 
@@ -338,7 +336,7 @@ body {
 
     &:last-child{
         border-bottom: none;
-        margin-bottom: 23px;
+        margin-bottom: 5px;
     }
   }
   

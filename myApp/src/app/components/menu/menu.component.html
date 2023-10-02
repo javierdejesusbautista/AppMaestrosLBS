@@ -23,7 +23,7 @@
   </button>
   
   <!-- Menu list -->
-  <li class="li-list" routerLink="/home/libros" routerLinkActive="active" (click)="navigateTo('Libros')">
+  <li class="li-list" routerLink="/home/libros" routerLinkActive="active" (click)="navigateToLibros()">
       <a class="a-menu">
         <img class="img-list" src="./assets/icon/Book.svg" alt="book">
         <p>Libros</p>
@@ -35,7 +35,7 @@
     <a [routerLink]="['/secuencias']"><p>Secuencias</p></a>
   </li> -->
   
-  <li class="li-list" routerLink="/home/estadisticas" routerLinkActive="active" (click)="navigateTo('Estadisticas')">
+  <li class="li-list" routerLink="/home/estadisticas" routerLinkActive="active" (click)="navigateToEstadisticas()">
     <a class="a-menu">
     <img class="img-list" src="./assets/icon/estadisticas.svg" alt="secuencias">
       <p>Estadisticas</p>

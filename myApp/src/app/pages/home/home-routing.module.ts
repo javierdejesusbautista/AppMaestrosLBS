@@ -24,6 +24,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('../estadisticas/estadisticas.module').then((m) => m.EstadisticasPageModule),
       },
+      {
+        path: 'estadisticas/libros-descargados',
+        loadChildren: () =>
+          import('../libros-descargados/libros-descargados.module').then((m) => m.librosDescargadosModule),
+      },
       
     ],
   },

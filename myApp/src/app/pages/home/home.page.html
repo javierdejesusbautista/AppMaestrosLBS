@@ -36,13 +36,18 @@
             class="historial-link" 
             color ="light" 
             style=" padding-left: 160px; margin-bottom: 16px;">
-            <ion-breadcrumb class="history" (click)="regresarInicio()">Inicio</ion-breadcrumb>
                 <ion-breadcrumb 
-                    class="history active" 
+                    class="history" 
                     (click)="regresarInicio()">
-                    {{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}
+                    {{'Inicio' | titlecase}}
                 </ion-breadcrumb>
-            
+                <ion-breadcrumb  class="history" [class.active]="!rutaActual[3]">
+                    {{rutaActual[2] | titlecase}}
+                </ion-breadcrumb>
+                <ion-breadcrumb  class="history" [class.active]="rutaActual[3]">
+                    {{rutaActual[3] | titlecase}}
+                </ion-breadcrumb>
+
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">{{nombreLibro}}</ion-breadcrumb>
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">Pagina: {{ pag }}</ion-breadcrumb>
         </ion-breadcrumbs>
@@ -88,7 +93,7 @@
             </div>
             
             <ion-text class="title" style="position: absolute;left: 370px;">
-                {{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}
+                {{(rutaActual[3])? (rutaActual[3] | titlecase ): (rutaActual[2] | titlecase )}}
             </ion-text>
         </div>
     </ion-col>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data.service';
 
 declare var Chart: any;
 
@@ -20,16 +22,19 @@ export class cardLibrosDescargadosComponent implements OnInit {
     librosDescargadosSelect : object = {
       
       cssClass: 'librosDescargados-select',
-      animated: true,
-      mode: 'ios',
-      dismissOnSelect: false,
-      side: 'bottom',
-      alignment: 'start'
+        animated: true,
+        mode: 'ios',
+        dismissOnSelect: false,
+        side: 'bottom',
+        alignment: 'center',
+        arrow: false,
+        size:'cover',
     }
     
-    constructor() { 
-     
-    }
+    constructor(
+      private router: Router,
+      private dataService: DataService,
+      ) { }
 
     
     ngOnInit(): void {
@@ -57,4 +62,8 @@ export class cardLibrosDescargadosComponent implements OnInit {
         });
       }
 
+      navigateTo(){
+        this.dataService.rutaActual('/home/estadisticas/libros-descargados');
+        this.router.navigate(['/home/estadisticas/libros-descargados']);
+    }
 }

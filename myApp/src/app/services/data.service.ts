@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subject } from "rxjs";
 
 @Injectable({
@@ -6,7 +7,8 @@ import { Observable, Subject } from "rxjs";
 })
 export class DataService {
 
-	rutaActual: string = '';
+	rutaActual$: Subject<string > = new Subject<string>();
+    ruta: string = '';
 
 	estadoModal = false;
 	displayModal = 'none';
@@ -38,10 +40,6 @@ export class DataService {
 
 	private observerHome: any;
 	private observerFolder: any;
-
-	navigateTo(value:string){
-		this.rutaActual = value;
-	}
 
 	locationsFolder = new Observable((observer) => {
 		this.observerFolder = observer;
@@ -127,9 +125,12 @@ export class DataService {
 	reiniciarNombreLibro(value: string){
 		this.nombreLibroActual$.next(value);
 	}
+	rutaActual(value: string){
+		this.rutaActual$.next(value);
+	}
 
 
-  constructor() { 
+  constructor(private router: Router) { 
 
 	this.paginaSubejct$.subscribe((value) => {
 		this.pagina = value
@@ -142,6 +143,13 @@ export class DataService {
 	
 	this.stateIframe$.subscribe((state) => {
 		this.stateIframe = state;
+	});
+
+	// Nueva
+	this.rutaActual$.subscribe((value) => {
+		 this.ruta = value;
+		 console.log(value);
+		
 	});
   }
 
