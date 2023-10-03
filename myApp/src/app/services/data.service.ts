@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subject } from "rxjs";
 
 @Injectable({
@@ -6,7 +7,8 @@ import { Observable, Subject } from "rxjs";
 })
 export class DataService {
 
-	rutaActual: string = '';
+	rutaActual$: Subject<string > = new Subject<string>();
+    ruta: string = '';
 
 	estadoModal = false;
 	displayModal = 'none';
@@ -38,10 +40,6 @@ export class DataService {
 
 	private observerHome: any;
 	private observerFolder: any;
-
-	navigateTo(value:string){
-		this.rutaActual = value;
-	}
 
 	locationsFolder = new Observable((observer) => {
 		this.observerFolder = observer;
@@ -82,47 +80,6 @@ export class DataService {
 
 		this.observerHome.next(dataFromIndex);
 	}
-
-	
-
-
-
-
-
-
-
-
-/*
-
-	
-	locations = new Observable((pagina: any) => { 
-		// this.pagina = pagina;
-		console.log("pagina", pagina);
-		window.addEventListener('message', this.receiveMessage, false); 
-
-		
-	});
-	
-    
-		receiveMessage = (event: any)  => {
-			console.log(event);
-			const dataFromIndex = {
-				type: event.data.type,
-				args: event.data.arguments
-			}
-			console.log("window listener message: ", dataFromIndex);
-			event.next(dataFromIndex);
-		}
-  
-	*/
-
-	// 	const dataFromIndex = {
-		// 		type: event.data.type,
-		// 		args: event.data.arguments
-		// 	}; 
-		// 	console.log(dataFromIndex);
-		// 	pagina.next(dataFromIndex);
-		// }, false);
 	
 
   abrirModal(){
@@ -164,9 +121,16 @@ export class DataService {
 	this.getSecuencias$.next(data);
   }
 
+	//   Nuevas Funciones
+	reiniciarNombreLibro(value: string){
+		this.nombreLibroActual$.next(value);
+	}
+	rutaActual(value: string){
+		this.rutaActual$.next(value);
+	}
 
 
-  constructor() { 
+  constructor(private router: Router) { 
 
 	this.paginaSubejct$.subscribe((value) => {
 		this.pagina = value
@@ -179,6 +143,13 @@ export class DataService {
 	
 	this.stateIframe$.subscribe((state) => {
 		this.stateIframe = state;
+	});
+
+	// Nueva
+	this.rutaActual$.subscribe((value) => {
+		 this.ruta = value;
+		 console.log(value);
+		
 	});
   }
 

@@ -297,14 +297,23 @@ body {
 
 .librosDescargados-select {
   
+    // --background: transparent;
+    --offset-x:23px;
+    --max-width:170px;
+
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 13px;
+        border-bottom-right-radius: 13px;
+
+   
+
   ion-label.sc-ion-label-ios-h {
     --color: white !important;
   }
   
   ion-list.list-ios {
     background:#606060;
-    border-top-left-radius: 13px;
-    border-top-right-radius: 13px;
     --ion-item-background: #606060;
   }
   
@@ -327,7 +336,7 @@ body {
 
     &:last-child{
         border-bottom: none;
-        margin-bottom: 23px;
+        margin-bottom: 5px;
     }
   }
   
@@ -341,12 +350,3 @@ body {
   }
 }
 
-// .img-prueba{
-//     display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-image: url("./assets/images/fondo-col-derecho.jpg");
-//   background-size: cover;
-//   background-repeat: no-repeat;
-//   background-position: center;
-// }

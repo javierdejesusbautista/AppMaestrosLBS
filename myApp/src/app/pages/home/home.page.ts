@@ -8,7 +8,7 @@ import { SecuenciasFsService } from 'src/app/services/secuencias-fs.service';
 
 import { EditorChangeContent, EditorChangeSelection, QuillEditorComponent } from 'ngx-quill';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 
 import { NgxJoditComponent } from 'ngx-jodit';
@@ -182,8 +182,7 @@ import { Config } from 'jodit/src/config';
 
 	nombreLibro: string = '';
 
-	rutaActual:string = ''; 
-
+	rutaActual:string[] = [];
 
 	globalInstance: any;
   editorCreatd:any
@@ -219,10 +218,20 @@ import { Config } from 'jodit/src/config';
 
 	ngOnInit() {
 
-		let ruta: string = this.router.url;
-		let rutaArray: string[] = ruta.split('/');
-		this.rutaActual = rutaArray[2];
+		  this.router.events.subscribe((event) => {
+			if (event instanceof NavigationEnd) {
+			  const ruta = event.urlAfterRedirects || '';
+			  this.dataService.rutaActual$.next(ruta);
+			}
+		  });
+	  
+		  this.dataService.rutaActual$.subscribe((ruta) => {
+			let rutaSinguion:string = ruta.replace(/-/g, ' ');
+			let rutaArray: string[] = rutaSinguion.split('/');
+			this.rutaActual = rutaArray;
+		  });
 
+		
 		this.dataService.locationsHome.subscribe((dataReceived: any) => {
 			const { type, args } = dataReceived;
 
@@ -280,6 +289,7 @@ import { Config } from 'jodit/src/config';
 
 		this.dataService.nombreLibroActual$.subscribe(nombre => this.nombreLibro = nombre);
 
+		
 
 	}
   ngAfterViewInit(): void {

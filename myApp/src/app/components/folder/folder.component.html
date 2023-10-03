@@ -18,21 +18,22 @@
 	</div>
 
 	<div *ngIf="!iframeEstado">
+		
 		<div *ngFor="let escolaridad of librosAll; index as i;" style="margin-bottom: 37px;" >
 
 			<ion-title class="titulo">{{ escolaridad.Escolaridad }}</ion-title>
 			
 			<ion-accordion-group class="accordion-group" expand="inset" *ngIf="acordeonEstado">
 				
-				<ion-item *ngIf="noHayLibrosAsignados" style="--border-color: #00c1eb; --border-radius: 15px; --background-hover: #028dac;">
+				<ion-item *ngIf="noHayLibrosAsignados" style="--border-color: #00c1eb; --background-hover: #028dac;">
 					<ion-label>No hay libros asignados. Por favor comunicarse con el Coordinador.</ion-label>			
 				</ion-item>
 				
-				<ion-accordion class="fade-in" toggleIcon="none" *ngFor="let grado of escolaridad.Grados">
+				<ion-accordion class="accordion" toggleIcon="none" *ngFor="let grado of escolaridad.Grados">
 					<ion-item slot="header">
 						<ion-label class="listado">{{ grado.Grados }} Grado</ion-label>
 					</ion-item>
-					<div class="fade-in-down" *ngFor="let libro of grado.Libros" slot="content">
+					<div *ngFor="let libro of grado.Libros" slot="content">
 						<ion-item lines="none" button slot="content" (click)="abrirLibro(libro)" >
 							<ion-label class="libros">{{ libro.Nombre }}</ion-label>
 						</ion-item>
@@ -42,6 +43,8 @@
 			</ion-accordion-group>
 		</div>
 	</div>
+	
+
 
     <div style="text-align: center; height: 100%;" *ngIf="iframeEstado">
         <div class="contenedorIframe" style="height: 91vh;">

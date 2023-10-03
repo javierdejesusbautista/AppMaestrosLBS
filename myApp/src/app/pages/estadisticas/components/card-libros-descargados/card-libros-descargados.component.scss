@@ -6,7 +6,7 @@
 .title-card {
   color: #03c1ea;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
   margin-left: 30px;
@@ -17,7 +17,7 @@
   background: rgba(255, 255, 255, 0);
   border-radius: 11.93px;
   border: 1px #606060 solid;
-  width: 162px;
+  width: 217px;
   height: 24px;
   margin-top: 30px;
   margin-right: 23px;
@@ -25,79 +25,49 @@
 
   color: #606060;
   font-size: 11px;
-  font-family: Volte;
+  font-family: 'Volte-Regular';
   font-weight: 400;
   word-wrap: break-word;
+
+  --placeholder-opacity: 1;
 }
-
-
-
-// ::ng-deep {
-
-// ion-popover{
-
-//   ion-label.sc-ion-label-md-h {
-//     --color: white !important;
-//   }
-  
-//   ion-list.list-md {
-//     border-top-left-radius: 13px;
-//     border-top-right-radius: 13px;
-//     --ion-item-background: #606060;
-//   }
-  
-//   ion-item {
-//     --background: #606060;
-//     color: white;
-//     font-size: 13px;
-//     font-family: Volte;
-//     font-weight: 400;
-//     word-wrap: break-word;
-//     margin-left: 10px;
-//     margin-right: 10px;
-//     border-bottom: 1px solid white;
-//     &:hover,
-//     &:active {
-//       color: white;
-//     }
-//   }
-  
-//   ion-checkbox {
-//     --border-radius: 50% !important;
-//     --background-checked: #03c1ea !important;
-//     --border-color-checked: #03c1ea !important;
-//     --border-color: white;
-//   }
-// }
-// }
   
 .ver-mas-boton {
   background: #03c1ea;
+  font-family: 'Volte-Semibold';
   border-radius: 77px;
   color: white;
   width: 129px;
   height: 29px;
   margin-bottom: 30px;
   margin-left: 30px;
+  transition: background-color 0.3s ease;
+      &:active{
+        background-color: #199FBE;
+        transform: scale(0.95);
+      }
+      &:focus{
+        background-color: #199FBE;
+      }
 }
 .no-descargados {
   color: #606060;
   font-size: 14px;
-  font-family: Volte;
+  font-family: 'Volte-Semibold';
   font-weight: 700;
   word-wrap: break-word;
 }
 .numero-no-descargado {
   color: #606060;
-  font-size: 10px;
-  font-family: Volte;
+  font-size: 14px;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
 }
 .porcentaje-no-descargado {
   color: #606060;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
 }
@@ -105,21 +75,23 @@
 .descargados {
   color: #03c1ea;
   font-size: 14px;
-  font-family: Volte;
+  font-family: 'Volte-Semibold';
   font-weight: 700;
   word-wrap: break-word;
+  text-align: right;
 }
 .numero-descargado {
   color: #03c1ea;
-  font-size: 10px;
-  font-family: Volte;
+  font-size: 14px;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
+  
 }
 .porcentaje-descargado {
   color: #606060;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
   display: flex;
@@ -142,14 +114,14 @@
   margin-bottom: 0px;
   color: #606060;
   font-size: 20px;
-  font-family: Volte;
+  font-family: 'Volte-bold';
   font-weight: 700;
   word-wrap: break-word;
 }
 .texto-libros {
   color: #606060;
   font-size: 10px;
-  font-family: Volte;
+  font-family: 'Volte-Regular';
   font-weight: 400;
   word-wrap: break-word;
 }

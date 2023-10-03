@@ -1,0 +1,199 @@
+.grafica {
+  width: 100%;
+  height: 574px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f5f5;
+  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.15); 
+  border-radius: 15px;
+}
+
+.label-input-select{
+  color: #606060;
+font-size: 13px;
+font-family: 'Volte-bold';
+font-weight: 700;
+word-wrap: break-word;
+margin-top: 35px;
+margin-bottom: 3px;
+margin-left: 18px;
+}
+
+.input-select {
+  width: 217px;
+  height: 32px;
+  margin-right: 23px;
+  padding-left: 12px;
+  background: #F5F5F5; 
+  border-radius: 16px; 
+
+  color: #606060;
+  font-size: 13px;
+  font-family: "Volte-Regular";
+  font-weight: 400;
+  word-wrap: break-word;
+  
+  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.15);
+
+    --placeholder-opacity: 1;
+    
+
+}
+
+
+.row {
+  width: 100%;
+  height: 100%;
+}
+
+.title-card {
+  color: #03c1ea;
+  font-size: 20px;
+  font-family: "Volte-bold";
+  font-weight: 700;
+  word-wrap: break-word;
+  margin-left: 30px;
+  margin-top: 30px;
+}
+
+.exportar-pdf {
+  background: #fff;
+  font-family: "Volte-Semibold";
+  border-radius: 21px;
+  border: 2px #03C1EA solid;
+  color: #03C1EA;
+  width: 285px;
+  height: 42px;
+  margin-top: 50px;
+  transition: background-color 0.3s ease;
+  &:active,
+  &:focus {
+    background-color: #03C1EA;
+    color: white;
+    
+  }
+}
+
+/* Estilos para el botón */
+.informe-excel {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  background: #fff;
+  font-family: "Volte-Semibold";
+  border-radius: 21px;
+  border: 2px #1F7143 solid;
+  color: #1F7143;
+  width: 285px;
+  height: 42px;
+  margin-top: 50px;
+  margin-left: 47px;
+  transition: background-color 0.3s ease;
+
+  /* Cambiar el color de fondo cuando el botón está activo o enfocado */
+  &:active,
+  &:focus {
+    background-color: #1F7143;
+    color: white;
+
+    /* Aplicar filtro de blanco y negro e invertir colores a la imagen */
+    .img-boton-excel {
+      filter: brightness(0) invert(1); /* Convierte la imagen en blanco y negro e invierte los colores */
+    }
+  }
+
+  span{
+    margin-left: 7px;
+  }
+}
+
+/* Restablecer el filtro cuando el botón no está activo ni enfocado */
+.informe-excel:not(:active):not(:focus) .img-boton-excel {
+  filter: none; /* Restablece el filtro para mostrar la imagen en color */
+}
+
+
+
+.no-descargados {
+  color: #606060;
+  font-size: 20px;
+  font-family: "Volte-Semibold";
+  font-weight: 700;
+  word-wrap: break-word;
+}
+.numero-no-descargado {
+  color: #606060;
+  font-size: 20px;
+  font-family: "Volte-bold";
+  font-weight: 700;
+  word-wrap: break-word;
+}
+.porcentaje-no-descargado {
+  color: #606060;
+  font-size: 48px;
+  font-family: "Volte-bold";
+  font-weight: 700;
+  word-wrap: break-word;
+}
+
+.descargados {
+  color: #03c1ea;
+  font-size: 20px;
+  font-family: "Volte-Semibold";
+  font-weight: 700;
+  word-wrap: break-word;
+  text-align: right;
+}
+.numero-descargado {
+  color: #03c1ea;
+  font-size: 20px;
+  font-family: "Volte-bold";
+  font-weight: 700;
+  word-wrap: break-word;
+}
+.porcentaje-descargado {
+  color: #606060;
+  font-size: 48px;
+  font-family: "Volte-bold";
+  font-weight: 700;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: right;
+}
+
+.espacio {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.texto-centrado {
+  position: absolute;
+  margin-left: 28px;
+}
+.numero-centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+  color: #606060;
+  font-size: 48px;
+  font-family: "Volte-bold";
+  font-weight: 700;
+  word-wrap: break-word;
+}
+.texto-libros {
+  color: #606060;
+  font-size: 20px;
+  font-family: "Volte-Regular";
+  font-weight: 400;
+  word-wrap: break-word;
+}
+
+.option-select {
+  background-color: #606060;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+}

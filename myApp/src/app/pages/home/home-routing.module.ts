@@ -20,11 +20,15 @@ const routes: Routes = [
         component: FolderComponent,
       },
       {
+        path: 'secuencias',
+        loadChildren: () =>
+          import('../secuencias/secuencias.module').then((m) => m.SecuenciasPageModule),
+      },
+      {
         path: 'estadisticas',
         loadChildren: () =>
           import('../estadisticas/estadisticas.module').then((m) => m.EstadisticasPageModule),
       },
-      
     ],
   },
   

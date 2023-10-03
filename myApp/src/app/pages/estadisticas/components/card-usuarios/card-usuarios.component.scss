@@ -12,13 +12,13 @@
         p {
           color: #03c1ea;
           font-size: 20px;
-          font-family: Volte;
+          font-family: 'Volte-bold';
           font-weight: 700;
           word-wrap: break-word;
           span {
             color: #525252;
             font-size: 20px;
-            font-family: Volte;
+            font-family: 'Volte-bold';
             font-style: italic;
             font-weight: 700;
             word-wrap: break-word;
@@ -43,7 +43,7 @@
   .label-input-select {
     color: #606060;
     font-size: 11px;
-    font-family: Volte;
+    font-family: 'Volte-bold';
     font-weight: 700;
     word-wrap: break-word;
     margin-left: 15px;
@@ -51,7 +51,7 @@
     &::placeholder {
       color: #606060;
       font-size: 11px;
-      font-family: Volte;
+      font-family: 'Volte-Regular';
       font-weight: 400;
       word-wrap: break-word;
       padding-left: 10px;
@@ -73,29 +73,39 @@
   .texto-tabla {
     color: #606060;
     font-size: 10px;
-    font-family: Volte;
+    font-family: 'Volte-Regular';
     font-weight: 500;
     word-wrap: break-word;
   }
   .numeros-usuarios {
     color: #03c1ea;
     font-size: 36px;
-    font-family: Volte;
+    font-family: 'Volte-Regular';
     font-weight: 700;
     word-wrap: break-word;
   }
   .numeros-usuarios-anterior {
     color: #606060;
     font-size: 36px;
-    font-family: Volte;
+    font-family: 'Volte-Regular';
     font-weight: 700;
     word-wrap: break-word;
   }
   .ver-mas-boton {
     background: #03c1ea;
+    font-family: 'Volte-Semibold';
     border-radius: 77px;
     color: white;
     width: 129px;
     height: 29px;
     margin-top: 5px;
+    transition: background-color 0.3s ease;
+      &:active{
+        background-color: #199FBE;
+        transform: scale(0.95);
+      }
+      &:focus{
+        background-color: #199FBE;
+      }
   }
+  

@@ -1,6 +1,6 @@
 <!-- NavBar -->
 
-<img class="perseus-fondo" src="./assets/icon/icono_perseus_folder.svg" alt="PerseusApp" role="presentation">
+<img *ngIf="rutaActual[2] == 'libros'" class="perseus-fondo" src="./assets/icon/icono_perseus_folder.svg" alt="PerseusApp" role="presentation">
 
 <ion-toolbar style=" --background: #03C1EA; ">
     <div style="position: absolute; top: 0; display: flex;justify-content: center;align-items: center; 
@@ -36,10 +36,18 @@
             class="historial-link" 
             color ="light" 
             style=" padding-left: 160px; margin-bottom: 16px;">
-            <ion-breadcrumb class="history" (click)="regresarInicio()">Inicio</ion-breadcrumb>
                 <ion-breadcrumb 
-                    class="history active" 
-                    (click)="regresarInicio()">{{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}</ion-breadcrumb>
+                    class="history" 
+                    (click)="regresarInicio()">
+                    {{'Inicio' | titlecase}}
+                </ion-breadcrumb>
+                <ion-breadcrumb  class="history" [class.active]="!rutaActual[3]">
+                    {{rutaActual[2] | titlecase}}
+                </ion-breadcrumb>
+                <ion-breadcrumb  class="history" [class.active]="rutaActual[3]">
+                    {{rutaActual[3] | titlecase}}
+                </ion-breadcrumb>
+
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">{{nombreLibro}}</ion-breadcrumb>
             <ion-breadcrumb class="history" *ngIf="nombreLibro !== '' && appPages[0].activo">Pagina: {{ pag }}</ion-breadcrumb>
         </ion-breadcrumbs>
@@ -63,7 +71,7 @@
             <div class="centrar-circulo">
                 <div class="parent">
                     <div class="div1">
-                        <div class="circle2">{{ datosGenUsuario.iniciales }}</div>
+                        <div class="circle2">{{ datosGenUsuario.iniciales | titlecase }}</div>
                     </div>
                 </div>
             </div>
@@ -85,7 +93,7 @@
             </div>
             
             <ion-text class="title" style="position: absolute;left: 370px;">
-                {{dataService.rutaActual === '' ? (rutaActual | titlecase) : dataService.rutaActual }}
+                {{(rutaActual[3])? (rutaActual[3] | titlecase ): (rutaActual[2] | titlecase )}}
             </ion-text>
         </div>
     </ion-col>
@@ -97,7 +105,10 @@
     <div  style="width: 100%; display: flex;">
         <app-menu></app-menu>
         
-        <div style="width: 100%; height: 100%; margin-right: 69px;">
+        <div 
+            [style]="(rutaActual[2] == 'libros')
+            ?'width: 100%; height: 78vh; margin-right: 69px; margin-bottom: 35px;'
+            :'width: 100%; height: 78vh; overflow-y: auto; margin-right: 69px; margin-bottom: 35px;' ">
             <router-outlet id="main-content"></router-outlet>
         </div>
     </div>

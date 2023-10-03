@@ -1,0 +1,113 @@
+<div style="width: 100%; height: 100%;">
+
+<div style="width: 100%;margin-bottom: 35px; display: flex; justify-content: space-between;">
+        
+    <div>
+        <p class="label-input-select" >
+            Campus
+        </p> 
+        <ion-select 
+            class="input-select" 
+            interface="popover" 
+            placeholder="Todos" 
+            [multiple]="true"
+            [interfaceOptions]="librosDescargadosSelect"
+        >
+        <ion-select-option value="Mazatlan">Mazatlán</ion-select-option>
+        <ion-select-option value="Culiacan">Culiacán</ion-select-option>
+        <ion-select-option value="San Luis Potosi">San Luis Potosi</ion-select-option>
+        <ion-select-option value="Zacatecas">Zacatecas</ion-select-option>
+        <ion-select-option value="Durango">Durango</ion-select-option>
+        <ion-select-option value="Torreon">Torreón</ion-select-option>
+        </ion-select>
+    </div>
+    <div>
+        <p class="label-input-select" >
+            Escolaridad
+        </p> 
+        <ion-select 
+            class="input-select" 
+            interface="popover" 
+            placeholder="Todos" 
+            [multiple]="true"
+            [interfaceOptions]="librosDescargadosSelect"
+        >
+            <ion-select-option value="Mazatlan">1er Grado</ion-select-option>
+            <ion-select-option value="Mazatlan">2do Grado</ion-select-option>
+            <ion-select-option value="Mazatlan">3ro Grado</ion-select-option>
+            <ion-select-option value="Mazatlan">4to Grado</ion-select-option>
+            <ion-select-option value="Mazatlan">5to Grado</ion-select-option>
+            <ion-select-option value="Mazatlan">6to Grado</ion-select-option>
+        </ion-select>
+    </div>
+    <div>
+        <p class="label-input-select" >
+            Grado
+        </p> 
+        <ion-select 
+            class="input-select" 
+            interface="popover" 
+            placeholder="Todos" 
+            [multiple]="true"
+            [interfaceOptions]="librosDescargadosSelect"
+        >
+            <ion-select-option value="Mazatlan">Mazatlán</ion-select-option>
+        </ion-select>
+    </div>
+    <div>
+        <p class="label-input-select" >
+            Materia
+        </p> 
+        <ion-select 
+            class="input-select" 
+            interface="popover" 
+            placeholder="Todos" 
+            [multiple]="true"
+            [interfaceOptions]="librosDescargadosSelect"
+        >
+            <ion-select-option value="Mazatlan">Geografía</ion-select-option>
+            <ion-select-option value="Mazatlan">Historia</ion-select-option>
+            <ion-select-option value="Mazatlan">History</ion-select-option>
+            <ion-select-option value="Mazatlan">Math</ion-select-option>
+            <ion-select-option value="Mazatlan">Matemáticas</ion-select-option>
+        </ion-select>
+    </div>
+
+         
+    
+</div>
+
+<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+    <div class="grafica">
+        
+        <p class="no-descargados">
+            <span class="numero-no-descargado">26</span>
+            <br>No descargados<span class="espacio"></span><br><hr>
+            <span class="porcentaje-no-descargado">59%</span>
+        </p>
+        <div style="width: 450px;">
+            <canvas id="Libros-Descargados"></canvas>
+        </div>
+        
+        <div class="texto-centrado">
+            <p class="texto-libros"><span class="numero-centrado">44</span>Libros asignados</p>
+        </div>
+        
+        <p class="descargados">
+            <span class="numero-descargado"><span class="espacio"></span>18</span>
+            <br><span class="espacio"></span>Descargados<br><hr>
+            <span class="porcentaje-descargado">41%</span>
+        </p>
+        
+    </div>
+</div>
+    
+<div style="display: flex; justify-content: end; width: 100%;height: 15%;">
+    <button class="exportar-pdf">Exportar PDF</button>
+    <button class="informe-excel">
+        <img class="img-boton-excel" src="./assets/icon/icono-excel.png" alt="icono excel"> 
+        <span>Informe Excel</span>
+    </button>
+</div>
+
+</div>

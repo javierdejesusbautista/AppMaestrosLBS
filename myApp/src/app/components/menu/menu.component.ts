@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 
 
@@ -9,20 +10,41 @@ import { DataService } from 'src/app/services/data.service';
 })
 
 export class menuComponent   {
-    constructor(private dataService: DataService) { }
+    constructor(
+      private dataService: DataService,
+      private router: Router,
+      ) { }
 
     isMenuOpen = false;
+
+    loading = true;
      
   toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+    this.isMenuOpen = true;
+    this.loading = false;
   }
   
   closeMenu() {
     this.isMenuOpen = false;
+    setTimeout(() => {
+      this.loading = true;
+    }, 300);
   }
 
-  navigateTo(value: string){
-    this.dataService.navigateTo(value);
+  navigateToLibros(){
+    this.dataService.reiniciarNombreLibro('');
+    this.dataService.rutaActual$.next('/home/libros');
+    this.router.navigate(['/home/libros']);
+  }
+  navigateToSecuencias(){
+    this.dataService.reiniciarNombreLibro('');
+    this.dataService.rutaActual$.next('/home/secuencias');
+    this.router.navigate(['/home/secuencias']);
+  }
+  navigateToEstadisticas(){
+    this.dataService.reiniciarNombreLibro('');
+    this.dataService.rutaActual$.next('/home/estadisticas');
+    this.router.navigate(['/home/estadisticas']);
   }
 
 }
