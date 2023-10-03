@@ -22,16 +22,17 @@
 						<p class="app">App</p>
 					</div>
 					<p class="eleva">Eleva la enseñanza</p>
-					<div style="width: 100%; height: 100%; border: 2px white solid; margin-bottom: 25px;"></div>
-					<div style="text-align:justify;">
-						<p class="eslogan">Crea secuencias didácticas y<br> lleva tus clases
-							<span class="nivel">al siguiente <br>nivel.</span>
+					<div style="width: 100%; height: 100%; border: 1.5px white solid;margin-bottom: 25px;"></div>
+					<div style="text-align:justify; width: 333px; height: 79px; ">
+						<p class="eslogan">Crea secuencias didácticas y lleva tus clases
+							<span class="nivel">al siguiente nivel.</span>
 						</p>
 						
 					</div>
 				</div>
 			</ion-col>
 			<ion-col class="col-derecho img-prueba" size="7">
+
 				<div style="display: block;">
 					<div style="text-align: justify;">
 						<p class="bienvenido">Bien<br>venido/a</p>
@@ -45,7 +46,7 @@
 											type="email" 
 											class="inputText"
 											placeholder="Usuario">
-											<ion-icon name="person-outline"></ion-icon>
+											<img class="img-input" style="width: 19px; height: 17px;" src="./assets/icon/usuario.png" alt="usuario">
 										</ion-input>
 									</div>
 									
@@ -57,23 +58,24 @@
 											type="password"
 											class="inputText" 
 											placeholder="Contraseña">
-											<ion-icon name="lock-closed-outline"></ion-icon>
+											<img class="img-input" style="width: 19px; height: 22px; " src="./assets/icon/password.png" alt="password">
 										</ion-input>
 									</div>
+
 									<div style="display: flex;justify-content: center;padding-bottom: 24px;" lines="none" *ngIf="isLoginError">
 										
 										<ion-text>
 											<ion-label class="message-error">
-												!Usuario o contraseña 
+												¡Usuario o contraseña 
 												<span class="message-error-bold">
-													incorrecta¡
+													incorrecta!
 												</span>
 											</ion-label>
 										  </ion-text>
 									</div>
 									
 									<div style=" display: flex; justify-content: center;">
-										<div style="position: absolute; bottom: 35px;">
+										<div style="position: absolute; bottom: 48px;">
 											<button class="boton-estilo" type="submit" >
 												<span class="boton-label">¡Entrar!</span>
 												<!-- <ion-spinner *ngIf="loginLoading" name="crescent"></ion-spinner> -->

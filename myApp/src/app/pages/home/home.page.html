@@ -1,6 +1,6 @@
 <!-- NavBar -->
 
-<img class="perseus-fondo" src="./assets/icon/icono_perseus_folder.svg" alt="PerseusApp" role="presentation">
+<img *ngIf="rutaActual[2] == 'libros'" class="perseus-fondo" src="./assets/icon/icono_perseus_folder.svg" alt="PerseusApp" role="presentation">
 
 <ion-toolbar style=" --background: #03C1EA; ">
     <div style="position: absolute; top: 0; display: flex;justify-content: center;align-items: center; 
@@ -105,7 +105,10 @@
     <div  style="width: 100%; display: flex;">
         <app-menu></app-menu>
         
-        <div style="width: 100%; height: 100%; margin-right: 69px;">
+        <div 
+            [style]="(rutaActual[2] == 'libros')
+            ?'width: 100%; height: 78vh; margin-right: 69px; margin-bottom: 35px;'
+            :'width: 100%; height: 78vh; overflow-y: auto; margin-right: 69px; margin-bottom: 35px;' ">
             <router-outlet id="main-content"></router-outlet>
         </div>
     </div>

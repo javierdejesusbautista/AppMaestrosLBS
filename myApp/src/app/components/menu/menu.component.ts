@@ -16,19 +16,30 @@ export class menuComponent   {
       ) { }
 
     isMenuOpen = false;
+
+    loading = true;
      
   toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+    this.isMenuOpen = true;
+    this.loading = false;
   }
   
   closeMenu() {
     this.isMenuOpen = false;
+    setTimeout(() => {
+      this.loading = true;
+    }, 300);
   }
 
   navigateToLibros(){
     this.dataService.reiniciarNombreLibro('');
     this.dataService.rutaActual$.next('/home/libros');
     this.router.navigate(['/home/libros']);
+  }
+  navigateToSecuencias(){
+    this.dataService.reiniciarNombreLibro('');
+    this.dataService.rutaActual$.next('/home/secuencias');
+    this.router.navigate(['/home/secuencias']);
   }
   navigateToEstadisticas(){
     this.dataService.reiniciarNombreLibro('');

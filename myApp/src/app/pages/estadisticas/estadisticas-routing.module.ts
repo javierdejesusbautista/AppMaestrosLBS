@@ -7,6 +7,11 @@ const routes: Routes = [
     path: '',
     component: EstadisticasPage,
   },
+  {
+    path: 'libros-descargados',
+    loadChildren: () =>
+      import('../libros-descargados/libros-descargados.module').then((m) => m.librosDescargadosModule),
+  },
   
 ];
 
