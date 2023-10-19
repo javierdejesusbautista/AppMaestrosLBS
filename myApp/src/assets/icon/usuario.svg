@@ -1,0 +1,17 @@
+<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 1">
+<g id="Rectangle 7">
+<mask id="path-1-inside-1_2_197" fill="white">
+<rect x="0.344482" y="7.25708" width="18.8684" height="14.5142" rx="1"/>
+</mask>
+<rect x="0.344482" y="7.25708" width="18.8684" height="14.5142" rx="1" stroke="#704CEB" stroke-width="4" mask="url(#path-1-inside-1_2_197)"/>
+</g>
+<g id="Rectangle 8">
+<mask id="path-2-inside-2_2_197" fill="white">
+<path d="M3.24731 6.53137C3.24731 2.92419 6.17151 0 9.77869 0C13.3859 0 16.3101 2.9242 16.3101 6.53137V8.29381C16.3101 8.52284 16.1244 8.7085 15.8954 8.7085H3.66201C3.43298 8.7085 3.24731 8.52284 3.24731 8.29381V6.53137Z"/>
+</mask>
+<path d="M3.24731 6.53137C3.24731 2.92419 6.17151 0 9.77869 0C13.3859 0 16.3101 2.9242 16.3101 6.53137V8.29381C16.3101 8.52284 16.1244 8.7085 15.8954 8.7085H3.66201C3.43298 8.7085 3.24731 8.52284 3.24731 8.29381V6.53137Z" stroke="#704CEB" stroke-width="4" mask="url(#path-2-inside-2_2_197)"/>
+</g>
+<circle id="Ellipse 1" cx="9.7787" cy="14.976" r="2.17713" fill="#704CEB"/>
+</g>
+</svg>

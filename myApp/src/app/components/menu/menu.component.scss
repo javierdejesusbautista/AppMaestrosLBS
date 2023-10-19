@@ -1,5 +1,5 @@
 .active p {
-  color: #03c1ea;
+  color: var(--ion-lbs-lila);
   font-size: 24px;
   font-family: 'Volte-bold';
   font-weight: 700;
@@ -117,7 +117,7 @@ p {
   display: flex;
   justify-content: center; 
   align-items: center; 
-  color: #03c1ea; 
+  color: var(--ion-lbs-lila); 
   font-size: 12px; 
   margin-left: 120px;
 

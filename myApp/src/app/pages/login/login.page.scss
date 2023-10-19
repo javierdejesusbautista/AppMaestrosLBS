@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #434343;
+  background-color: var(--ion-lbs-negro);;
 }
 .col-derecho {
   display: flex;
@@ -36,7 +36,7 @@
   padding: 0;
 }
 .app {
-  color: #03c1ea;
+  color: var(--ion-lbs-lila);
   font-size: 66px;
   font-family: 'Volte-bold';
   font-weight: 700;
@@ -55,7 +55,7 @@
 }
 
 .eleva {
-  color: #03c1ea;
+  color: var(--ion-lbs-lila);
   font-size: 41px;
   font-family: 'Volte-Semibold';
   font-weight: 500;
@@ -80,7 +80,7 @@
   line-height: 1.2;
 }
 .bienvenido {
-  color: rgba(3, 193, 234, 0.4);
+  color: rgba(112, 76, 235, 0.50);
   font-size: 120px;
   font-family: 'Volte-bold';
   font-weight: 700;
@@ -91,7 +91,7 @@
 .divform {
   width: 100%;
   height: 100%;
-  background: #373636;
+  background: var(--ion-lbs-negro);
   box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.3);
   border-radius: 29px;
 }
@@ -103,7 +103,7 @@
 .inputText {
   background: white;
   border-radius: 67px;
-  color: #03c1ea;
+  color: var(--ion-lbs-lila);
   font-size: 24px;
   font-family: 'Volte-Regular';
   font-weight: 400;
@@ -140,20 +140,20 @@
   border-radius: 20px;
   width: 500px;
   height: 390px;
-  background-color: #373636;
+  background-color: var(--ion-lbs-negro);
   padding: 44px;
   position: relative;
 }
 
 .message-error {
-  color: #03c1ea;
+  color: white;
   font-size: 16px;
   font-family: 'Volte-Regular';
   font-weight: 500;
   word-wrap: break-word;
 }
 .message-error-bold {
-  color: #03c1ea;
+  color: white;
   font-size: 16px;
   font-family: 'Volte-bold';
   font-weight: 700;
@@ -172,15 +172,15 @@
   width: 240px;
   height: 35px;
   border-radius: 67px;
-  background-color: #03c1ea;
+  background-color: var(--ion-lbs-lila);
   color: white;
   transition: background-color 0.3s ease;
     &:active{
-      background-color: #218DA5;
+      background-color: var(--ion-lbs-lila-oscuro);
       transform: scale(0.95);
     }
     &:focus{
-      background-color: #218DA5;
+      background-color: var(--ion-lbs-lila-oscuro);
     }
 }
 /* nuevas Clases*/

@@ -50,7 +50,7 @@ margin-left: 18px;
 }
 
 .title-card {
-  color: #03c1ea;
+  color: var(--ion-lbs-lila);
   font-size: 20px;
   font-family: "Volte-bold";
   font-weight: 700;
@@ -63,15 +63,15 @@ margin-left: 18px;
   background: #fff;
   font-family: "Volte-Semibold";
   border-radius: 21px;
-  border: 2px #03C1EA solid;
-  color: #03C1EA;
+  border: 2px var(--ion-lbs-lila) solid;
+  color: var(--ion-lbs-lila);
   width: 285px;
   height: 42px;
   margin-top: 50px;
   transition: background-color 0.3s ease;
   &:active,
   &:focus {
-    background-color: #03C1EA;
+    background-color: var(--ion-lbs-lila);
     color: white;
     
   }
@@ -140,7 +140,7 @@ margin-left: 18px;
 }
 
 .descargados {
-  color: #03c1ea;
+  color: var(--ion-lbs-lila);
   font-size: 20px;
   font-family: "Volte-Semibold";
   font-weight: 700;
@@ -148,7 +148,7 @@ margin-left: 18px;
   text-align: right;
 }
 .numero-descargado {
-  color: #03c1ea;
+  color: var(--ion-lbs-lila);
   font-size: 20px;
   font-family: "Volte-bold";
   font-weight: 700;

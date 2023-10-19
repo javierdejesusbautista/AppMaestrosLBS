@@ -11,7 +11,7 @@
 }
 /* Cambiar el fondo del ion-accordion-group */
 ion-accordion-group {
-  --background: #F4F4F4; /* Cambia el color de fondo según tus preferencias */
+  --background: var( --ion-lbs-negro-gris); /* Cambia el color de fondo según tus preferencias */
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.15);
   border-radius: 17px
   
@@ -19,7 +19,7 @@ ion-accordion-group {
 
 /* Cambiar el fondo del ion-accordion */
 ion-accordion {
-  --background: #F4F4F4; /* Cambia el color de fondo según tus preferencias */
+  --background: var( --ion-lbs-negro-gris); /* Cambia el color de fondo según tus preferencias */
   margin-bottom: 0px;
   margin-top: 0px;
   border-radius: 0px 0px 0px 0px;
@@ -28,11 +28,11 @@ ion-accordion {
 
 /* Cambiar el fondo del ion-item */
 ion-item {
-  --background: #F4F4F4; /* Cambia el color de fondo según tus preferencias */
+  --background: var( --ion-lbs-negro-gris); /* Cambia el color de fondo según tus preferencias */
 }
 
 .listado {
-  color: #606060;
+  color: white;
   font-size: 20px;
   font-family: 'Volte-Regular';
   font-weight: 400;
@@ -40,7 +40,7 @@ ion-item {
   padding-left: 70px;
 }
 .libros {
-  color: #03c1ea;
+  color: white;
   font-size: 20px;
   font-family: 'Volte-bold';
   font-weight: 700;

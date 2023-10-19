@@ -10,7 +10,7 @@
         margin-left: 30px;
         margin-top: 30px;
         p {
-          color: #03c1ea;
+          color: var(--ion-lbs-lila);
           font-size: 20px;
           font-family: 'Volte-bold';
           font-weight: 700;
@@ -78,7 +78,7 @@
     word-wrap: break-word;
   }
   .numeros-usuarios {
-    color: #03c1ea;
+    color: var(--ion-lbs-lila);
     font-size: 36px;
     font-family: 'Volte-Regular';
     font-weight: 700;
@@ -92,7 +92,7 @@
     word-wrap: break-word;
   }
   .ver-mas-boton {
-    background: #03c1ea;
+    background: var(--ion-lbs-lila);
     font-family: 'Volte-Semibold';
     border-radius: 77px;
     color: white;
@@ -101,11 +101,11 @@
     margin-top: 5px;
     transition: background-color 0.3s ease;
       &:active{
-        background-color: #199FBE;
+        background-color: var(--ion-lbs-lila-oscuro);
         transform: scale(0.95);
       }
       &:focus{
-        background-color: #199FBE;
+        background-color: var(--ion-lbs-lila-oscuro);
       }
   }
   

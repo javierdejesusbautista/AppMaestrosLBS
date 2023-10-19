@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('../libros-descargados/libros-descargados.module').then((m) => m.librosDescargadosModule),
   },
+  {
+    path: 'tiempo-de-uso-de-docentes',
+    loadChildren: () =>
+      import('../tiempo-de-uso-de-docentes/tiempo-de-uso-de-docentes.module').then((m) => m.TiempoDeUsoDeDocentesModule),
+  },
   
 ];
 

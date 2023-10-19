@@ -6,9 +6,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TiempoDeUsoDeDocentesPage } from './pages/tiempo-de-uso-de-docentes/tiempo-de-uso-de-docentes.page';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TiempoDeUsoDeDocentesPage],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

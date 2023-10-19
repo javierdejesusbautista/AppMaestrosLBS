@@ -2,7 +2,7 @@
 
 <img *ngIf="rutaActual[2] == 'libros'" class="perseus-fondo" src="./assets/icon/icono_perseus_folder.svg" alt="PerseusApp" role="presentation">
 
-<ion-toolbar style=" --background: #03C1EA; ">
+<ion-toolbar style=" --background: var(--ion-lbs-lila); ">
     <div style="position: absolute; top: 0; display: flex;justify-content: center;align-items: center; 
                 width: 100%; height: 70px; overflow-x: auto; overflow-y: hidden;">
 
@@ -18,14 +18,14 @@
                 
                 <ion-select 
                     [interfaceOptions]="{cssClass: 'accionesSelect'}" 
-                        interface="popover" style="--background-hover: #028dac; font-family: Volte-Medium !important;" 
+                        interface="popover" style="--background-hover: var(--ion-lbs-lila-oscuro); font-family: Volte-Medium !important;" 
                         [ngModel]="selectAcciones" 
                         (ionDismiss)="cleanSelectDropDown()" 
                         (ionChange)="selectDropDown( $event )" 
                         selected-text="Acciones" 
                         placeholder="Acciones">
                 <ion-select-option 
-                    style="--background-hover: #028dac; font-family: Volte-Medium !important;" 
+                    style="--background-hover: var(--ion-lbs-lila-oscuro); font-family: Volte-Medium !important;" 
                     value="crear-secuencia">Crear Secuencia
                 </ion-select-option>
                 
@@ -62,7 +62,7 @@
                     <ion-content>
                         <ion-list lines="none">
                             <!-- <ion-item style="--background-hover: #6228cf;" [button]="true" [detail]="false">Otros</ion-item> -->
-                            <ion-item style="--background-hover: #028dac; font-family: Volte-Medium;" [button]="true" [detail]="false" (click)="onLogout()">Cerrar sesión</ion-item>
+                            <ion-item style="--background-hover: var(--ion-lbs-lila-oscuro); font-family: Volte-Medium;" [button]="true" [detail]="false" (click)="onLogout()">Cerrar sesión</ion-item>
                         </ion-list>
                     </ion-content>
                 </ng-template>
@@ -85,7 +85,7 @@
     <ion-col size="12" style="padding-left: 59px; padding-top: 49px;">
          <div style="display: flex;">
             
-                <div style="background-color:#03C1EA;" class="circle-nuevo">
+                <div style="background-color:var(--ion-lbs-lila);" class="circle-nuevo">
                     <span class="iniciales">{{ datosGenUsuario.iniciales | titlecase}}</span>
                 </div>
                 <div class="nombre" style="padding-left: 22px;">
@@ -93,7 +93,8 @@
             </div>
             
             <ion-text class="title" style="position: absolute;left: 370px;">
-                {{(rutaActual[3])? (rutaActual[3] | titlecase ): (rutaActual[2] | titlecase )}}
+                <!-- {{(rutaActual[3])? (rutaActual[3] | titlecase ): (rutaActual[2] | titlecase )}} -->
+                {{(rutaActual[2] === 'estadisticas')? 'Tiempo de Uso de Docentes.': (rutaActual[2] | titlecase )}}
             </ion-text>
         </div>
     </ion-col>

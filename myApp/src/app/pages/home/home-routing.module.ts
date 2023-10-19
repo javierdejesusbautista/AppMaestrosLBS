@@ -26,8 +26,11 @@ const routes: Routes = [
       },
       {
         path: 'estadisticas',
+
         loadChildren: () =>
-          import('../estadisticas/estadisticas.module').then((m) => m.EstadisticasPageModule),
+          import('../tiempo-de-uso-de-docentes/tiempo-de-uso-de-docentes.module').then((m) => m.TiempoDeUsoDeDocentesModule),
+        // loadChildren: () =>
+        //   import('../estadisticas/estadisticas.module').then((m) => m.EstadisticasPageModule),
       },
     ],
   },
