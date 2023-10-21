@@ -1,0 +1,23 @@
+.container-resumen {
+    position: absolute;
+    bottom: 21px;
+    left: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 212px;
+    height: 70px;
+    margin-left: 26;
+    margin-right: 27px;
+  }
+  .horas {
+    width: 97px;
+    height: 70px;
+    border-radius: 15px;
+    margin-right: 18px;
+  }
+  .sesiones {
+    width: 97px;
+    height: 70px;
+    border-radius: 15px;
+  }

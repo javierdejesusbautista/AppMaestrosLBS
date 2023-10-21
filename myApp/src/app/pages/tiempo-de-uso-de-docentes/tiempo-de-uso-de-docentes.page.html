@@ -1,67 +1,82 @@
-<ion-grid>
-<ion-row>
+<div class="row-select">
+  <ion-select
+    class="input-select"
+    interface="popover"
+    placeholder="Campus"
+    [multiple]="true"
+    [interfaceOptions]="librosDescargadosSelect"
+    (ionChange)="handleChange($event)"
+  >
+    <ion-select-option value="Mazatlán">Mazatlán</ion-select-option>
+    <ion-select-option value="Culiacán">Culiacán</ion-select-option>
+    <ion-select-option value="San Luis Potosi"
+      >San Luis Potosi</ion-select-option
+    >
+    <ion-select-option value="Zacatecas">Zacatecas</ion-select-option>
+    <ion-select-option value="Durango">Durango</ion-select-option>
+    <ion-select-option value="Torreon">Torreón</ion-select-option>
+  </ion-select>
 
-    <ion-col size="3" >
-         <ion-select 
-            class="input-select" 
-            interface="popover" 
-            placeholder="Campus" 
-            [multiple]="true"
-            [interfaceOptions]="librosDescargadosSelect">
-                <ion-select-option value="Mazatlan">Mazatlán</ion-select-option>
-                <ion-select-option value="Culiacan">Culiacán</ion-select-option>
-                <ion-select-option value="San Luis Potosi">San Luis Potosi</ion-select-option>
-                <ion-select-option value="Zacatecas">Zacatecas</ion-select-option>
-                <ion-select-option value="Durango">Durango</ion-select-option>
-                <ion-select-option value="Torreon">Torreón</ion-select-option>
-            </ion-select>
-    </ion-col>
-   
-    <ion-col size="9">
-        <ion-searchbar 
-        placeholder="Buscar Docente"
-        [debounce]="1000" 
-        (ionInput)="handleInput($any($event))">
-    </ion-searchbar>
+  <ion-searchbar
+    placeholder="Buscar Docente"
+    [debounce]="1000"
+    (ionInput)="handleInput($any($event))"
+  >
+  </ion-searchbar>
+  
+  <ion-card *ngIf="busquedaVisible" class="card-busqueda"  mode="ios">
+    <ion-card-content>
+      <ion-list mode="ios">
+        <ion-item *ngFor="let result of results" (click)="selectDocente(result.Id)">
+          <ion-label>
+              <span class="docente">
+                {{result.Docente}} -
+              </span>
+              <span class="nivel-entidad">
+                {{result.Escolaridad}} - {{result.Campus}}<br/>
+              </span>
+              </ion-label>
+        </ion-item>
+        <ion-item>
+          <div style="position: absolute; right: 0px; bottom: 0px">
+            <ion-label>{{ TotalResult }} Resultados</ion-label>
+          </div>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</div>
+ 
+<div class="container">
 
-    <ion-card *ngIf="busquedavisible" class="card-busqueda" size="12" mode="ios">
-        <ion-card-content>
-            <ion-list mode="ios">
-                <ion-item *ngFor="let result of results">
-                  <ion-label>{{ result }}</ion-label>
-                </ion-item>
-                <ion-item>
-                    <div style="position: absolute; right: 0px; bottom: 0px;">
-                        <ion-label>{{ TotalResult }} Resultados</ion-label>
-                    </div>
-                </ion-item>
-              </ion-list>
-        </ion-card-content>
-    </ion-card>
+  <vista-principal></vista-principal>
+
+  <div class="row" *ngIf="!cargandoInfoDocente && DocenteSeleccionado ">
+    
+    <div class="vertical-small">
+      <div class="informacion">
+        <docente-info 
+          [DocenteData]="docenteSeleccionadoData" 
+          (libroSeleccionadoEvent)="manejarLibroSeleccionado($event)">
+        </docente-info> 
+      </div>
       
-    </ion-col>
+      <div class="resumen">
+        <skeleton-resumen-loading *ngIf="cargandoSkeleton"></skeleton-resumen-loading>
+        <resumen-espera *ngIf="!libroSeleccionado"></resumen-espera>
+        <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton"></resumen-resultado>
+      </div>
+    </div>
 
-<ion-col size="12">
-    <ion-card class="card-principal">
-                <img style="width: 100%; position: absolute; top: 0;" 
-                    src="./assets/images/header-card-tiempo-de-uso-de-docentes.png" 
-                    alt="header-card"
-                    #headerImage>
-            
-            <ion-card-content class="center-card" #cardContent>
-                <div class="center-content">
-                  <div>
-                    <img src="./assets/icon/search.svg" alt="search">
-                  </div>
-                  <div>
-                    <span class="realice-una">Realice una<br/></span>
-                    <span class="busqueda">búsqueda.</span>
-                  </div>
-                </div>
-              </ion-card-content>
-    </ion-card>
-</ion-col>
+    <div class="vertical-large">
+      <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading>
+      <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera>
+      <grafica-resultado *ngIf="libroSeleccionado && !cargandoSkeleton"></grafica-resultado>
+    </div>
 
-</ion-row>
-</ion-grid>
+  </div>
 
+  <skeleton-loading *ngIf="cargandoInfoDocente"></skeleton-loading>
+  
+
+</div>

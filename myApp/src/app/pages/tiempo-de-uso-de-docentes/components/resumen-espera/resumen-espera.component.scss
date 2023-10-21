@@ -1,0 +1,34 @@
+
+.container-resumen {
+    position: absolute;
+    bottom: 21px;
+    left: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 212px;
+    height: 70px;
+    margin-left: 26;
+    margin-right: 27px;
+    margin-bottom: 16px;
+  }
+  .esperando-texto {
+    color: white;
+    font-size: 15px;
+    font-family: Volte;
+    font-weight: 400;
+    line-height: 15.52px;
+    word-wrap: break-word;
+  }
+  
+  .resultado-texto {
+    color: white;
+    font-size: 15px;
+    font-family: Volte;
+    font-weight: 700;
+    line-height: 15.52px;
+    word-wrap: break-word;
+  }
+  

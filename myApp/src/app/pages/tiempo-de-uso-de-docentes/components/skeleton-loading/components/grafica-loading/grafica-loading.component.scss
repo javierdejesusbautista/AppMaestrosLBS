@@ -1,0 +1,50 @@
+.grafica {
+  position: absolute;
+  background: var(--ion-lbs-gris);
+  width: 704px;
+  height: 546px;
+  border-radius: 15px;
+  margin-top: 149px;
+  margin-right: 32px;
+}
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.linea-uno {
+  width: 115px;
+  height: 24px;
+  border-radius: 12px;
+  margin-bottom: 22px;
+  margin-right: 13px;
+  margin-top: 50px;
+}
+.linea-dos {
+  width: 162px;
+  height: 24px;
+  border-radius: 12px;
+}
+.card-skeleton {
+  width: 435px;
+  height: 92px;
+  border-radius: 14px;
+  margin-left: 43px;
+  margin-bottom: 18px;
+  margin-right: 29px;
+}
+
+.margin-right-skeleton {
+  margin-right: 35px;
+}
+.grafica-skeleton {
+  width: 626px;
+  height: 306px;
+  border-radius: 14px;
+  margin-left: 43px;
+}
+
+ion-skeleton-text {
+  --background: #c4c4c4;
+  --background-rgb: 196, 196, 196;
+}

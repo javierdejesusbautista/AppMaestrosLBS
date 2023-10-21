@@ -19,7 +19,6 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
-import { TiempoDeUsoDeDocentesPage } from './pages/tiempo-de-uso-de-docentes/tiempo-de-uso-de-docentes.page';
 
 //import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,7 +26,7 @@ import { TiempoDeUsoDeDocentesPage } from './pages/tiempo-de-uso-de-docentes/tie
 @NgModule({
   declarations: [
 	AppComponent, 
-	SelectScrollDirective, TiempoDeUsoDeDocentesPage, 
+	SelectScrollDirective, 
 	],
   imports: [
 	BrowserModule,
