@@ -13,6 +13,7 @@ import { ResumenResultadoComponent } from './components/resumen-resultado/resume
 import { GraficaResultadoComponent } from './components/grafica-resultado/grafica-resultado.component';
 import { ResumenLoadingComponent } from './components/skeleton-loading/components/resumen-loading/resumen-loading.component';
 import { GraficaLoadingComponent } from './components/skeleton-loading/components/grafica-loading/grafica-loading.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { GraficaLoadingComponent } from './components/skeleton-loading/component
   imports: [
     CommonModule,
     IonicModule,
+    FormsModule,
     TiempoDeUsoDeDocentesRoutingModule
   ]
 })
