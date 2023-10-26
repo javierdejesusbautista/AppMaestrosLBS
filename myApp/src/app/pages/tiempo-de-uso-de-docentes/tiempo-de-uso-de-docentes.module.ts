@@ -14,6 +14,8 @@ import { GraficaResultadoComponent } from './components/grafica-resultado/grafic
 import { ResumenLoadingComponent } from './components/skeleton-loading/components/resumen-loading/resumen-loading.component';
 import { GraficaLoadingComponent } from './components/skeleton-loading/components/grafica-loading/grafica-loading.component';
 import { FormsModule } from '@angular/forms';
+import { ResumenErrorComponent } from './components/resumen-error/resumen-error.component';
+import { GraficaErrorComponent } from './components/grafica-error/grafica-error.component';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { FormsModule } from '@angular/forms';
     GraficaResultadoComponent,
     ResumenLoadingComponent,
     GraficaLoadingComponent,
+    ResumenErrorComponent,
+    GraficaErrorComponent,
   ],
   imports: [
     CommonModule,

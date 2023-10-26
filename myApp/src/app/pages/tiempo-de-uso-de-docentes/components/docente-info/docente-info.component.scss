@@ -2,8 +2,7 @@
   width: 132px;
   height: 132px;
   border-radius: 50%;
-  margin-top: 25px;
-  margin-bottom: 6px;
+  margin-top: 5px;
 }
 .docente-info {
   text-align: center;
@@ -56,9 +55,9 @@
   margin-left: 14px;
   margin-bottom: 6px;
 }
-.container-libros{
-    overflow-y: auto;
-    height: 120px;
+.container-libros {
+  overflow-y: auto;
+  height: 120px;
 }
 
 .nombre-libro {
@@ -74,4 +73,20 @@
   font-family: Volte;
   font-weight: 700;
   word-wrap: break-word;
+}
+.container-perfil {
+  text-align: center;
+  position: relative;
+  width: 143px;
+  height: 142px;
+  border: 1px solid;
+}
+
+.checkmark {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 129px;
+  right: 80px;
+
 }

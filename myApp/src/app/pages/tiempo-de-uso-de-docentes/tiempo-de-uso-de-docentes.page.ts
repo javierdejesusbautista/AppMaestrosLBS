@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
+import { TiempoDeUsoDeDocentesService } from 'src/app/services/tiempo-de-uso-de-docentes.service';
+import { Campus } from './interfaces/campus';
+import { DocenteByCampus } from './interfaces/docente-by-campus';
 
 @Component({
   templateUrl: './tiempo-de-uso-de-docentes.page.html',
   styleUrls: ['./tiempo-de-uso-de-docentes.page.scss']
 })
-export class TiempoDeUsoDeDocentesPage {
+export class TiempoDeUsoDeDocentesPage implements OnInit{
 
   
 
@@ -20,15 +24,6 @@ export class TiempoDeUsoDeDocentesPage {
     size:'cover'
   }
 
-  public dataSearch = [
-    {Id:1, Docente: 'Daniel Omar Cuellar Álvarez', Escolaridad: 'Secundaria', Campus: 'Mazatlán' },
-    {Id:2, Docente: 'Daniel Sánchez López', Escolaridad: 'Secundaria', Campus: 'Culiacán' },
-    {Id:3, Docente: 'Daniel Paredes Magaña', Escolaridad: 'Primaria', Campus: 'Durango' },
-    {Id:4, Docente: 'Daniel Eduardo Guerra Bobadilla', Escolaridad: 'Primaria', Campus: 'Zacatecas' },
-    {Id:5, Docente: 'Daniel Rodríguez Sánchez', Escolaridad: 'Secundaria', Campus: 'Durango' },
-    {Id:6, Docente: 'Daniel Bravo Gutiérrez', Escolaridad: 'Primaria', Campus: 'Mazatlán' },
-    {Id:7, Docente: 'Daniel López López', Escolaridad: 'Licenciatura', Campus: 'Mazatlán' },
-  ];
 
   public InfoDocente = [
     {Id:1, Docente: 'Daniel Omar Cuellar Álvarez', Campus: 'Mazatlán',
@@ -95,43 +90,73 @@ export class TiempoDeUsoDeDocentesPage {
 
   public InformacionDocente: any[] = [];
 
-  public results: any[] = [...this.dataSearch];
-  public TotalResult: number = this.dataSearch.length;
+  public DocentesByCampusTotal: number = 0;
   public busquedaVisible: boolean = false;
-
+  
   public cargandoInfoDocente:boolean = false;
   public DocenteSeleccionado: boolean = false;
-  public docenteSeleccionadoData: any = {};
   public selectValues: any[] = [];
   public libroSeleccionado: boolean = false;
   public cargandoSkeleton: boolean = false;
+  public errorlibros: boolean = false;
+  
+  public ionSelectValues: Campus[] = [];
+  public DocentesByCampus: DocenteByCampus[] = [];
+  public BusquedaResults: DocenteByCampus[] = [];
+  public docenteSeleccionadoData: any = {};
+  
+  public shownData: number = 10;
+
+  constructor(
+    private tiempodeusoService: TiempoDeUsoDeDocentesService,
+  ){}
+
+  ngOnInit(): void {
+    this.tiempodeusoService.getCampus().pipe(
+      take(1)
+      ).subscribe((responseData) => {
+      console.log(responseData);
+      this.ionSelectValues = responseData;
+    });  
+  }
 
   handleInput(event) {
     const query = event.target.value.toLowerCase();
-    
-    // Filtrar solo si query no está vacío y selectValues contiene elementos
-    if (query !== '' || this.selectValues.length > 0) {
-      this.results = this.dataSearch.filter(item => 
-        (query === '' || item.Docente.toLowerCase().includes(query)) && 
-        (this.selectValues.length === 0 || this.selectValues.includes(item.Campus))
+  
+    // Filtrar solo si query no está vacío
+    if (query !== '') {
+      this.BusquedaResults = this.DocentesByCampus.filter(item => 
+        item.UsuarioNombreCompleto.toLowerCase().includes(query)
       );
-      this.totalData(this.results);
-      this.busquedaVisible = true;
     } else {
-      this.results = [...this.dataSearch];
-      this.totalData(this.results);
-      this.busquedaVisible = false;
+      this.BusquedaResults = [...this.DocentesByCampus];
     }
+  
+    this.totalData(this.BusquedaResults);
+    this.busquedaVisible = true;
+  
   }
+  
   
 
   handleChange(e) {
-    this.selectValues= e.detail.value;
+    const idDocente  = e.detail.value;
+
+    this.tiempodeusoService.getDocentesByCampus(idDocente).pipe(
+      take(1)
+      ).subscribe((responseData) => {
+      console.log(responseData);
+      this.DocentesByCampus = responseData;
+      this.BusquedaResults = responseData;
+      this.DocentesByCampusTotal = responseData.length;
+    });
+    
+    this.busquedaVisible = true;
     this.handleInput({ target: { value: ' ' } });
   }
 
-  totalData(results: any[]) {
-    this.TotalResult = results.length;
+  totalData(results: DocenteByCampus[]) {
+    this.DocentesByCampusTotal = results.length;
   }
 
   async selectDocente(id: number) {
@@ -142,7 +167,7 @@ export class TiempoDeUsoDeDocentesPage {
 
     let docenteSeleccionadoData: any = [];
 
-    docenteSeleccionadoData = await this.InfoDocente.find(docente => docente.Id === id);
+    docenteSeleccionadoData = await this.BusquedaResults.find(docente => docente.UsuarioId === id);
     
     setTimeout(() => {
       // Verifica si los datos se han cargado completamente
@@ -157,10 +182,22 @@ export class TiempoDeUsoDeDocentesPage {
 manejarLibroSeleccionado(id:number){
     this.libroSeleccionado = true;
     this.cargandoSkeleton = true;
-    setTimeout(() => {
-      
-      this.cargandoSkeleton = false;
-    }, 1000);
+    console.log(id);
+
+    if(id === 1){
+
+      setTimeout(() => {
+        this.errorlibros = true;
+        this.cargandoSkeleton = false;
+      }, 1000);
+    }else{
+
+
+      setTimeout(() => {
+        this.errorlibros = false;
+        this.cargandoSkeleton = false;
+      }, 1000);
+    }
 }
 
 }

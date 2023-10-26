@@ -1,18 +1,19 @@
 <div>
-  <div style="text-align: center">
+  <div style="text-align: center;margin-top: 25px;margin-bottom: 6px;">
     <img
       class="circulo-imagen"
       src="./assets/images/foto-de-perfil.png"
       alt="img"
     />
+    <img class="checkmark" src="./assets/icon/checkmark-circle.svg" alt="checkmark-circle">
   </div>
   <div class="docente-info">
-    {{ DocenteData.Docente }}
+    {{ DocenteData.UsuarioNombreCompleto }}
   </div>
   <div style="text-align: center">
     <span class="campus-texto"> Campus: </span>
     <span class="campus-nombre">
-      {{ DocenteData.Campus }}
+      {{ DocenteData.CampusNombre }}
     </span>
   </div>
 

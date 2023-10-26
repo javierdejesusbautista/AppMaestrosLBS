@@ -3,18 +3,11 @@
     class="input-select"
     interface="popover"
     placeholder="Campus"
-    [multiple]="true"
     [interfaceOptions]="librosDescargadosSelect"
     (ionChange)="handleChange($event)"
   >
-    <ion-select-option value="Mazatlán">Mazatlán</ion-select-option>
-    <ion-select-option value="Culiacán">Culiacán</ion-select-option>
-    <ion-select-option value="San Luis Potosi"
-      >San Luis Potosi</ion-select-option
-    >
-    <ion-select-option value="Zacatecas">Zacatecas</ion-select-option>
-    <ion-select-option value="Durango">Durango</ion-select-option>
-    <ion-select-option value="Torreon">Torreón</ion-select-option>
+    <ion-select-option *ngFor="let item of ionSelectValues" [value]="item.Id">{{item.Nombre}}</ion-select-option>
+    
   </ion-select>
 
   <ion-searchbar
@@ -26,25 +19,31 @@
   
   <ion-card *ngIf="busquedaVisible" class="card-busqueda"  mode="ios">
     <ion-card-content>
-      <ion-list mode="ios">
-        <ion-item *ngFor="let result of results" (click)="selectDocente(result.Id)">
+      <div style="overflow-y: auto; height: 400px;">
+
+        <ion-list mode="ios" >
+          <ion-item *ngFor="let docente of BusquedaResults" 
+          (click)="selectDocente(docente.UsuarioId)">
+          
           <ion-label>
-              <span class="docente">
-                {{result.Docente}} -
-              </span>
-              <span class="nivel-entidad">
-                {{result.Escolaridad}} - {{result.Campus}}<br/>
-              </span>
-              </ion-label>
-        </ion-item>
-        <ion-item>
-          <div style="position: absolute; right: 0px; bottom: 0px">
-            <ion-label>{{ TotalResult }} Resultados</ion-label>
-          </div>
+            <span class="docente">
+              {{docente.UsuarioNombreCompleto}} -
+            </span>
+            <span class="nivel-entidad">
+              {{docente.UsuarioEscolaridad}} - {{docente.CampusNombre}}<br/>
+            </span>
+          </ion-label>
         </ion-item>
       </ion-list>
+    </div>
+    <ion-item>
+      <div style="position: absolute; right: 0px; bottom: 0px">
+        <ion-label>{{ DocentesByCampusTotal }} Resultados</ion-label>
+      </div>
+    </ion-item>
     </ion-card-content>
   </ion-card>
+
 </div>
  
 <div class="container">
@@ -64,14 +63,22 @@
       <div class="resumen">
         <skeleton-resumen-loading *ngIf="cargandoSkeleton"></skeleton-resumen-loading>
         <resumen-espera *ngIf="!libroSeleccionado"></resumen-espera>
-        <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton"></resumen-resultado>
+        <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></resumen-resultado>
+        <resumen-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></resumen-error>
       </div>
     </div>
 
     <div class="vertical-large">
+
+      <div class="container-exportar" *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros">
+        <img style="width: 23px; height: 33px;" src="./assets/icon/PDF_file_icon.svg" alt="file-icon">
+        <div class="exportar-texto">Exportar información</div>
+      </div>
+
       <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading>
       <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera>
-      <grafica-resultado *ngIf="libroSeleccionado && !cargandoSkeleton"></grafica-resultado>
+      <grafica-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado>
+      <grafica-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></grafica-error>
     </div>
 
   </div>

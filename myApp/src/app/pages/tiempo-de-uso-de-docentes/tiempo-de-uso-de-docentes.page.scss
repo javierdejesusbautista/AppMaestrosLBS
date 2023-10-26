@@ -92,7 +92,7 @@ ion-searchbar {
   width: 100%;
   height: 100%;
   z-index: 3;
-} 
+}
 
 .vertical-small {
   flex: 30%;
@@ -149,4 +149,18 @@ ion-searchbar {
   margin-top: 14px;
 }
 
-
+.exportar-texto {
+  color: white;
+  font-size: 13px;
+  font-family: Volte;
+  font-weight: 500;
+  word-wrap: break-word;
+  text-decoration: underline;
+  margin-left: 6px;
+}
+.container-exportar {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 96px;
+}
