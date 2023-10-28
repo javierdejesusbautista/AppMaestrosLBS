@@ -32,6 +32,7 @@ import { GraficaErrorComponent } from './components/grafica-error/grafica-error.
     GraficaLoadingComponent,
     ResumenErrorComponent,
     GraficaErrorComponent,
+    
   ],
   imports: [
     CommonModule,

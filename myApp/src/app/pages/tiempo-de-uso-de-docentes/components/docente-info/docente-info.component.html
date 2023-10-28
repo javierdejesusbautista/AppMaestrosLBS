@@ -2,28 +2,31 @@
   <div style="text-align: center;margin-top: 25px;margin-bottom: 6px;">
     <img
       class="circulo-imagen"
-      src="./assets/images/foto-de-perfil.png"
+      src="./assets/icon/avatar.svg"
       alt="img"
     />
     <img class="checkmark" src="./assets/icon/checkmark-circle.svg" alt="checkmark-circle">
   </div>
   <div class="docente-info">
-    {{ DocenteData.UsuarioNombreCompleto }}
+    <!-- {{ DocenteData.UsuarioNombreCompleto }} -->
   </div>
   <div style="text-align: center">
     <span class="campus-texto"> Campus: </span>
     <span class="campus-nombre">
-      {{ DocenteData.CampusNombre }}
+      <!-- {{ DocenteData.CampusNombre }} -->
     </span>
   </div>
 
   <div class="selecciona-libro" style="background: var(--ion-lbs-negro-gris)">
     <div class="text-selecciona-libro">Selecciona el libro.</div>
     <div class="container-libros">
-      <div class="libros" *ngFor="let libro of DocenteData.libros" (click)="libroSeleccionado(libro.Id)">
-        <div style="text-align: center">
-          <span class="nombre-libro"> {{ libro.Nombre }} - </span>
-          <span class="escolaridad-libro"> {{ libro.Escolaridad }}</span>
+      <div *ngFor="let libro of DocenteData" (click)="libroSeleccionado(libro.Id)">
+        
+        <div class="libros">
+          <span class="nombre-libro"> {{ libro.Nombre }} {{ libro.Grados}} - 
+            <span class="escolaridad-libro">{{ libro.Escolaridad }}</span>
+          </span>
+          
         </div>
       </div>
     </div>

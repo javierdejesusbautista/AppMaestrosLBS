@@ -65,6 +65,13 @@ ion-searchbar {
   }
 }
 
+.card-loading-busqueda {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .row-select {
   width: 1055px;
   margin-bottom: 26px;

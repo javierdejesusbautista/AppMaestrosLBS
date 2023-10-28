@@ -6,6 +6,7 @@
     [interfaceOptions]="librosDescargadosSelect"
     (ionChange)="handleChange($event)"
   >
+    <ion-select-option value="0">Todos</ion-select-option>
     <ion-select-option *ngFor="let item of ionSelectValues" [value]="item.Id">{{item.Nombre}}</ion-select-option>
     
   </ion-select>
@@ -13,18 +14,46 @@
   <ion-searchbar
     placeholder="Buscar Docente"
     [debounce]="1000"
-    (ionInput)="handleInput($any($event))"
-  >
+    (ionChange)="handleInput($any($event))"
+    (ionInput)="handleInputSearch()"
+    (ionBlur)="cerrarSearchbar()"
+    >
   </ion-searchbar>
   
-  <ion-card *ngIf="busquedaVisible" class="card-busqueda"  mode="ios">
+  <ion-card *ngIf="isLoadingBusqueda 
+            || BusquedaNoHayRelaciones 
+            || TotalCampusSeleccionado"  
+            class="card-busqueda"  
+            mode="ios">
     <ion-card-content>
-      <div style="overflow-y: auto; height: 400px;">
+      <div class="card-loading-busqueda">
+        <ion-spinner *ngIf="isLoadingBusqueda"></ion-spinner>
+        <h3 *ngIf="isLoadingBusqueda" style="margin-left: 4px;">Cargando...</h3>
+        <h2 *ngIf="BusquedaNoHayRelaciones" style="margin-left: 4px;">¡No Hay Relaciones!</h2>
+      </div>
 
+      <ion-item *ngIf="TotalCampusSeleccionado">
+        <div style="position: absolute; right: 0px; bottom: 0px">
+          <ion-label>{{ TotalDocentesByCampus }} Resultados</ion-label>
+        </div>
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card *ngIf="busquedaVisible 
+              && !isLoadingBusqueda 
+              && !BusquedaNoHayRelaciones 
+              && !TotalCampusSeleccionado"  
+              class="card-busqueda" type="button" mode="ios">
+    <ion-card-content>
+    <div>
+      <div style="overflow-y: auto; height: 400px;">
+        
         <ion-list mode="ios" >
           <ion-item *ngFor="let docente of BusquedaResults" 
           (click)="selectDocente(docente.UsuarioId)">
-          
           <ion-label>
             <span class="docente">
               {{docente.UsuarioNombreCompleto}} -
@@ -38,9 +67,10 @@
     </div>
     <ion-item>
       <div style="position: absolute; right: 0px; bottom: 0px">
-        <ion-label>{{ DocentesByCampusTotal }} Resultados</ion-label>
+        <ion-label>{{ TotalDocentesByCampus }} Resultados</ion-label>
       </div>
     </ion-item>
+  </div>
     </ion-card-content>
   </ion-card>
 

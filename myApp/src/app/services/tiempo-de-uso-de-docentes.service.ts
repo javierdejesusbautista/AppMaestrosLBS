@@ -8,7 +8,7 @@ import { DocenteByCampus } from '../pages/tiempo-de-uso-de-docentes/interfaces/d
 })
 export class TiempoDeUsoDeDocentesService {
 
-  private BaseUrlBackend: string = 'https://192.168.59.16:5001';
+  private BaseUrlBackend: string = 'https://192.168.58.249:5001';
   private ws: string = 'api/ReportesPerseus'
 
   constructor(private http: HttpClient ) { }
@@ -16,7 +16,16 @@ export class TiempoDeUsoDeDocentesService {
   getCampus()  {
 		return this.http.get<Campus[]>(`${this.BaseUrlBackend}/${this.ws}/getCampus`);
 	}
-  getDocentesByCampus(id: number) {
-    return this.http.get<DocenteByCampus[]>(`${this.BaseUrlBackend}/${this.ws}/getDocentesByCampus/${id}`);
+
+  getDocentesByName(id: number , query: string) {
+      return this.http.get<DocenteByCampus[]>(`${this.BaseUrlBackend}/${this.ws}/getDocentesByName/${id}/${query}`);
+  }
+  
+  getTotalDocentesByCampus(id: number) {
+      return this.http.get<number>(`${this.BaseUrlBackend}/${this.ws}/getTotalDocentesByCampus/${id}`);
+  }
+
+  getLibrosDocente(id: number) {
+      return this.http.get<number>(`${this.BaseUrlBackend}/${this.ws}/getLibrosDocente/${id}`);
   }
 }

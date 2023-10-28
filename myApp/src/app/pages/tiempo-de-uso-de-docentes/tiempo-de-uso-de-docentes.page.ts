@@ -10,10 +10,7 @@ import { DocenteByCampus } from './interfaces/docente-by-campus';
 })
 export class TiempoDeUsoDeDocentesPage implements OnInit{
 
-  
-
-  librosDescargadosSelect : object = {
-      
+  public librosDescargadosSelect : object = {
     cssClass: 'librosDescargados-select',
     animated: true,
     mode: 'ios',
@@ -79,34 +76,25 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
     },
   ];
 
-  public campus = [
-    {Id:1, Nombre:'Mazatlán'},
-    {Id:2, Nombre:'Culiacán'},
-    {Id:3, Nombre:'San Luis Potosi'},
-    {Id:4, Nombre:'Zacatecas'},
-    {Id:5, Nombre:'Durango'},
-    {Id:5, Nombre:'Torreon'},
-  ]
-
   public InformacionDocente: any[] = [];
 
-  public DocentesByCampusTotal: number = 0;
   public busquedaVisible: boolean = false;
   
   public cargandoInfoDocente:boolean = false;
   public DocenteSeleccionado: boolean = false;
-  public selectValues: any[] = [];
   public libroSeleccionado: boolean = false;
   public cargandoSkeleton: boolean = false;
   public errorlibros: boolean = false;
   
   public ionSelectValues: Campus[] = [];
-  public DocentesByCampus: DocenteByCampus[] = [];
   public BusquedaResults: DocenteByCampus[] = [];
-  public docenteSeleccionadoData: any = {};
+  public docenteSeleccionadoData: any = [];
+  public isLoadingBusqueda: boolean = false;
+  public BusquedaNoHayRelaciones:boolean = false; 
+  public TotalDocentesByCampus: number = 0;
+  public TotalCampusSeleccionado: boolean = false;
+  public idDocenteSelect: number = 0;
   
-  public shownData: number = 10;
-
   constructor(
     private tiempodeusoService: TiempoDeUsoDeDocentesService,
   ){}
@@ -120,62 +108,84 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
     });  
   }
 
+  handleChange(e) {
+    this.TotalCampusSeleccionado = false; 
+    this.isLoadingBusqueda = true;
+    const idSelect = e.detail.value;
+    this.idDocenteSelect = idSelect;
+    
+      this.tiempodeusoService.getTotalDocentesByCampus(idSelect).pipe(
+        take(1)
+      ).subscribe((responseData) => {
+        console.log('select', responseData);
+        this.TotalDocentesByCampus = responseData;
+        this.isLoadingBusqueda = false;
+        this.busquedaVisible = true;
+        this.TotalCampusSeleccionado = true;
+      });
+  }
+  
   handleInput(event) {
     const query = event.target.value.toLowerCase();
-  
-    // Filtrar solo si query no está vacío
+    
     if (query !== '') {
-      this.BusquedaResults = this.DocentesByCampus.filter(item => 
-        item.UsuarioNombreCompleto.toLowerCase().includes(query)
-      );
-    } else {
-      this.BusquedaResults = [...this.DocentesByCampus];
+      this.tiempodeusoService.getDocentesByName(this.idDocenteSelect,query).pipe(
+        take(1)
+      ).subscribe((responseData) => {
+        console.log('busqueda', responseData);
+        this.TotalDocentesByCampus = responseData.length;
+        this.TotalCampusSeleccionado = false;
+      
+        if (responseData.length === 0) {
+          // No se encontraron resultados, así que restauramos los originales
+          this.BusquedaResults = [];
+          this.BusquedaNoHayRelaciones = true;
+        } else {
+          this.BusquedaNoHayRelaciones = false;
+          this.BusquedaResults = responseData;
+        }
+        this.isLoadingBusqueda = false;
+        this.busquedaVisible = true;
+      });
+    }
+    
+    if(query.length === 0){
+      this.tiempodeusoService.getTotalDocentesByCampus(this.idDocenteSelect).pipe(
+        take(1)
+      ).subscribe((responseData) => {
+        this.TotalDocentesByCampus = responseData;
+        this.TotalCampusSeleccionado = true;
+        this.isLoadingBusqueda = false;
+        this.busquedaVisible = true;
+      });
     }
   
-    this.totalData(this.BusquedaResults);
-    this.busquedaVisible = true;
-  
-  }
-  
-  
-
-  handleChange(e) {
-    const idDocente  = e.detail.value;
-
-    this.tiempodeusoService.getDocentesByCampus(idDocente).pipe(
-      take(1)
-      ).subscribe((responseData) => {
-      console.log(responseData);
-      this.DocentesByCampus = responseData;
-      this.BusquedaResults = responseData;
-      this.DocentesByCampusTotal = responseData.length;
-    });
-    
-    this.busquedaVisible = true;
-    this.handleInput({ target: { value: ' ' } });
   }
 
-  totalData(results: DocenteByCampus[]) {
-    this.DocentesByCampusTotal = results.length;
+  handleInputSearch(){
+    this.isLoadingBusqueda = true; 
+    this.BusquedaNoHayRelaciones = false;
+    this.TotalCampusSeleccionado = false;
+  }
+  
+  cerrarSearchbar(){ 
+    // this.busquedaVisible = false;
   }
 
-  async selectDocente(id: number) {
+   selectDocente(id: number) {
+    console.log('seleccionado docente',id);
     this.busquedaVisible = false;
     this.cargandoInfoDocente = true;
     this.DocenteSeleccionado = true;
     this.libroSeleccionado = false;
 
-    let docenteSeleccionadoData: any = [];
-
-    docenteSeleccionadoData = await this.BusquedaResults.find(docente => docente.UsuarioId === id);
-    
-    setTimeout(() => {
-      // Verifica si los datos se han cargado completamente
-      if (docenteSeleccionadoData) {
-        this.docenteSeleccionadoData = docenteSeleccionadoData;
-        this.cargandoInfoDocente = false;
-      }
-    }, 2000);
+    this.tiempodeusoService.getLibrosDocente(id).pipe(
+      take(1)
+    ).subscribe((responseData) => {
+      console.log(responseData);
+      this.docenteSeleccionadoData = responseData;
+      this.cargandoInfoDocente = false;
+    });
 
   }
 
