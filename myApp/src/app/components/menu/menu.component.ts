@@ -15,21 +15,6 @@ export class menuComponent   {
       private router: Router,
       ) { }
 
-    isMenuOpen = false;
-
-    loading = true;
-     
-  toggleMenu() {
-    this.isMenuOpen = true;
-    this.loading = false;
-  }
-  
-  closeMenu() {
-    this.isMenuOpen = false;
-    setTimeout(() => {
-      this.loading = true;
-    }, 300);
-  }
 
   navigateToLibros(){
     this.dataService.reiniciarNombreLibro('');

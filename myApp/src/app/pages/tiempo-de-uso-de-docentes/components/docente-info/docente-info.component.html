@@ -8,19 +8,19 @@
     <img class="checkmark" src="./assets/icon/checkmark-circle.svg" alt="checkmark-circle">
   </div>
   <div class="docente-info">
-    <!-- {{ DocenteData.UsuarioNombreCompleto }} -->
+      {{ DocenteData.UsuarioNombre }} {{ DocenteData.UsuarioApellidoPaterno }} {{ DocenteData.UsuarioApellidoMaterno }}
   </div>
   <div style="text-align: center">
     <span class="campus-texto"> Campus: </span>
     <span class="campus-nombre">
-      <!-- {{ DocenteData.CampusNombre }} -->
+      {{ DocenteData.CampusNombre }}
     </span>
   </div>
 
   <div class="selecciona-libro" style="background: var(--ion-lbs-negro-gris)">
     <div class="text-selecciona-libro">Selecciona el libro.</div>
     <div class="container-libros">
-      <div *ngFor="let libro of DocenteData" (click)="libroSeleccionado(libro.Id)">
+      <div *ngFor="let libro of LibrosDocenteData" (click)="libroSeleccionado(libro.Id)">
         
         <div class="libros">
           <span class="nombre-libro"> {{ libro.Nombre }} {{ libro.Grados}} - 

@@ -1,18 +1,12 @@
 
 <div>
            
-  <img *ngIf="loading"
-    class="menu-button" 
-    (click)="toggleMenu()" 
-    src="./assets/icon/menu-icon.svg" 
-    alt="menu"
-  >
+  
 
-<div class="menu" [class.zoomOut]="!isMenuOpen" *ngIf="!loading">
+<div class="menu">
 <ul style="width:350px; ">
   
   <!-- Menu list -->
-  <div style="display: flex; justify-content: center; margin-left: -30px;">
     <li class="li-list" routerLink="/home/libros" routerLinkActive="active" (click)="navigateToLibros()">
       <a class="a-menu">
         <img class="img-list" src="./assets/icon/Book.svg" alt="book">
@@ -20,18 +14,7 @@
       </a>
       
     </li>
-
-    <button 
-    style="margin-top: 8px;"
-    class="circle" 
-    [ngStyle]="{ 'display': isMenuOpen ? 'block' : 'none' }"
-    (click)="closeMenu()"
-    >
-    <!-- <span class="x">x</span> -->
-    <img style="width: 7px;" src="./assets/icon/boton-x.png" alt="x">
-  </button>
-</div>
-
+   
   <li class="li-list" routerLink="/home/secuencias" routerLinkActive="active" (click)="navigateToSecuencias()">
     <a class="a-menu">
     <img class="img-list" src="./assets/icon/file.svg" alt="secuencias">

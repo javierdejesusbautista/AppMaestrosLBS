@@ -1,3 +1,5 @@
+<div style="width: 100%">
+
 <div class="row-select">
   <ion-select
     class="input-select"
@@ -16,7 +18,7 @@
     [debounce]="1000"
     (ionChange)="handleInput($any($event))"
     (ionInput)="handleInputSearch()"
-    (ionBlur)="cerrarSearchbar()"
+    (ionClear)="clearSearch()"
     >
   </ion-searchbar>
   
@@ -49,11 +51,11 @@
               class="card-busqueda" type="button" mode="ios">
     <ion-card-content>
     <div>
-      <div style="overflow-y: auto; height: 400px;">
+      <div style="overflow-y: auto; height: auto; max-height: 400px;">
         
         <ion-list mode="ios" >
           <ion-item *ngFor="let docente of BusquedaResults" 
-          (click)="selectDocente(docente.UsuarioId)">
+          (click)="selectDocente(docente)">
           <ion-label>
             <span class="docente">
               {{docente.UsuarioNombreCompleto}} -
@@ -75,9 +77,9 @@
   </ion-card>
 
 </div>
- 
-<div class="container">
 
+<div class="container">
+ 
   <vista-principal></vista-principal>
 
   <div class="row" *ngIf="!cargandoInfoDocente && DocenteSeleccionado ">
@@ -85,7 +87,8 @@
     <div class="vertical-small">
       <div class="informacion">
         <docente-info 
-          [DocenteData]="docenteSeleccionadoData" 
+          [DocenteData]="docenteSeleccionadoData"
+          [LibrosDocenteData]="LibrosDocenteData" 
           (libroSeleccionadoEvent)="manejarLibroSeleccionado($event)">
         </docente-info> 
       </div>
@@ -107,7 +110,7 @@
 
       <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading>
       <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera>
-      <grafica-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado>
+      <grafica-resultado [LibroDocenteData]="LibroDocenteData" *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado>
       <grafica-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></grafica-error>
     </div>
 
@@ -115,5 +118,7 @@
 
   <skeleton-loading *ngIf="cargandoInfoDocente"></skeleton-loading>
   
+
+</div>
 
 </div>

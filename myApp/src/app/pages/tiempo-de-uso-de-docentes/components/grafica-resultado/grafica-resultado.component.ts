@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 declare var Chart: any;
 
@@ -9,6 +9,12 @@ declare var Chart: any;
 })
 export class GraficaResultadoComponent implements OnInit {
 
+  @Input() LibroDocenteData: any;
+
+  RutaPortada = 'https://www.alfalbs.app/ApiOmega/covers/';
+
+  public tiempoReal = new Date().getTime();
+
   public desde: boolean = false;
   public hasta: boolean = false;
 
@@ -17,6 +23,8 @@ export class GraficaResultadoComponent implements OnInit {
 
   public desdeLabel: string = '';
   public hastaLabel: string = '';
+
+  public isLoading: boolean = true;
   
   constructor() {
     // Calcular la fecha del día siguiente
@@ -29,7 +37,9 @@ export class GraficaResultadoComponent implements OnInit {
     this.hastaValue = tomorrow.toISOString();
   }
 
-  
+  onImageLoad() {
+    this.isLoading = false;
+  }
   
   ngOnInit(): void {
   const ctx = document.getElementById('TiempoDeUsoDeDocentes');

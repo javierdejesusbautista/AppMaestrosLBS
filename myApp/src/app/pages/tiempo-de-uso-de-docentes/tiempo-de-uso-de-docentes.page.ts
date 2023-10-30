@@ -88,12 +88,17 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
   
   public ionSelectValues: Campus[] = [];
   public BusquedaResults: DocenteByCampus[] = [];
-  public docenteSeleccionadoData: any = [];
+  
+  public docenteSeleccionadoData: {} = {};
+  public LibrosDocenteData: any = [];
+  public LibroDocenteData: {} = {};
+
   public isLoadingBusqueda: boolean = false;
   public BusquedaNoHayRelaciones:boolean = false; 
   public TotalDocentesByCampus: number = 0;
   public TotalCampusSeleccionado: boolean = false;
   public idDocenteSelect: number = 0;
+  public clearSearchx: boolean = false;
   
   constructor(
     private tiempodeusoService: TiempoDeUsoDeDocentesService,
@@ -109,24 +114,27 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
   }
 
   handleChange(e) {
-    this.TotalCampusSeleccionado = false; 
-    this.isLoadingBusqueda = true;
+    this.busquedaVisible = false;
     const idSelect = e.detail.value;
     this.idDocenteSelect = idSelect;
     
-      this.tiempodeusoService.getTotalDocentesByCampus(idSelect).pipe(
-        take(1)
-      ).subscribe((responseData) => {
-        console.log('select', responseData);
-        this.TotalDocentesByCampus = responseData;
-        this.isLoadingBusqueda = false;
-        this.busquedaVisible = true;
-        this.TotalCampusSeleccionado = true;
-      });
   }
   
   handleInput(event) {
     const query = event.target.value.toLowerCase();
+    console.log(event);
+    if(query.length === 0){
+      this.isLoadingBusqueda = false;
+      this.busquedaVisible = false;
+      // this.tiempodeusoService.getTotalDocentesByCampus(this.idDocenteSelect).pipe(
+      //   take(1)
+      // ).subscribe((responseData) => {
+      //   this.TotalDocentesByCampus = responseData;
+      //   this.TotalCampusSeleccionado = true;
+      //   this.isLoadingBusqueda = false;
+      //   this.busquedaVisible = false;
+      // });
+    }
     
     if (query !== '') {
       this.tiempodeusoService.getDocentesByName(this.idDocenteSelect,query).pipe(
@@ -149,41 +157,47 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
       });
     }
     
-    if(query.length === 0){
-      this.tiempodeusoService.getTotalDocentesByCampus(this.idDocenteSelect).pipe(
-        take(1)
-      ).subscribe((responseData) => {
-        this.TotalDocentesByCampus = responseData;
-        this.TotalCampusSeleccionado = true;
-        this.isLoadingBusqueda = false;
-        this.busquedaVisible = true;
-      });
-    }
   
   }
 
   handleInputSearch(){
-    this.isLoadingBusqueda = true; 
-    this.BusquedaNoHayRelaciones = false;
-    this.TotalCampusSeleccionado = false;
+    if(this.clearSearchx === false){
+      this.isLoadingBusqueda = true; 
+      this.BusquedaNoHayRelaciones = false;
+      this.TotalCampusSeleccionado = false;
+    }
   }
   
-  cerrarSearchbar(){ 
-    // this.busquedaVisible = false;
+  clearSearch(){
+    this.clearSearchx = true;
+    this.isLoadingBusqueda = false;
+    this.busquedaVisible = false;
   }
 
-   selectDocente(id: number) {
-    console.log('seleccionado docente',id);
+   selectDocente(docente: DocenteByCampus) {
+    const { UsuarioId, 
+            CampusNombre,
+            UsuarioNombre,
+            UsuarioApellidoMaterno,
+            UsuarioApellidoPaterno } = docente;
+
     this.busquedaVisible = false;
     this.cargandoInfoDocente = true;
     this.DocenteSeleccionado = true;
     this.libroSeleccionado = false;
 
-    this.tiempodeusoService.getLibrosDocente(id).pipe(
+    this.docenteSeleccionadoData = {
+      UsuarioNombre,
+      UsuarioApellidoMaterno,
+      UsuarioApellidoPaterno, 
+      CampusNombre
+    };
+
+    this.tiempodeusoService.getLibrosDocente(UsuarioId).pipe(
       take(1)
     ).subscribe((responseData) => {
       console.log(responseData);
-      this.docenteSeleccionadoData = responseData;
+      this.LibrosDocenteData = responseData;
       this.cargandoInfoDocente = false;
     });
 
@@ -194,20 +208,22 @@ manejarLibroSeleccionado(id:number){
     this.cargandoSkeleton = true;
     console.log(id);
 
-    if(id === 1){
+    // Buscar el libro con el ID correspondiente en LibroDocenteData
+  const libroSeleccionado = this.LibrosDocenteData.find(libro => libro.Id === id);
 
-      setTimeout(() => {
-        this.errorlibros = true;
-        this.cargandoSkeleton = false;
-      }, 1000);
-    }else{
+  if (libroSeleccionado) {
+
+    this.LibroDocenteData = libroSeleccionado;
+    console.log(libroSeleccionado);
+    
+    this.errorlibros = false;
+    this.cargandoSkeleton = false;
+  } else {
+    this.errorlibros = true;
+    this.cargandoSkeleton = false;
+  }
 
 
-      setTimeout(() => {
-        this.errorlibros = false;
-        this.cargandoSkeleton = false;
-      }, 1000);
-    }
 }
 
 }

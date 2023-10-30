@@ -8,12 +8,16 @@
                         Tiempo de uso de:
                     </span>
                     <span class="libro-nombre">
-                        Science 1.
+                        {{LibroDocenteData.Nombre}}
                     </span>
                 </div>
             </div>
             <div class="card-portada-libro">
-                <img class="portada" src="./assets/images/libro-portada.png" alt="libro-portada">
+                <ion-spinner style="--color: white;" *ngIf="isLoading"></ion-spinner>
+                <img class="portada" 
+                    [src]="RutaPortada + LibroDocenteData.RutaThumbnails + '?t=' + tiempoReal" 
+                    alt="libro-portada"
+                    (load)="onImageLoad()">
             </div>
         </div>
 
@@ -47,14 +51,12 @@
 
             </div>
         
-
     </div>
 
-    
-        
-    <div class="horas-de-uso">
-        Horas de Uso
-    </div>
+    <div style="width: 100%;">
+        <div class="horas-de-uso">
+            Horas de Uso
+        </div>
         <div class="container-grafica">
             <div class="grafica">
                 <canvas id="TiempoDeUsoDeDocentes"></canvas>
@@ -62,7 +64,8 @@
             <div class="dias">
                 Días
             </div>
-            
         </div>
+    </div>
 
+    
   </div>

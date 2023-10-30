@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class DocenteInfoComponent {
 
   @Input() DocenteData: any;
+  @Input() LibrosDocenteData: any;
 
   @Output() libroSeleccionadoEvent: EventEmitter<number> = new EventEmitter<number>();
 

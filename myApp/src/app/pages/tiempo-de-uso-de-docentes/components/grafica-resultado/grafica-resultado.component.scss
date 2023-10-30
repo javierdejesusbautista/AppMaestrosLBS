@@ -15,26 +15,37 @@
   background: var(--ion-lbs-negro-gris);
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.15);
   border-radius: 14px;
-
+  overflow-x: auto;
+  overflow-y: hidden;
+  
   div {
     padding: 14px 28px 15px 19px;
   }
 }
+
+.card-titulo::-webkit-scrollbar:horizontal {
+  height: 3px;
+}
+
 .tiempo-texto {
   color: white;
-  font-size: 32px;
+  font-size: 30px;
   font-family: Volte;
   font-weight: 500;
   line-height: 30px;
-  word-wrap: break-word;
+  
 }
 .libro-nombre {
   color: white;
-  font-size: 24px;
+  font-size: 22px;
   font-family: Volte;
   font-weight: 700;
   line-height: 28.44px;
-  word-wrap: break-word;
+  margin-right: 28px;
+  white-space: nowrap;
+  
+  text-overflow: ellipsis;
+  max-width: 100%; 
 }
 
 .header {
@@ -53,6 +64,10 @@
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.15);
   border-radius: 14px;
   margin-left: 17px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .portada {
   width: 50px;
