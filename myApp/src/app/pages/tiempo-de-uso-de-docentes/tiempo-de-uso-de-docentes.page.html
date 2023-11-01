@@ -96,11 +96,12 @@
       </div>
       
       <div class="resumen">
-        <skeleton-resumen-loading *ngIf="cargandoSkeleton"></skeleton-resumen-loading>
+        <!-- <skeleton-resumen-loading *ngIf="cargandoSkeleton"></skeleton-resumen-loading> -->
         <!-- <resumen-espera *ngIf="!libroSeleccionado"></resumen-espera> -->
         <!-- <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></resumen-resultado> -->
         <!-- <resumen-resultado ></resumen-resultado> -->
-        <resumen-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></resumen-error>
+        <!-- <resumen-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></resumen-error> -->
+        <resumen-error></resumen-error>
       </div>
     </div>
 
@@ -111,18 +112,19 @@
         <div class="exportar-texto">Exportar información</div>
       </div>
 
-      <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading>
+      <!-- <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading> -->
       <!-- <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera> -->
       <!-- <grafica-resultado [LibroDocenteData]="LibroDocenteData" *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado> -->
       <!-- <grafica-resultado [LibroDocenteData]="LibroDocenteData" ></grafica-resultado> -->
-      <grafica-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></grafica-error>
+      <!-- <grafica-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></grafica-error> -->
+      <grafica-error></grafica-error>
     </div>
 
     <div style="width: 32px;"></div>
 
   </div>
 
-  <skeleton-loading ></skeleton-loading>
+  <skeleton-loading *ngIf="cargandoInfoDocente"></skeleton-loading>
   
 
 </div>
