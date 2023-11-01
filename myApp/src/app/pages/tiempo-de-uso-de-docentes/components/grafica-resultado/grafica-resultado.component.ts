@@ -46,11 +46,11 @@ export class GraficaResultadoComponent implements OnInit {
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['1', '2'],
+      labels: ['1', '2','3','4','5','6','7','8','9','10'],
       datasets: [
         {
           label: 'Horas de Uso',
-          data: [0.1,0.2],
+          data: [0.1,0.2,0.6,0.8,0.4,0.9,0.1,0.6,0.2,1],
           borderColor: 'white', // Color de las líneas (blanco)
           borderWidth: 2,
           pointBackgroundColor: '#704CEB', // Color de los puntos (morado)
@@ -180,11 +180,13 @@ export class GraficaResultadoComponent implements OnInit {
 
   onDesdeChange(event: CustomEvent) {
     this.desdeValue = event.detail.value;
+    console.log(event.detail.value);
     this.desdeLabel = this.convertirFormato(event.detail.value);
   }
 
   onHastaChange(event: CustomEvent) {
     this.hastaValue = event.detail.value;
+    console.log(event.detail.value);
     this.hastaLabel = this.convertirFormato(event.detail.value);
   }
 

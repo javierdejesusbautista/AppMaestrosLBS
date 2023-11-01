@@ -8,7 +8,8 @@ import { DocenteByCampus } from '../pages/tiempo-de-uso-de-docentes/interfaces/d
 })
 export class TiempoDeUsoDeDocentesService {
 
-  private BaseUrlBackend: string = 'https://192.168.58.240:5001';
+  private BaseUrlBackendLocal: string = 'https://192.168.58.240:5001';
+  private BaseUrlBackend: string = 'https://www.alfalbs.app/ApiOmega';
   private ws: string = 'api/ReportesPerseus'
 
   constructor(private http: HttpClient ) { }
