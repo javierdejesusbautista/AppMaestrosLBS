@@ -1,23 +1,25 @@
 .container {
-  position: absolute;
+  position: relative;
   background: var(--ion-lbs-gris);
-  width: 704px;
+  // width: 704px;
+  width: 100%;
+  min-width: 586px;
   height: 546px;
+  max-height: 546px;
   border-radius: 15px;
   margin-top: 149px;
-  margin-right: 32px;
   display: flex;
   flex-direction: column;
 }
 .card-titulo {
-  width: 311px;
+  min-width: 311px;
   height: 92px;
   background: var(--ion-lbs-negro-gris);
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.15);
   border-radius: 14px;
   overflow-x: auto;
   overflow-y: hidden;
-  
+
   div {
     padding: 14px 28px 15px 19px;
   }
@@ -33,7 +35,6 @@
   font-family: Volte;
   font-weight: 500;
   line-height: 30px;
-  
 }
 .libro-nombre {
   color: white;
@@ -43,19 +44,19 @@
   line-height: 28.44px;
   margin-right: 28px;
   white-space: nowrap;
-  
+
   text-overflow: ellipsis;
-  max-width: 100%; 
+  max-width: 100%;
 }
 
 .header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: 30%;
   margin-top: 29px;
   margin-left: 41px;
   margin-right: 35px;
-  margin-bottom: 55px;
 }
 .card-portada-libro {
   width: 72px;
@@ -122,21 +123,27 @@ ion-datetime {
 }
 
 .container-grafica {
-  width: 635px;
-  height: 632px;
-  margin-right: 66px;
-  margin-left: 40px;
+  width: 100%;
+  // width: 835px;
+  // height: 632px;
 }
 
+.grafica {
+  bottom: 49px;
+  border: 1px solid red;
+}
+
+
+
 .horas-de-uso {
+  position: absolute;
   transform: rotate(-90deg);
   color: white;
   font-size: 15px;
   font-family: Volte;
   font-weight: 500;
   word-wrap: break-word;
-  position: absolute;
-  left: -50px;
+  left: -40px;
   top: 300px;
   margin-left: 37px;
 }
@@ -148,4 +155,28 @@ ion-datetime {
   font-size: 15px;
   font-family: Volte;
   font-weight: 500;
+}
+
+
+#c3-chart {
+  .c3-texts{
+    color: white !important;
+    background-color: white;
+  }
+  .c3-text{
+    color: white !important;
+    background-color: white;
+  }
+  .c3-xgrid-lines{
+    border-color: white !important;
+    color: white !important;
+  }
+  .c3-ygrid-lines{
+    border-color: white !important;
+    color: white !important;
+  }
+
+  .tick{
+    color: white !important;
+  }
 }

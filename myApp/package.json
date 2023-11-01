@@ -29,6 +29,8 @@
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
+    "c3": "^0.7.20",
+    "d3": "^7.8.5",
     "dexie": "^3.2.2",
     "file-saver": "^2.0.5",
     "interactjs": "^1.10.17",

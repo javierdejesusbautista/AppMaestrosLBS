@@ -1,9 +1,13 @@
 .column {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-width: 1055px;
   height: 728px;
   z-index: 1;
+  border-radius: 15px;
+  padding: 0;
 }
 
 .horizontal-small {
@@ -16,6 +20,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: var(--ion-lbs-negro-gris);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 .realice-una {
   color: white;

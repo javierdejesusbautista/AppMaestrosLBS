@@ -1,4 +1,5 @@
-<div style="width: 100%">
+
+<div style="overflow-y: auto; height: 100%; padding-right: 40px;">
 
 <div class="row-select">
   <ion-select
@@ -78,11 +79,12 @@
 
 </div>
 
-<div class="container">
- 
+<div style="position: relative;">
+  
   <vista-principal></vista-principal>
-
-  <div class="row" *ngIf="!cargandoInfoDocente && DocenteSeleccionado ">
+ 
+  <!-- <div class="row" *ngIf="!cargandoInfoDocente && DocenteSeleccionado "> -->
+  <div class="row" >
     
     <div class="vertical-small">
       <div class="informacion">
@@ -95,8 +97,9 @@
       
       <div class="resumen">
         <skeleton-resumen-loading *ngIf="cargandoSkeleton"></skeleton-resumen-loading>
-        <resumen-espera *ngIf="!libroSeleccionado"></resumen-espera>
-        <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></resumen-resultado>
+        <!-- <resumen-espera *ngIf="!libroSeleccionado"></resumen-espera> -->
+        <!-- <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></resumen-resultado> -->
+        <!-- <resumen-resultado ></resumen-resultado> -->
         <resumen-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></resumen-error>
       </div>
     </div>
@@ -109,16 +112,19 @@
       </div>
 
       <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading>
-      <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera>
-      <grafica-resultado [LibroDocenteData]="LibroDocenteData" *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado>
+      <!-- <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera> -->
+      <!-- <grafica-resultado [LibroDocenteData]="LibroDocenteData" *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado> -->
+      <!-- <grafica-resultado [LibroDocenteData]="LibroDocenteData" ></grafica-resultado> -->
       <grafica-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></grafica-error>
     </div>
 
+    <div style="width: 32px;"></div>
+
   </div>
 
-  <skeleton-loading *ngIf="cargandoInfoDocente"></skeleton-loading>
+  <skeleton-loading ></skeleton-loading>
   
 
 </div>
-
 </div>
+

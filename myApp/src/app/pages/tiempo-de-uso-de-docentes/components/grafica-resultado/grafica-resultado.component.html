@@ -53,18 +53,18 @@
         
     </div>
 
-    <div style="width: 100%;">
-        <div class="horas-de-uso">
-            Horas de Uso
-        </div>
-        <div class="container-grafica">
-            <div class="grafica">
-                <canvas id="TiempoDeUsoDeDocentes"></canvas>
+    <div style="display: flex; flex-direction: row; width: 100%; height: 100%; ">
+
+            <div class="horas-de-uso">
+                Horas de Uso
             </div>
-            <div class="dias">
-                Días
+            
+            <div style="position: absolute; display: flex; flex-direction: column; width: 100%; height: 100%;">
+                <canvas style="min-height: 350px; max-height: 350px; max-width: 1200px;margin-left: 64px; margin-right: 75px;" id="TiempoDeUsoDeDocentes"></canvas>
+                <div class="dias" style="height: 49px;">
+                    Días
+                </div> 
             </div>
-        </div>
     </div>
 
     
