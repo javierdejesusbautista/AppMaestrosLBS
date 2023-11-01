@@ -181,15 +181,11 @@ export class GraficaResultadoComponent implements OnInit {
   onDesdeChange(event: CustomEvent) {
     this.desdeValue = event.detail.value;
     this.desdeLabel = this.convertirFormato(event.detail.value);
-    console.log('Fecha Desde seleccionada:', this.desdeValue);
-    // this.closeDatetime('desde');
   }
 
   onHastaChange(event: CustomEvent) {
     this.hastaValue = event.detail.value;
     this.hastaLabel = this.convertirFormato(event.detail.value);
-    console.log('Fecha Desde seleccionada:', this.hastaValue);
-    // this.closeDatetime('hasta');
   }
 
 }

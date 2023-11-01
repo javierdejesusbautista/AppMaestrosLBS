@@ -1,32 +1,31 @@
 .grafica {
-    position: relative;
-    background: var(--ion-lbs-gris);
-    width: 100%;
-    min-width: 586px;
-    height: 546px;
-    border-radius: 15px;
-    margin-top: 149px;
-    margin-right: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  } 
-  
-  .seleccione {
-    color: white;
-    font-size: 24px;
-    font-family: Volte;
-    font-weight: 400;
-    line-height: 24.84px;
-    word-wrap: break-word;
-  }
-  .un-libro {
-    color: white;
-    font-size: 24px;
-    font-family: Volte;
-    font-weight: 700;
-    line-height: 24.84px;
-    word-wrap: break-word;
-  }
+  position: relative;
+  background: var(--ion-lbs-gris);
+  width: 100%;
+  min-width: 586px;
+  height: 546px;
+  border-radius: 15px;
+  margin-top: 149px;
+  margin-right: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.seleccione {
+  color: white;
+  font-size: 24px;
+  font-family: Volte;
+  font-weight: 400;
+  line-height: 24.84px;
+  word-wrap: break-word;
+}
+.un-libro {
+  color: white;
+  font-size: 24px;
+  font-family: Volte;
+  font-weight: 700;
+  line-height: 24.84px;
+  word-wrap: break-word;
+}

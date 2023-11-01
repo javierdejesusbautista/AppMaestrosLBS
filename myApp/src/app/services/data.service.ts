@@ -46,12 +46,6 @@ export class DataService {
 
 		window.addEventListener('message', this.receiveMessageFolder, false);
 
-		//cleanup function to unsuscribe from the observable // test 
-
-		// return () => {
-		// 	console.log("cleanup function");
-		// 	window.removeEventListener('message', this.receiveMessage,);
-		// }
 	});
 
 	locationsHome = new Observable((observer) => {
@@ -89,7 +83,6 @@ export class DataService {
 
   abrirModalMain() {
 	  this.estadoModalMain = this.estadoModalMain ? false : true;
-	//   console.log(this.estadoModalMain);
 	  this.displayModalMain = 'none' ? 'inherit' : ' none';
 	  
   }
@@ -148,7 +141,6 @@ export class DataService {
 	// Nueva
 	this.rutaActual$.subscribe((value) => {
 		 this.ruta = value;
-		 console.log(value);
 		
 	});
   }

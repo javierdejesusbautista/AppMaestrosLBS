@@ -108,7 +108,6 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
     this.tiempodeusoService.getCampus().pipe(
       take(1)
       ).subscribe((responseData) => {
-      console.log(responseData);
       this.ionSelectValues = responseData;
     });  
   }
@@ -122,25 +121,16 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
   
   handleInput(event) {
     const query = event.target.value.toLowerCase();
-    console.log(event);
     if(query.length === 0){
       this.isLoadingBusqueda = false;
       this.busquedaVisible = false;
-      // this.tiempodeusoService.getTotalDocentesByCampus(this.idDocenteSelect).pipe(
-      //   take(1)
-      // ).subscribe((responseData) => {
-      //   this.TotalDocentesByCampus = responseData;
-      //   this.TotalCampusSeleccionado = true;
-      //   this.isLoadingBusqueda = false;
-      //   this.busquedaVisible = false;
-      // });
+     
     }
     
     if (query !== '') {
       this.tiempodeusoService.getDocentesByName(this.idDocenteSelect,query).pipe(
         take(1)
       ).subscribe((responseData) => {
-        console.log('busqueda', responseData);
         this.TotalDocentesByCampus = responseData.length;
         this.TotalCampusSeleccionado = false;
       
@@ -196,7 +186,6 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
     this.tiempodeusoService.getLibrosDocente(UsuarioId).pipe(
       take(1)
     ).subscribe((responseData) => {
-      console.log(responseData);
       this.LibrosDocenteData = responseData;
       this.cargandoInfoDocente = false;
     });
@@ -206,7 +195,6 @@ export class TiempoDeUsoDeDocentesPage implements OnInit{
 manejarLibroSeleccionado(id:number){
     this.libroSeleccionado = true;
     this.cargandoSkeleton = true;
-    console.log(id);
 
     // Buscar el libro con el ID correspondiente en LibroDocenteData
   const libroSeleccionado = this.LibrosDocenteData.find(libro => libro.Id === id);
@@ -214,7 +202,6 @@ manejarLibroSeleccionado(id:number){
   if (libroSeleccionado) {
 
     this.LibroDocenteData = libroSeleccionado;
-    console.log(libroSeleccionado);
     
     this.errorlibros = false;
     this.cargandoSkeleton = false;

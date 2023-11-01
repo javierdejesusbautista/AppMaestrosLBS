@@ -1,3 +1,36 @@
+.container-principal {
+  position: relative;
+  margin-top: 10px;
+  overflow-y: auto;
+  height: 100%;
+  padding-right: 40px;
+}
+.card-lista-busqueda {
+  overflow-y: auto;
+  height: auto;
+  padding-right: 20px;
+  max-height: 306px;
+}
+.resultado-posicion {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  display: flex;
+  flex-direction: column;
+}
+.linea-resultado {
+  width: 140px;
+  border: 0.3px #373636 solid;
+  background: #373636;
+  margin-bottom: 9px;
+  margin-right: 26px;
+}
+
+.label-resultado {
+  text-align: end;
+  margin-right: 26px;
+}
+
 .label-input-select {
   color: #606060;
   font-size: 13px;
@@ -11,6 +44,7 @@
 
 .input-select {
   width: 217px;
+  min-width: 217px;
   height: 32px;
   margin-right: 44px;
   padding-left: 12px;
@@ -40,6 +74,7 @@ ion-searchbar {
   font-weight: 400;
   word-wrap: break-word;
   margin-top: -14px;
+  min-width: 816px;
 
   --border-radius: 16px;
   --background: var(--ion-lbs-negro-gris);
@@ -48,12 +83,16 @@ ion-searchbar {
 }
 
 .card-busqueda {
-  position: fixed;
+  position: absolute;
   z-index: 9;
-  width: 716px;
+  width: 100%;
+  min-width: 716px;
+  max-width: calc(100% - 400px);
   background: #f5f5f5;
-  margin-left: 265px;
+  margin-left: 310px;
   margin-top: 40px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 
   ion-list.list-ios {
     background: #f5f5f5;

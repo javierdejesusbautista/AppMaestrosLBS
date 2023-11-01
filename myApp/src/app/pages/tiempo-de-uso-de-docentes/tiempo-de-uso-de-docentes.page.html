@@ -1,5 +1,5 @@
 
-<div style="overflow-y: auto; height: 100%; padding-right: 40px;">
+<div class="container-principal">
 
 <div class="row-select">
   <ion-select
@@ -52,10 +52,10 @@
               class="card-busqueda" type="button" mode="ios">
     <ion-card-content>
     <div>
-      <div style="overflow-y: auto; height: auto; max-height: 400px;">
+      <div class="card-lista-busqueda">
         
         <ion-list mode="ios" >
-          <ion-item *ngFor="let docente of BusquedaResults" 
+          <ion-item *ngFor="let docente of BusquedaResults; "
           (click)="selectDocente(docente)">
           <ion-label>
             <span class="docente">
@@ -68,9 +68,11 @@
         </ion-item>
       </ion-list>
     </div>
-    <ion-item>
-      <div style="position: absolute; right: 0px; bottom: 0px">
-        <ion-label>{{ TotalDocentesByCampus }} Resultados</ion-label>
+
+    <ion-item lines="none">
+      <div class="resultado-posicion">
+        <hr class="linea-resultado">
+        <ion-label class="label-resultado">{{ TotalDocentesByCampus }} Resultados</ion-label>
       </div>
     </ion-item>
   </div>
@@ -83,8 +85,7 @@
   
   <vista-principal></vista-principal>
  
-  <!-- <div class="row" *ngIf="!cargandoInfoDocente && DocenteSeleccionado "> -->
-  <div class="row" >
+  <div class="row" *ngIf="!cargandoInfoDocente && DocenteSeleccionado ">
     
     <div class="vertical-small">
       <div class="informacion">
@@ -96,12 +97,10 @@
       </div>
       
       <div class="resumen">
-        <!-- <skeleton-resumen-loading *ngIf="cargandoSkeleton"></skeleton-resumen-loading> -->
-        <!-- <resumen-espera *ngIf="!libroSeleccionado"></resumen-espera> -->
-        <!-- <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></resumen-resultado> -->
-        <!-- <resumen-resultado ></resumen-resultado> -->
-        <!-- <resumen-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></resumen-error> -->
-        <resumen-error></resumen-error>
+        <skeleton-resumen-loading *ngIf="cargandoSkeleton"></skeleton-resumen-loading>
+        <resumen-espera *ngIf="!libroSeleccionado"></resumen-espera>
+        <resumen-resultado *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></resumen-resultado>
+        <resumen-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></resumen-error>
       </div>
     </div>
 
@@ -112,12 +111,10 @@
         <div class="exportar-texto">Exportar información</div>
       </div>
 
-      <!-- <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading> -->
-      <!-- <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera> -->
-      <!-- <grafica-resultado [LibroDocenteData]="LibroDocenteData" *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado> -->
-      <!-- <grafica-resultado [LibroDocenteData]="LibroDocenteData" ></grafica-resultado> -->
-      <!-- <grafica-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></grafica-error> -->
-      <grafica-error></grafica-error>
+      <skeleton-grafica-loading *ngIf="cargandoSkeleton"></skeleton-grafica-loading>
+      <grafica-espera *ngIf="!libroSeleccionado"></grafica-espera>
+      <grafica-resultado [LibroDocenteData]="LibroDocenteData" *ngIf="libroSeleccionado && !cargandoSkeleton && !errorlibros"></grafica-resultado>
+      <grafica-error *ngIf="libroSeleccionado && !cargandoSkeleton && errorlibros"></grafica-error>
     </div>
 
     <div style="width: 32px;"></div>

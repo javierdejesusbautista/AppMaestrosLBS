@@ -36,19 +36,12 @@ import { Config } from 'jodit/src/config';
         const btnTacha = modal?.querySelector('button:not([ref])');
         const btnCancelar = modal?.querySelector('button:not([ref]):not(.jodit-toolbar-button__button)');
 
-        // console.log('modal', modal);
-        // console.log('tacha', btnTacha);
-        // console.log('cancelar', btnCancelar);
-
         btnTacha?.addEventListener('click', () => { cancelled = true; });
         btnCancelar?.addEventListener('click', () => { cancelled = true; });
 
         const callback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
           for (const mutation of mutationsList) {
             if (mutation.type === 'childList' && !document.contains(modal)) {
-              // El div específico se ha eliminado del DOM
-              // console.log('El div específico ha sido eliminado del DOM');
-              // console.log('cancelled?', cancelled);
 
               if (!cancelled){
                 setTimeout(() => {
@@ -250,10 +243,6 @@ import { Config } from 'jodit/src/config';
 			}
 			if (type === 'totalPaginas') {
 				this.totalPaginas = args;
-				// console.log(dataReceived);
-				// for (let index = 1; index <= args; index++) {
-				// 	this.totalPaginas.push(index);
-				// }
 			}
 
 			if(type === 'secuencia-accion') {
