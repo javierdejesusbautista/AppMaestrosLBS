@@ -77,7 +77,7 @@ export class GraficaResultadoComponent implements OnInit {
             color: 'white', 
             font: {
               size: 15, 
-              family: 'Volte',
+              family: 'Volte-Regular',
               weight: 500, 
             },
           },
@@ -85,7 +85,7 @@ export class GraficaResultadoComponent implements OnInit {
             font: {
               weight: 'bold',
               size: 15, 
-              family: 'Volte',
+              family: 'Volte-Regular',
             },
             align: 'end', 
             color: 'white',
@@ -100,7 +100,7 @@ export class GraficaResultadoComponent implements OnInit {
             font: {
               weight: 'bold',
               size: 15, // Tamaño de fuente personalizado
-              family: 'Volte',
+              family: 'Volte-Regular',
             },
             align: 'center', // Alinea el texto al centro verticalmente
             color: 'white',
@@ -113,7 +113,7 @@ export class GraficaResultadoComponent implements OnInit {
             color: 'white', 
             font: {
               size: 15, 
-              family: 'Volte',
+              family: 'Volte-Regular',
               weight: 500, 
             },
           },
@@ -127,7 +127,7 @@ export class GraficaResultadoComponent implements OnInit {
           display: false,
         },
         tooltip: {
-          enabled: false,
+          enabled: true,
         },
       },
     },

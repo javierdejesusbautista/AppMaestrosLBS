@@ -222,6 +222,7 @@ import { Config } from 'jodit/src/config';
 			let rutaSinguion:string = ruta.replace(/-/g, ' ');
 			let rutaArray: string[] = rutaSinguion.split('/');
 			this.rutaActual = rutaArray;
+			console.log(rutaArray);
 		  });
 
 		
